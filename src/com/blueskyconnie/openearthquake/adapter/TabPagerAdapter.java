@@ -14,14 +14,14 @@ import com.blueskyconnie.openearthquake.R;
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class TabPagerAdapter extends FragmentPagerAdapter {
 
 	/**
 	 * 
 	 */
 	private final MainActivity mainActivity;
 
-	public SectionsPagerAdapter(MainActivity mainActivity, FragmentManager fm) {
+	public TabPagerAdapter(MainActivity mainActivity, FragmentManager fm) {
 		super(fm);
 		this.mainActivity = mainActivity;
 	}

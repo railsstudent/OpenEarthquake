@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.blueskyconnie.openearthquake.adapter.SectionsPagerAdapter;
+import com.blueskyconnie.openearthquake.adapter.TabPagerAdapter;
 import com.blueskyconnie.openearthquake.base.RoboActionBarActivity;
 import com.blueskyconnie.openearthquake.helper.AlertDialogHelper;
 import com.google.android.gms.common.ConnectionResult;
@@ -63,7 +63,7 @@ public class MainActivity extends RoboActionBarActivity implements
 	 * becomes too memory intensive, it may be best to switch to a
 	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
 	 */
-	SectionsPagerAdapter mSectionsPagerAdapter;
+	TabPagerAdapter mSectionsPagerAdapter;
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
@@ -100,7 +100,7 @@ public class MainActivity extends RoboActionBarActivity implements
 		
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
+		mSectionsPagerAdapter = new TabPagerAdapter(
 				this, getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
