@@ -13,6 +13,10 @@
     <string name="no_internet_error">No Internet connection. Close Application.</string>
     <string name="exit_error">Exit failure, please try again.</string>
     <string name="info_title">Information</string>
-
+    
+    <string name="past_hour_title">Past Hour</string>
+    <string name="past_day_title">Past Day</string>
+    
+    <string name="btnLoad">Load</string>
     
 </resources>

@@ -1,5 +1,6 @@
 package com.blueskyconnie.openearthquake;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -63,7 +64,7 @@ public class MainActivity extends RoboActionBarActivity implements
 	 * becomes too memory intensive, it may be best to switch to a
 	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
 	 */
-	TabPagerAdapter mSectionsPagerAdapter;
+	TabPagerAdapter mTabsPagerAdapter;
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
@@ -100,12 +101,13 @@ public class MainActivity extends RoboActionBarActivity implements
 		
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
-		mSectionsPagerAdapter = new TabPagerAdapter(
-				this, getSupportFragmentManager());
+		List<Fragment> lstFragment = new ArrayList<Fragment>();
+		lstFragment.add(EarthquakeFragment.newInstance("all_hour.geojson"));
+		lstFragment.add(EarthquakeFragment.newInstance("all_day.geojson"));
+		mTabsPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), this, lstFragment);
 
 		// Set up the ViewPager with the sections adapter.
-		//mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+		mViewPager.setAdapter(mTabsPagerAdapter);
 
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
@@ -113,21 +115,18 @@ public class MainActivity extends RoboActionBarActivity implements
 		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
-				switch (position) {
-					default:
-						actionBar.setSelectedNavigationItem(position);
-				}
+				actionBar.setSelectedNavigationItem(position);
 			}
 		});
 		
 		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+		for (int i = 0; i < mTabsPagerAdapter.getCount(); i++) {
 			// Create a tab with text corresponding to the page title defined by
 			// the adapter. Also specify this Activity object, which implements
 			// the TabListener interface, as the callback (listener) for when
 			// this tab is selected.
 			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
+					.setText(mTabsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
 	}

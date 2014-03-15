@@ -1,13 +1,12 @@
 package com.blueskyconnie.openearthquake.adapter;
 
-import java.util.Locale;
+import java.util.List;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.blueskyconnie.openearthquake.EarthquakeFragment;
-import com.blueskyconnie.openearthquake.MainActivity;
 import com.blueskyconnie.openearthquake.R;
 
 /**
@@ -16,41 +15,33 @@ import com.blueskyconnie.openearthquake.R;
  */
 public class TabPagerAdapter extends FragmentPagerAdapter {
 
-	/**
-	 * 
-	 */
-	private final MainActivity mainActivity;
+	private List<Fragment> lstFragment;
+	private Context context;
 
-	public TabPagerAdapter(MainActivity mainActivity, FragmentManager fm) {
+	public TabPagerAdapter(FragmentManager fm, Context context, List<Fragment> lstFragment) {
 		super(fm);
-		this.mainActivity = mainActivity;
+		this.context = context;
+		this.lstFragment = lstFragment;
 	}
 
 	@Override
 	public Fragment getItem(int position) {
-		// getItem is called to instantiate the fragment for the given page.
-		// Return a PlaceholderFragment (defined as a static inner class
-		// below).
-		return EarthquakeFragment.newInstance(position + 1);
+		return lstFragment.get(position);
 	}
 
 	@Override
 	public int getCount() {
-		// Show 3 total pages.
-		return 3;
+		return lstFragment.size();
 	}
 
 	@Override
 	public CharSequence getPageTitle(int position) {
-		Locale l = Locale.getDefault();
 		switch (position) {
-		case 0:
-			return this.mainActivity.getString(R.string.title_section1).toUpperCase(l);
-		case 1:
-			return this.mainActivity.getString(R.string.title_section2).toUpperCase(l);
-		case 2:
-			return this.mainActivity.getString(R.string.title_section3).toUpperCase(l);
+			case 0:
+				return context.getString(R.string.past_hour_title);
+			case 1:
+				return context.getString(R.string.past_day_title);
 		}
-		return null;
+		return "";
 	}
 }
