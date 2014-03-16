@@ -23,7 +23,7 @@ public class EarthquakeInfo implements Serializable {
 	private String place;
 	private Date date;
 	
-	static class EarthquakeInfoBuilder {
+	public static class Builder {
 		
 		private double lat;
 		private double lng;
@@ -34,42 +34,42 @@ public class EarthquakeInfo implements Serializable {
 		private long time;
 		private String magnitudeType;
 		
-		public EarthquakeInfoBuilder lat(final double lat) {
+		public Builder lat(final double lat) {
 			this.lat = lat;
 			return this;
 		}
 
-		public EarthquakeInfoBuilder lng(final double lng) {
+		public Builder lng(final double lng) {
 			this.lng = lng;
 			return this;
 		}
 
-		public EarthquakeInfoBuilder depth(final double depth) {
+		public Builder depth(final double depth) {
 			this.depth = depth;
 			return this;
 		}
 		
-		public EarthquakeInfoBuilder url(final String url) {
+		public Builder url(final String url) {
 			this.url = Strings.nullToEmpty(url);
 			return this;
 		}
 		
-		public EarthquakeInfoBuilder magnitude(final double magnitude) {
+		public Builder magnitude(final double magnitude) {
 			this.magnitude = magnitude;
 			return this;
 		}
 		
-		public EarthquakeInfoBuilder magnitudeType(final String magnitudeType) {
+		public Builder magnitudeType(final String magnitudeType) {
 			this.magnitudeType = Strings.nullToEmpty(magnitudeType);
 			return this;
 		}
 
-		public EarthquakeInfoBuilder place(final String place) {
+		public Builder place(final String place) {
 			this.place = Strings.nullToEmpty(place);
 			return this;
 		}
 		
-		public EarthquakeInfoBuilder time(final long time) {
+		public Builder time(final long time) {
 			this.time = time;
 			return this;
 		}
@@ -79,7 +79,7 @@ public class EarthquakeInfo implements Serializable {
 		}
 	}
 	
-	public EarthquakeInfo(EarthquakeInfoBuilder builder) {
+	public EarthquakeInfo(Builder builder) {
 		this.lat = builder.lat;
 		this.lng = builder.lng;
 		this.depth = builder.depth;

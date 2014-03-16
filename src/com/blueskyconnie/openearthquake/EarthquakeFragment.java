@@ -72,22 +72,37 @@ public class EarthquakeFragment extends RoboListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
+		earthquakeAdapter = new EarthquakeListAdapter(getActivity(), R.layout.earthquake_row_layout);
+		setListAdapter(earthquakeAdapter);
 		// by experiment, control is injected here
 		btnLoad.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (earthquakeAdapter != null) {
+					earthquakeAdapter.loadAdditionalData();
+				}
 			}
 		});
-		if (!isRestUrlCalled) {
-			// make restful call to retrieve earthquake data
+	}
+	
+	
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		if (progressbar != null) {
+			if (progressbar.isShown()) {
+				progressbar.setVisibility(View.INVISIBLE);
+			}
 		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-//		double lat = ((EarthquakeApplication) getActivity().getApplicationContext()).getCurrentLat();
-//		double lng = ((EarthquakeApplication) getActivity().getApplicationContext()).getCurrentLng();
+		if (!isRestUrlCalled) {
+			
+		}
 	}
 
 	@Override

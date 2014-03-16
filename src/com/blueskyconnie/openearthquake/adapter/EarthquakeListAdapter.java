@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.blueskyconnie.openearthquake.R;
 import com.blueskyconnie.openearthquake.model.EarthquakeInfo;
 
 public class EarthquakeListAdapter extends BaseAdapter {
@@ -51,6 +52,9 @@ public class EarthquakeListAdapter extends BaseAdapter {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(resourceId, null);
 			holder = new EarthquakeHolder();
+			holder.tvMagnitude = (TextView) convertView.findViewById(R.id.tvMagnitude);
+			holder.tvPlace = (TextView) convertView.findViewById(R.id.tvPlace);
+			holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
 			convertView.setTag(holder);
 		} else {
 			holder = (EarthquakeHolder) convertView.getTag();
@@ -59,7 +63,6 @@ public class EarthquakeListAdapter extends BaseAdapter {
 		if (objRowData != null) {
 			EarthquakeInfo objEarthquake = (EarthquakeInfo) objRowData;
 			holder.tvMagnitude.setText(objEarthquake.getMagnitude() + " " + objEarthquake.getMagnitudeType());
-			holder.tvDepth.setText(String.valueOf(objEarthquake.getDepth()));
 			holder.tvPlace.setText(objEarthquake.getPlace());
 			holder.tvTime.setText(objEarthquake.getTime());
 		}
@@ -76,13 +79,13 @@ public class EarthquakeListAdapter extends BaseAdapter {
 		if (newLstEarthquake != null) {
 			this.lstInfo.addAll(newLstEarthquake);
 		}
+		count = BUFFER_SIZE;
 		this.notifyDataSetChanged();
 	}
 	
 	private static class EarthquakeHolder {
 		TextView tvMagnitude;
 		TextView tvPlace;
-		TextView tvDepth;
 		TextView tvTime;
 	}
 
