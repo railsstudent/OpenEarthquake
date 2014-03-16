@@ -18,5 +18,6 @@
     <string name="past_day_title">Past Day</string>
     
     <string name="btnLoad">Load</string>
+    <string name="noEarthquake">No earthquake information</string>
     
 </resources>

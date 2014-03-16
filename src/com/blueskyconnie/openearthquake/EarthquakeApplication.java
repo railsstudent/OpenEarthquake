@@ -15,9 +15,6 @@ import android.os.Environment;
 
 public class EarthquakeApplication extends Application {
 
-	private double currentLat;
-	private double currentLng;
-	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -45,19 +42,4 @@ public class EarthquakeApplication extends Application {
 		ImageLoader.getInstance().init(config);
 	}
 
-	public double getCurrentLat() {
-		return currentLat;
-	}
-
-	public void setCurrentLat(double currentLat) {
-		this.currentLat = currentLat;
-	}
-
-	public double getCurrentLng() {
-		return currentLng;
-	}
-
-	public void setCurrentLng(double currentLng) {
-		this.currentLng = currentLng;
-	}
 }
