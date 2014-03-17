@@ -1,47 +1,39 @@
 package com.blueskyconnie.openearthquake.asynchttp;
 
-import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 
-import com.blueskyconnie.openearthquake.adapter.EarthquakeListAdapter;
 import com.blueskyconnie.openearthquake.model.EarthquakeInfo;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 
 	private static final String TAG = "EarthquakeJsonHttpResponseHandler";
+	private HttpResponseCallback callback;
 	
-	private WeakReference<Activity> weakActivity;
-	private WeakReference<ListView> weakLstView;
-	private WeakReference<Button> weakBtnLoad;
-	private WeakReference<ProgressBar> weakProgressbar;
-	private EarthquakeListAdapter earthquakeAdapter;
+	public interface HttpResponseCallback {
+		void successCallback(List<EarthquakeInfo> newResults);
+		void failedCallback();
+	}
 	
-	public EarthquakeJsonHttpResponseHandler(Activity activity, ListView lstView, 
-			Button btnLoad, ProgressBar progressbar, EarthquakeListAdapter adapter) {
-		weakActivity = new WeakReference<Activity>(activity);
-		weakLstView = new WeakReference<ListView>(lstView);
-		weakBtnLoad = new WeakReference<Button>(btnLoad);
-		weakProgressbar = new WeakReference<ProgressBar>(progressbar);
-		earthquakeAdapter = adapter;
+	public EarthquakeJsonHttpResponseHandler(HttpResponseCallback callback) {
+		this.callback = callback;
 	}
 	
 	
 	@Override
 	public void onFailure(Throwable e, JSONObject errorResponse) {
 		super.onFailure(e, errorResponse);
-		Log.i(TAG, e.getMessage());
-		finishLoading();
+		if (callback != null) {
+			callback.failedCallback();
+		}
+		Log.i(TAG, "onFailure - " + e.getMessage());
 	}
 
 	@Override
@@ -49,6 +41,7 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 		super.onSuccess(response);
 		
 		try {
+			ArrayList<EarthquakeInfo> lst = new ArrayList<EarthquakeInfo>();
 			JSONArray features = response.getJSONArray("features");
 			if (features != null) {
 				for (int i = 0; i < features.length(); i++) {
@@ -69,27 +62,34 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 							builder.time(properties.getLong("time"));
 						}
 					}
+					
+					if (feature.has("geometry")) {
+						JSONObject geometry = feature.getJSONObject("geometry");
+						if (geometry.has("coordinates")) {
+							JSONArray coordinates = geometry.getJSONArray("coordinates");
+							if (coordinates.length() >= 3) {
+								builder.depth(coordinates.getDouble(2));
+							}
+							if (coordinates.length() >= 2) {
+								builder.lat(coordinates.getDouble(1));
+							}
+							if (coordinates.length() >= 1) {
+								builder.lng(coordinates.getDouble(0));
+							}
+						}
+					}
+					lst.add(builder.create());
 				}
 			}
+			if (callback != null) {
+				callback.successCallback(lst);
+			}
+			Log.i(TAG, "onSuccess ends.");
 		} catch (JSONException e) {
 			Log.i(TAG, e.getMessage());
 			e.printStackTrace();
 		} finally {
-			finishLoading();
-		}
-	}
-	
-	private void finishLoading() {
-		if (weakProgressbar != null && weakProgressbar.get() != null) {
-			weakProgressbar.get() .setVisibility(View.GONE);
-		}
-		
-		if (weakLstView != null && weakLstView.get() != null) {
-			weakLstView.get().setVisibility(View.VISIBLE);
-		}
-		
-		if (weakBtnLoad != null && weakBtnLoad.get() != null) {
-			weakBtnLoad.get().setEnabled(true);
+			
 		}
 	}
 }

@@ -2,8 +2,10 @@ package com.blueskyconnie.openearthquake.model;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import com.google.common.base.Strings;
 
@@ -12,7 +14,7 @@ public class EarthquakeInfo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss", Locale.getDefault());
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss z", Locale.getDefault());
 	
 	private double lat;
 	private double lng;
@@ -22,6 +24,10 @@ public class EarthquakeInfo implements Serializable {
 	private String magnitudeType;
 	private String place;
 	private Date date;
+	
+	static {
+		sdf.setTimeZone(Calendar.getInstance().getTimeZone());
+	}
 	
 	public static class Builder {
 		
@@ -60,7 +66,7 @@ public class EarthquakeInfo implements Serializable {
 		}
 		
 		public Builder magnitudeType(final String magnitudeType) {
-			this.magnitudeType = Strings.nullToEmpty(magnitudeType);
+			this.magnitudeType = Strings.nullToEmpty(magnitudeType).toLowerCase(Locale.getDefault());
 			return this;
 		}
 

@@ -72,6 +72,7 @@ public class EarthquakeListAdapter extends BaseAdapter {
 	public void loadAdditionalData() {
 		count += BUFFER_SIZE;
 		count = Math.min(count, lstInfo.size());
+		this.notifyDataSetChanged();
 	}
 	
 	public void addEarthquake(List<EarthquakeInfo> newLstEarthquake) {
@@ -80,6 +81,7 @@ public class EarthquakeListAdapter extends BaseAdapter {
 			this.lstInfo.addAll(newLstEarthquake);
 		}
 		count = BUFFER_SIZE;
+		count = Math.min(count, lstInfo.size());
 		this.notifyDataSetChanged();
 	}
 	

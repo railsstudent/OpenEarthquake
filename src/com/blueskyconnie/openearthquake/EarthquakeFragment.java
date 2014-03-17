@@ -1,6 +1,6 @@
 package com.blueskyconnie.openearthquake;
 
-import org.json.JSONObject;
+import java.util.List;
 
 import roboguice.fragment.RoboListFragment;
 import roboguice.inject.InjectView;
@@ -14,16 +14,18 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.blueskyconnie.openearthquake.adapter.EarthquakeListAdapter;
+import com.blueskyconnie.openearthquake.asynchttp.EarthquakeJsonHttpResponseHandler;
+import com.blueskyconnie.openearthquake.asynchttp.EarthquakeJsonHttpResponseHandler.HttpResponseCallback;
 import com.blueskyconnie.openearthquake.asynchttp.UsgsEarthquakeClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
+import com.blueskyconnie.openearthquake.model.EarthquakeInfo;
 
-public class EarthquakeFragment extends RoboListFragment {
+public class EarthquakeFragment extends RoboListFragment implements HttpResponseCallback {
 	
 	private static final String TAG = "EarthquakeFragment";
 	
 	private EarthquakeListAdapter earthquakeAdapter;
 	private String restfulUrl;
-	private boolean isRestUrlCalled;
+	private boolean isDataLoaded;
 	
 	/**
 	 * The fragment argument representing the section number for this
@@ -59,7 +61,7 @@ public class EarthquakeFragment extends RoboListFragment {
 		if (getArguments() != null) {
 			restfulUrl = getArguments().getString(ARG_URL);
 		}
-		isRestUrlCalled = false;
+		isDataLoaded = false;
 	}
 
 	@Override
@@ -100,8 +102,19 @@ public class EarthquakeFragment extends RoboListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isRestUrlCalled) {
-			
+		if (!isDataLoaded) {
+			if (this.getUserVisibleHint()) {
+				// call client to get restful data
+				if (lstView != null && btnLoad != null && progressbar != null) {
+					lstView.setVisibility(View.INVISIBLE);
+					btnLoad.setEnabled(false);
+					progressbar.setVisibility(View.VISIBLE);
+					
+					EarthquakeJsonHttpResponseHandler handler = new EarthquakeJsonHttpResponseHandler(this);
+					UsgsEarthquakeClient.get(restfulUrl, null, handler);
+					Log.i(TAG, "onResume called - resfulUrl = " + restfulUrl);
+				}
+			}
 		}
 	}
 
@@ -114,23 +127,42 @@ public class EarthquakeFragment extends RoboListFragment {
 				lstView.setVisibility(View.INVISIBLE);
 				btnLoad.setEnabled(false);
 				progressbar.setVisibility(View.VISIBLE);
-				UsgsEarthquakeClient.get(restfulUrl, null, new JsonHttpResponseHandler() {
-					@Override
-					public void onSuccess(JSONObject response) {
-						Log.i(TAG, "onSuccess called - restful url = " + restfulUrl);
-					}
-	
-					@Override
-					public void onFinish() {
-						super.onFinish();
-						lstView.setVisibility(View.VISIBLE);
-						btnLoad.setEnabled(true);
-						progressbar.setVisibility(View.GONE);
-						isRestUrlCalled = true;
-						Log.i(TAG, "onFinish called");
-					}
-				});
+				
+				EarthquakeJsonHttpResponseHandler handler = 
+						new EarthquakeJsonHttpResponseHandler(this);
+				UsgsEarthquakeClient.get(restfulUrl, null, handler);
+				Log.i(TAG, "setUserVisibleHint called - resfulUrl = " + restfulUrl);
 			}
 		}
+	}
+
+	@Override
+	public void successCallback(List<EarthquakeInfo> newResults) {
+		this.isDataLoaded = true;
+		this.earthquakeAdapter.addEarthquake(newResults);
+		finishLoading();
+		Log.i(TAG, "successCallback called.");
+	}
+
+	@Override
+	public void failedCallback() {
+		this.isDataLoaded = false;
+		finishLoading();
+		Log.i(TAG, "failedCallback called.");
+	}
+	
+	private void finishLoading() {
+		if (progressbar != null) {
+			progressbar.setVisibility(View.GONE);
+		}
+		
+		if (lstView != null) {
+			lstView.setVisibility(View.VISIBLE);
+		}
+		
+		if (btnLoad != null) {
+			btnLoad.setEnabled(true);
+		}
+		Log.i(TAG, "finishLoading called.");
 	}
 }
