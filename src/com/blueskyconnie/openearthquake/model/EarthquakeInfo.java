@@ -7,6 +7,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
+
+import android.util.Log;
+
 import com.google.common.base.Strings;
 
 public class EarthquakeInfo implements Serializable {
@@ -14,7 +19,7 @@ public class EarthquakeInfo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss z", Locale.getDefault());
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss z", Locale.getDefault()); 
 	
 	private double lat;
 	private double lng;
@@ -23,7 +28,7 @@ public class EarthquakeInfo implements Serializable {
 	private double magnitude;
 	private String magnitudeType;
 	private String place;
-	private Date date;
+	private long time;
 	
 	static {
 		sdf.setTimeZone(Calendar.getInstance().getTimeZone());
@@ -93,7 +98,7 @@ public class EarthquakeInfo implements Serializable {
 		this.place = builder.place;
 		this.url = builder.url;
 		this.magnitudeType = builder.magnitudeType;
-		date = new Date(builder.time);
+		this.time = builder.time;
 	}
 	
 	public double getLatitude() {
@@ -144,7 +149,7 @@ public class EarthquakeInfo implements Serializable {
 	}
 	
 	public String getTime() {
-		return sdf.format(date);
+		return sdf.format(new LocalDateTime(time).toDate());
 	}
 
 	public String getMagnitudeType() {
@@ -159,7 +164,6 @@ public class EarthquakeInfo implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(depth);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -172,6 +176,7 @@ public class EarthquakeInfo implements Serializable {
 		result = prime * result
 				+ ((magnitudeType == null) ? 0 : magnitudeType.hashCode());
 		result = prime * result + ((place == null) ? 0 : place.hashCode());
+		result = prime * result + (int) (time ^ (time >>> 32));
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
 	}
@@ -185,11 +190,6 @@ public class EarthquakeInfo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		EarthquakeInfo other = (EarthquakeInfo) obj;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
-			return false;
 		if (Double.doubleToLongBits(depth) != Double
 				.doubleToLongBits(other.depth))
 			return false;
@@ -209,6 +209,8 @@ public class EarthquakeInfo implements Serializable {
 			if (other.place != null)
 				return false;
 		} else if (!place.equals(other.place))
+			return false;
+		if (time != other.time)
 			return false;
 		if (url == null) {
 			if (other.url != null)

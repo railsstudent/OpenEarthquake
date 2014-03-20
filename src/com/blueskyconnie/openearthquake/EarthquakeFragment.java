@@ -4,6 +4,7 @@ import java.util.List;
 
 import roboguice.fragment.RoboListFragment;
 import roboguice.inject.InjectView;
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -97,6 +98,12 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 				progressbar.setVisibility(View.INVISIBLE);
 			}
 		}
+		
+		// cancel requests
+		Activity activity = getActivity();
+		if (activity != null) {
+			UsgsEarthquakeClient.cancelRequests(activity, false);
+		}
 	}
 
 	@Override
@@ -117,6 +124,8 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 			}
 		}
 	}
+	
+	
 
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {

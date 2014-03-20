@@ -27,6 +27,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/bottom_control_bar"
+        android:dividerHeight="1dp"
+        android:divider="@color/dividerColor"
         android:layout_margin="8dp" >
     </ListView>
 

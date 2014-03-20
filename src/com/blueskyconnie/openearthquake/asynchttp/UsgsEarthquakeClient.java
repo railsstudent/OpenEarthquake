@@ -21,4 +21,8 @@ public class UsgsEarthquakeClient {
 	private static final String getAbsoluteUrl(String relativeUrl) {
 		return BASE_URL + relativeUrl.trim();
 	}
+	
+	public static void cancelRequests(android.content.Context context, boolean mayInterruptIfRunning) {
+		client.cancelRequests(context, mayInterruptIfRunning);
+	}
 }

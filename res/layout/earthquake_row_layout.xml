@@ -5,34 +5,48 @@
     android:background="@color/grayColor"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/tvMagnitude"
+    <LinearLayout
+        android:id="@+id/ll_horiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="36sp"
-        android:textColor="@color/redColor"
-        android:layout_marginTop="4dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
-    
-     <TextView
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp" >
+
+        <TextView
+            android:id="@+id/lblMagnitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/magnitude"
+            android:textColor="@color/blackColor"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvMagnitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/redColor"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <TextView
         android:id="@+id/tvPlace"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@color/blackColor"
-        android:layout_marginTop="4dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
-     
-     <TextView
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/blueColor"
+        android:textSize="20sp" />
+
+    <TextView
         android:id="@+id/tvTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/blackColor"
-        android:layout_marginTop="4dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/blackColor"
+        android:textSize="14sp" />
 
 </LinearLayout>
