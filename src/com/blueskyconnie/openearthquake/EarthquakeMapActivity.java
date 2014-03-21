@@ -1,26 +1,71 @@
 package com.blueskyconnie.openearthquake;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.TextView;
 
-public class EarthquakeMapActivity extends ActionBarActivity {
+import com.blueskyconnie.openearthquake.base.RoboActionBarActivity;
+import com.blueskyconnie.openearthquake.model.EarthquakeInfo;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+public class EarthquakeMapActivity extends RoboActionBarActivity {
+
+	private static final int GOOGLE_MAP_REQUEST = 1;
+	
+	@InjectView(R.id.tvLatitude)
+	private TextView tvLat;
+	@InjectView(R.id.tvLongtitude)
+	private TextView tvLng;
+	@InjectView(R.id.tvDepth)
+	private TextView tvDepth;
+	
+	private SupportMapFragment fragEarthquake;
+	
+	private EarthquakeInfo earthquakeInfo;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_earthquake_map);
 
+		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+			Intent intent = getIntent();
+			if (intent != null) {
+				earthquakeInfo  = (EarthquakeInfo) intent.getSerializableExtra(Constants.EARTHQUAKE_INFO_KEY);
+				tvLat.setText(String.valueOf(earthquakeInfo.getLatitude()));
+				tvLng.setText(String.valueOf(earthquakeInfo.getLongtitude()));
+				tvDepth.setText(earthquakeInfo.getDepth() + " " + getString(R.string.kilometer));
+			}
+			fragEarthquake = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragEarthquake);
+			if (fragEarthquake != null) {
+				// todo set pin and stuff
+				int result_code = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+				if (ConnectionResult.SUCCESS == result_code) {
+					GoogleMap map = fragEarthquake.getMap();
+					if (map != null) {
+						LatLng latLng = new LatLng(earthquakeInfo.getLatitude(), earthquakeInfo.getLongtitude());
+						map.addMarker(new MarkerOptions().position(latLng)
+										.icon(BitmapDescriptorFactory
+												.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+						map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+						map.animateCamera(CameraUpdateFactory.zoomTo(8));
+					}
+				} else {
+					GooglePlayServicesUtil.getErrorDialog(result_code, this, GOOGLE_MAP_REQUEST).show();
+				}
+			}
 		}
 	}
 
@@ -40,25 +85,10 @@ public class EarthquakeMapActivity extends ActionBarActivity {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
+		} else if (id == android.R.id.home) {
+			// close this activity
+			finish();
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_earthquake_map,
-					container, false);
-			return rootView;
-		}
-	}
-
 }

@@ -17,7 +17,8 @@
     <string name="btnLoad">Load</string>
     <string name="noEarthquake">No earthquake information</string>
     <string name="magnitude">Magnitude:</string>
-    <string name="title_activity_earthquake_map">Earthquake Map</string>
-    <string name="hello_world">Hello world!</string>
-
+	<string name="latitude">Latitude :</string>
+	<string name="longtitude">Longtitude :</string>
+	<string name="depth">Depth :</string>
+	<string name="kilometer">km</string>
 </resources>

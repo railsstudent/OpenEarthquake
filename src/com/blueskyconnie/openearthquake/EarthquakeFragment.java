@@ -5,6 +5,7 @@ import java.util.List;
 import roboguice.fragment.RoboListFragment;
 import roboguice.inject.InjectView;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -173,5 +174,17 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 			btnLoad.setEnabled(true);
 		}
 		Log.i(TAG, "finishLoading called.");
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Object obj = l.getItemAtPosition(position);
+		if (obj != null && obj instanceof EarthquakeInfo) {
+			EarthquakeInfo info = (EarthquakeInfo) obj;
+			Intent mapIntent = new Intent(getActivity(), EarthquakeMapActivity.class);
+			mapIntent.putExtra(Constants.EARTHQUAKE_INFO_KEY, info);
+			startActivity(mapIntent);
+		}
 	}
 }

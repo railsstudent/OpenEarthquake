@@ -2,15 +2,9 @@ package com.blueskyconnie.openearthquake.model;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
-import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
-
-import android.util.Log;
 
 import com.google.common.base.Strings;
 
@@ -29,10 +23,6 @@ public class EarthquakeInfo implements Serializable {
 	private String magnitudeType;
 	private String place;
 	private long time;
-	
-	static {
-		sdf.setTimeZone(Calendar.getInstance().getTimeZone());
-	}
 	
 	public static class Builder {
 		
