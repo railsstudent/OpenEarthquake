@@ -1,5 +1,7 @@
 package com.blueskyconnie.openearthquake;
 
+import java.text.DecimalFormat;
+
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +22,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class EarthquakeMapActivity extends RoboActionBarActivity {
 
-	private static final int GOOGLE_MAP_REQUEST = 1;
+	private static final int RQS_GOOGLE_SERVICE = 1;
+	private static final double KM_2_MILE = 0.621371;
+	private static final DecimalFormat df = new DecimalFormat("#.##");
 	
 	@InjectView(R.id.tvLatitude)
 	private TextView tvLat;
@@ -46,7 +50,11 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 				earthquakeInfo  = (EarthquakeInfo) intent.getSerializableExtra(Constants.EARTHQUAKE_INFO_KEY);
 				tvLat.setText(String.valueOf(earthquakeInfo.getLatitude()));
 				tvLng.setText(String.valueOf(earthquakeInfo.getLongtitude()));
-				tvDepth.setText(earthquakeInfo.getDepth() + " " + getString(R.string.kilometer));
+				
+				double mile = earthquakeInfo.getDepth()  * KM_2_MILE;
+				tvDepth.setText(String.format("%s %s (%s %s)", 
+						df.format(earthquakeInfo.getDepth()), getString(R.string.kilometer),
+						df.format(mile), getString(R.string.mile)));
 			}
 			fragEarthquake = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragEarthquake);
 			if (fragEarthquake != null) {
@@ -58,12 +66,12 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 						LatLng latLng = new LatLng(earthquakeInfo.getLatitude(), earthquakeInfo.getLongtitude());
 						map.addMarker(new MarkerOptions().position(latLng)
 										.icon(BitmapDescriptorFactory
-												.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+												.defaultMarker()));
 						map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 						map.animateCamera(CameraUpdateFactory.zoomTo(8));
 					}
 				} else {
-					GooglePlayServicesUtil.getErrorDialog(result_code, this, GOOGLE_MAP_REQUEST).show();
+					GooglePlayServicesUtil.getErrorDialog(result_code, this, RQS_GOOGLE_SERVICE).show();
 				}
 			}
 		}
