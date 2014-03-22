@@ -9,11 +9,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.blueskyconnie.openearthquake.adapter.EarthquakeListAdapter;
 import com.blueskyconnie.openearthquake.asynchttp.EarthquakeJsonHttpResponseHandler;
@@ -27,6 +31,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	
 	private EarthquakeListAdapter earthquakeAdapter;
 	private String restfulUrl;
+	private String title_earthquake_map;
 	private boolean isDataLoaded;
 	
 	/**
@@ -34,6 +39,8 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	 * fragment.
 	 */
 	private static final String ARG_URL = "restfulUrl";
+
+	private static final String ARG_TITLE = "eq_title";
 	
 	@InjectView (R.id.btnLoad)
 	private Button btnLoad;
@@ -44,13 +51,17 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	@InjectView (R.id.progressbar)
 	private ProgressBar progressbar;
 	
+	@InjectView(R.id.tvTotal)
+	private TextView tvTotal;
+	
 	/**
 	 * Returns a new instance of this fragment for the given section number.
 	 */
-	public static EarthquakeFragment newInstance(String url) {
+	public static EarthquakeFragment newInstance(String title, String url) {
 		EarthquakeFragment fragment = new EarthquakeFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_URL, url);
+		args.putString(ARG_TITLE, title);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -59,9 +70,11 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
+		setHasOptionsMenu(true);
 		restfulUrl = "";
 		if (getArguments() != null) {
 			restfulUrl = getArguments().getString(ARG_URL);
+			title_earthquake_map = getArguments().getString(ARG_TITLE);
 		}
 		isDataLoaded = false;
 	}
@@ -88,8 +101,6 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 			}
 		});
 	}
-	
-	
 
 	@Override
 	public void onPause() {
@@ -114,8 +125,10 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 			if (this.getUserVisibleHint()) {
 				// call client to get restful data
 				if (lstView != null && btnLoad != null && progressbar != null) {
+					tvTotal.setVisibility(View.INVISIBLE);
 					lstView.setVisibility(View.INVISIBLE);
 					btnLoad.setEnabled(false);
+					btnLoad.setVisibility(View.INVISIBLE);
 					progressbar.setVisibility(View.VISIBLE);
 					
 					EarthquakeJsonHttpResponseHandler handler = new EarthquakeJsonHttpResponseHandler(this);
@@ -126,16 +139,16 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		}
 	}
 	
-	
-
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
 			// call client to get restful data
 			if (lstView != null && btnLoad != null && progressbar != null) {
+				tvTotal.setVisibility(View.INVISIBLE);
 				lstView.setVisibility(View.INVISIBLE);
 				btnLoad.setEnabled(false);
+				btnLoad.setVisibility(View.INVISIBLE);
 				progressbar.setVisibility(View.VISIBLE);
 				
 				EarthquakeJsonHttpResponseHandler handler = 
@@ -150,6 +163,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	public void successCallback(List<EarthquakeInfo> newResults) {
 		this.isDataLoaded = true;
 		this.earthquakeAdapter.addEarthquake(newResults);
+		tvTotal.setText(getString(R.string.totalEarthquake) + " " + newResults.size());
 		finishLoading();
 		Log.i(TAG, "successCallback called.");
 	}
@@ -165,6 +179,10 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		if (progressbar != null) {
 			progressbar.setVisibility(View.GONE);
 		}
+
+		if (tvTotal != null) {
+			tvTotal.setVisibility(View.VISIBLE);
+		}
 		
 		if (lstView != null) {
 			lstView.setVisibility(View.VISIBLE);
@@ -172,6 +190,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		
 		if (btnLoad != null) {
 			btnLoad.setEnabled(true);
+			btnLoad.setVisibility(View.VISIBLE);
 		}
 		Log.i(TAG, "finishLoading called.");
 	}
@@ -186,5 +205,25 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 			mapIntent.putExtra(Constants.EARTHQUAKE_INFO_KEY, info);
 			startActivity(mapIntent);
 		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.earthquake_fragment_menu, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch (item.getItemId()) {
+			case R.id.action_map:
+				Intent mapIntent = new Intent(getActivity(), EarthquakeAllMapActivity.class);
+				mapIntent.putExtra(Constants.EARTHQUAKE_REST_URL, restfulUrl);
+				mapIntent.putExtra(Constants.EARTHQUAKE_TITLE, title_earthquake_map);
+				startActivity(mapIntent);
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

@@ -2,7 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.blueskyconnie.openearthquake.EarthquakeAllMapActivity$PlaceholderFragment" >
+    android:background="@color/background"
+    tools:context="com.blueskyconnie.openearthquake.EarthquakeAllMapActivity"
+    tools:ignore="MergeRootFrame">
 
-
+    <TextView
+      android:id="@+id/tvHeading"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentTop="true"
+       android:layout_margin="8dp"
+       android:textColor="@color/blueColor"
+        />
+    
+   <fragment
+        android:id="@+id/fragEarthquakeAll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/tvHeading"
+        android:layout_alignRight="@+id/tvHeading"
+        android:layout_below="@+id/tvHeading"
+        android:layout_marginBottom="8dp"
+        class="com.google.android.gms.maps.SupportMapFragment" />
+    
 </RelativeLayout>

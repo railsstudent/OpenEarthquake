@@ -5,6 +5,8 @@ import java.text.DecimalFormat;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -26,6 +28,8 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 	private static final double KM_2_MILE = 0.621371;
 	private static final DecimalFormat df = new DecimalFormat("#.##");
 	
+	private static final String TAG = "EarthquakeMapActivity";
+	
 	@InjectView(R.id.tvLatitude)
 	private TextView tvLat;
 	@InjectView(R.id.tvLongtitude)
@@ -42,7 +46,8 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_earthquake_map);
 
-		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionbar = this.getSupportActionBar();
+		actionbar.setDisplayHomeAsUpEnabled(true);
 
 		if (savedInstanceState == null) {
 			Intent intent = getIntent();
@@ -90,13 +95,15 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		} else if (id == android.R.id.home) {
-			// close this activity
-			finish();
-		}
-		return super.onOptionsItemSelected(item);
+		 switch (item.getItemId()) {
+		    // Respond to the action bar's Up/Home button
+		    case android.R.id.home:
+		    	Intent upIntent = getSupportParentActivityIntent();
+		    	upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		    	supportNavigateUpTo(upIntent);
+		    	Log.i(TAG, "android.R.id.home: Up navigation");
+		        return true;
+		 }
+		 return super.onOptionsItemSelected(item);
 	}
 }

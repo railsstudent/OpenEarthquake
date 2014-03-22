@@ -19,7 +19,9 @@
     <string name="depth">Depth :</string>
     <string name="kilometer">km</string>
     <string name="mile">mi</string>
-    <string name="title_activity_earthquake_all_map">EarthquakeAllMapActivity</string>
-    <string name="hello_world">Hello world!</string>
-
+    <string name="totalEarthquake">Total earthquakes:</string>
+    <string name="title_eq_past_day">Earthquakes in Past Day</string>
+    <string name="title_eq_past_hour">Earthquakes in Past Hour</string>
+    <string name="show_map">Show Map</string>
+    
 </resources>

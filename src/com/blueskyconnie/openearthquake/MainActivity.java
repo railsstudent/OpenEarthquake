@@ -56,8 +56,10 @@ public class MainActivity extends RoboActionBarActivity implements
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
 		List<Fragment> lstFragment = new ArrayList<Fragment>();
-		lstFragment.add(EarthquakeFragment.newInstance("all_hour.geojson"));
-		lstFragment.add(EarthquakeFragment.newInstance("all_day.geojson"));
+		lstFragment.add(EarthquakeFragment.newInstance(getString(R.string.title_eq_past_hour), 
+					"all_hour.geojson"));
+		lstFragment.add(EarthquakeFragment.newInstance(getString(R.string.title_eq_past_day), 
+					"all_day.geojson"));
 		mTabsPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), this, lstFragment);
 
 		// Set up the ViewPager with the sections adapter.

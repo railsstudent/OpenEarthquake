@@ -42,43 +42,45 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 		
 		try {
 			ArrayList<EarthquakeInfo> lst = new ArrayList<EarthquakeInfo>();
-			JSONArray features = response.getJSONArray("features");
-			if (features != null) {
-				for (int i = 0; i < features.length(); i++) {
-					EarthquakeInfo.Builder builder = new EarthquakeInfo.Builder();
-					JSONObject feature = features.getJSONObject(i);
-					if (feature.has("properties")) {
-						JSONObject properties = feature.getJSONObject("properties");
-						if (properties.has("mag")) {
-							builder.magnitude(properties.getDouble("mag"));
+			if (response.has("features")) {
+				JSONArray features = response.getJSONArray("features");
+				if (features != null) {
+					for (int i = 0; i < features.length(); i++) {
+						EarthquakeInfo.Builder builder = new EarthquakeInfo.Builder();
+						JSONObject feature = features.getJSONObject(i);
+						if (feature.has("properties")) {
+							JSONObject properties = feature.getJSONObject("properties");
+							if (properties.has("mag")) {
+								builder.magnitude(properties.getDouble("mag"));
+							}
+							if (properties.has("magnitudeType")) {
+								builder.magnitudeType(properties.getString("magnitudeType"));
+							}
+							if (properties.has("place")) {
+								builder.place(properties.getString("place"));
+							}
+							if (properties.has("time")) {
+								builder.time(properties.getLong("time"));
+							}
 						}
-						if (properties.has("magnitudeType")) {
-							builder.magnitudeType(properties.getString("magnitudeType"));
+						
+						if (feature.has("geometry")) {
+							JSONObject geometry = feature.getJSONObject("geometry");
+							if (geometry.has("coordinates")) {
+								JSONArray coordinates = geometry.getJSONArray("coordinates");
+								if (coordinates.length() >= 3) {
+									builder.depth(coordinates.getDouble(2));
+								}
+								if (coordinates.length() >= 2) {
+									builder.lat(coordinates.getDouble(1));
+								}
+								if (coordinates.length() >= 1) {
+									builder.lng(coordinates.getDouble(0));
+								}
+							}
 						}
-						if (properties.has("place")) {
-							builder.place(properties.getString("place"));
-						}
-						if (properties.has("time")) {
-							builder.time(properties.getLong("time"));
-						}
+						lst.add(builder.create());
 					}
-					
-					if (feature.has("geometry")) {
-						JSONObject geometry = feature.getJSONObject("geometry");
-						if (geometry.has("coordinates")) {
-							JSONArray coordinates = geometry.getJSONArray("coordinates");
-							if (coordinates.length() >= 3) {
-								builder.depth(coordinates.getDouble(2));
-							}
-							if (coordinates.length() >= 2) {
-								builder.lat(coordinates.getDouble(1));
-							}
-							if (coordinates.length() >= 1) {
-								builder.lng(coordinates.getDouble(0));
-							}
-						}
-					}
-					lst.add(builder.create());
 				}
 			}
 			if (callback != null) {

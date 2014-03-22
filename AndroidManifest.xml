@@ -44,7 +44,6 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -57,11 +56,17 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity
             android:name="com.blueskyconnie.openearthquake.EarthquakeMapActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" 
+            android:parentActivityName="com.blueskyconnie.openearthquake.MainActivity">
+             <meta-data android:name="android.support.PARENT_ACTIVITY"
+          			  android:value="com.blueskyconnie.openearthquake.MainActivity" />
         </activity>
         <activity
             android:name="com.blueskyconnie.openearthquake.EarthquakeAllMapActivity"
-            android:label="@string/title_activity_earthquake_all_map" >
+            android:screenOrientation="portrait"
+            android:parentActivityName="com.blueskyconnie.openearthquake.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+          			  android:value="com.blueskyconnie.openearthquake.MainActivity" />
         </activity>
     </application>
 

@@ -13,22 +13,36 @@
         android:layout_margin="8dp"
         android:orientation="vertical" >
 
+        <!--              style="?android:attr/buttonStyleSmall"
+         -->
         <Button
             android:id="@+id/btnLoad"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Buttonearthquake2"
             android:text="@string/btnLoad" />
     </LinearLayout>
 
+     <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
+        android:textSize="14sp" />
+    
     <ListView
         android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/tvTotal"
         android:layout_above="@+id/bottom_control_bar"
         android:dividerHeight="1dp"
         android:divider="@color/dividerColor"
+        style="@style/ListViewearthquake2"
+        android:background="@color/background"
+        android:listSelector="@android:color/transparent"
+        android:choiceMode="singleChoice"
         android:layout_margin="8dp" >
     </ListView>
 
