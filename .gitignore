@@ -6,9 +6,9 @@
 bin/
 gen/
 build/
-.classpath
-project.properties
+#.classpath
+#project.properties
 proguard-project.txt
 .gradle
-.project
+#.project
 .settings/
