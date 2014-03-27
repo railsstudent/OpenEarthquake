@@ -25,10 +25,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
-import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
 public class EarthquakeAllMapActivity extends RoboActionBarActivity implements HttpResponseCallback {
 
@@ -44,7 +42,6 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 	//private String title;
 	private String restUrl;
 	private ClusterManager<EarthquakeClusterItem> mClusterManager;  
-	private EarthquakeRenderer earthquakeRenderer;
 	private EarthquakeClusterItem clickedClusterItem;
 	
 	@Override
@@ -75,8 +72,6 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 							mClusterManager = new ClusterManager<EarthquakeClusterItem>(this, map);
 							map.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 							mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new EarthquakeInfoWindowAdapter());
-							earthquakeRenderer = new EarthquakeRenderer();
-							mClusterManager.setRenderer(new EarthquakeRenderer());
 							map.setOnCameraChangeListener(mClusterManager);
 							map.setOnMarkerClickListener(mClusterManager);
 							mClusterManager.setOnClusterItemClickListener(new OnClusterItemClickListener<EarthquakeClusterItem>() {
@@ -144,20 +139,6 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 
 	private void finishedLoading() {
 		fragEarthquake.getView().setVisibility(View.VISIBLE);
-	}
-	
-	private class EarthquakeRenderer extends DefaultClusterRenderer<EarthquakeClusterItem> {
-
-		public EarthquakeRenderer() {
-			 super(EarthquakeAllMapActivity.this, map, mClusterManager);
-		}
-
-		@Override
-		protected void onBeforeClusterItemRendered(EarthquakeClusterItem item,
-				MarkerOptions markerOptions) {
-			super.onBeforeClusterItemRendered(item, markerOptions);
-			markerOptions.title(String.valueOf(item.getId()));
-		}
 	}
 	
 	private class EarthquakeInfoWindowAdapter implements InfoWindowAdapter {
