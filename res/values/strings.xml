@@ -14,6 +14,7 @@
     <string name="btnLoad">Load</string>
     <string name="noEarthquake">No earthquake information</string>
     <string name="magnitude">Magnitude:</string>
+    <string name="place">Place:</string>
     <string name="latitude">Latitude :</string>
     <string name="longtitude">Longtitude :</string>
     <string name="depth">Depth :</string>

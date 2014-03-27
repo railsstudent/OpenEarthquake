@@ -2,6 +2,7 @@ package com.blueskyconnie.openearthquake;
 
 import java.text.DecimalFormat;
 
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,11 +25,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class EarthquakeMapActivity extends RoboActionBarActivity {
 
+	private static final String TAG = "EarthquakeMapActivity";
 	private static final int RQS_GOOGLE_SERVICE = 1;
 	private static final double KM_2_MILE = 0.621371;
 	private static final DecimalFormat df = new DecimalFormat("#.##");
-	
-	private static final String TAG = "EarthquakeMapActivity";
 	
 	@InjectView(R.id.tvLatitude)
 	private TextView tvLat;
@@ -36,10 +36,19 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 	private TextView tvLng;
 	@InjectView(R.id.tvDepth)
 	private TextView tvDepth;
+	@InjectResource(R.string.kilometer)
+	private String strMile;
+	@InjectResource(R.string.mile)
+	private String strKM;
 	
 	private SupportMapFragment fragEarthquake;
-	
 	private EarthquakeInfo earthquakeInfo;
+	
+	@InjectResource(R.string.magnitude)
+	private String lblMagnitude;
+	
+	@InjectResource(R.string.place)
+	private String lblPlace;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +65,9 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 				tvLat.setText(String.valueOf(earthquakeInfo.getLatitude()));
 				tvLng.setText(String.valueOf(earthquakeInfo.getLongtitude()));
 				
-				double mile = earthquakeInfo.getDepth()  * KM_2_MILE;
+				double mile = earthquakeInfo.getDepth() * KM_2_MILE;
 				tvDepth.setText(String.format("%s %s (%s %s)", 
-						df.format(earthquakeInfo.getDepth()), getString(R.string.kilometer),
-						df.format(mile), getString(R.string.mile)));
+						df.format(earthquakeInfo.getDepth()), strKM, df.format(mile), strMile));
 			}
 			fragEarthquake = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragEarthquake);
 			if (fragEarthquake != null) {
@@ -69,9 +77,12 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 					GoogleMap map = fragEarthquake.getMap();
 					if (map != null) {
 						LatLng latLng = new LatLng(earthquakeInfo.getLatitude(), earthquakeInfo.getLongtitude());
-						map.addMarker(new MarkerOptions().position(latLng)
-										.icon(BitmapDescriptorFactory
-												.defaultMarker()));
+						String magnitude = String.format("%s %s", earthquakeInfo.getMagnitude(), earthquakeInfo.getMagnitudeType());
+						map.addMarker(new MarkerOptions()
+										.position(latLng)
+										.title(lblMagnitude + " " + magnitude)
+										.snippet(lblPlace + " " + earthquakeInfo.getPlace())
+										.icon(BitmapDescriptorFactory.defaultMarker()));
 						map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 						map.animateCamera(CameraUpdateFactory.zoomTo(8));
 					}
