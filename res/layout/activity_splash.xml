@@ -6,21 +6,36 @@
     android:id="@+id/relLayout"
     tools:context="com.blueskyconnie.simpleearthquake.SplashActivity" >
 
+    <TextView
+        android:id="@+id/tvAppName1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:text="@string/app_title1"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:textStyle="bold" />
+    
+    
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:contentDescription="@string/contentImageLogo"
         android:src="@drawable/img_globe" />
 
     <TextView
-        android:id="@+id/tvAppName"
+        android:id="@+id/tvAppName2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:text="@string/app_title"
+        android:layout_marginTop="8dp"
+        android:text="@string/app_title2"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="36sp"

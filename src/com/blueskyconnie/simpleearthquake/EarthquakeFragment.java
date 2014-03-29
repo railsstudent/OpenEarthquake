@@ -3,6 +3,7 @@ package com.blueskyconnie.simpleearthquake;
 import java.util.List;
 
 import roboguice.fragment.RoboListFragment;
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,12 +22,13 @@ import android.widget.TextView;
 
 import com.blueskyconnie.simpleearthquake.R;
 import com.blueskyconnie.simpleearthquake.adapter.EarthquakeListAdapter;
+import com.blueskyconnie.simpleearthquake.adapter.EarthquakeListAdapter.LoadDataCallback;
 import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHandler;
 import com.blueskyconnie.simpleearthquake.asynchttp.UsgsEarthquakeClient;
 import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHandler.HttpResponseCallback;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 
-public class EarthquakeFragment extends RoboListFragment implements HttpResponseCallback {
+public class EarthquakeFragment extends RoboListFragment implements HttpResponseCallback, LoadDataCallback {
 	
 	private static final String TAG = "EarthquakeFragment";
 	
@@ -54,6 +56,11 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	
 	@InjectView(R.id.tvTotal)
 	private TextView tvTotal;
+	
+	@InjectResource(R.string.strTotalFormatter)
+	private String strTotalFormatter;
+	
+	private int totalRecords;
 	
 	/**
 	 * Returns a new instance of this fragment for the given section number.
@@ -90,7 +97,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		earthquakeAdapter = new EarthquakeListAdapter(getActivity(), R.layout.earthquake_row_layout);
+		earthquakeAdapter = new EarthquakeListAdapter(getActivity(), R.layout.earthquake_row_layout, this);
 		setListAdapter(earthquakeAdapter);
 		// by experiment, control is injected here
 		btnLoad.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +171,8 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	public void successCallback(List<EarthquakeInfo> newResults) {
 		this.isDataLoaded = true;
 		this.earthquakeAdapter.addEarthquake(newResults);
-		tvTotal.setText(getString(R.string.totalEarthquake) + " " + newResults.size());
+		totalRecords = newResults.size();
+		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
 		finishLoading();
 		Log.i(TAG, "successCallback called.");
 	}
@@ -172,6 +180,8 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	@Override
 	public void failedCallback() {
 		this.isDataLoaded = false;
+		totalRecords = 0;
+		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
 		finishLoading();
 		Log.i(TAG, "failedCallback called.");
 	}
@@ -226,5 +236,10 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onAfterDataLoad() {
+		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
 	}
 }

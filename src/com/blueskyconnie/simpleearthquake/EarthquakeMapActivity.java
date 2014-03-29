@@ -40,9 +40,9 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 	@InjectView(R.id.tvDepth)
 	private TextView tvDepth;
 	@InjectResource(R.string.kilometer)
-	private String strMile;
-	@InjectResource(R.string.mile)
 	private String strKM;
+	@InjectResource(R.string.mile)
+	private String strMile;
 	
 	private SupportMapFragment fragEarthquake;
 	private EarthquakeInfo earthquakeInfo;

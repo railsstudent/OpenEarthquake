@@ -22,12 +22,14 @@ public class EarthquakeListAdapter extends BaseAdapter {
 	private int count;
 	private Context context;
 	private int resourceId;
+	private LoadDataCallback loadCallback;
 	
-	public EarthquakeListAdapter(Context context, int resourceId) {
+	public EarthquakeListAdapter(Context context, int resourceId, LoadDataCallback loadCallback) {
 		this.context = context;
 		this.resourceId = resourceId;
 		lstInfo = new ArrayList<EarthquakeInfo>();
 		count = 0;
+		this.loadCallback = loadCallback;
 	}
 	
 	@Override
@@ -74,6 +76,10 @@ public class EarthquakeListAdapter extends BaseAdapter {
 		count += BUFFER_SIZE;
 		count = Math.min(count, lstInfo.size());
 		this.notifyDataSetChanged();
+		if (loadCallback != null) {
+			loadCallback.onAfterDataLoad();
+			Log.i("EarthquakeListAdapter", "loadCallback fired.");
+		}
 		Log.i("EarthquakeListAdapter", "count = " + count);
 	}
 	
@@ -91,6 +97,10 @@ public class EarthquakeListAdapter extends BaseAdapter {
 		TextView tvMagnitude;
 		TextView tvPlace;
 		TextView tvTime;
+	}
+	
+	public interface LoadDataCallback {
+		public void onAfterDataLoad();		
 	}
 
 }
