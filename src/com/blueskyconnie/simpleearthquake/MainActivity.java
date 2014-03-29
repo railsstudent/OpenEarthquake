@@ -3,13 +3,18 @@ package com.blueskyconnie.simpleearthquake;
 import java.util.ArrayList;
 import java.util.List;
 
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,6 +29,12 @@ public class MainActivity extends RoboActionBarActivity implements
 		LocationListener*/ {
 
 	private static final String TAG = "MainActivity";
+	
+	@InjectResource(R.string.shareSubject)
+	private String strExtraSubject;
+	
+	@InjectResource(R.string.shareText)
+	private String strExtraText;
 	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -42,6 +53,9 @@ public class MainActivity extends RoboActionBarActivity implements
 	private ViewPager mViewPager;
 //	private ImageLoader imageLoader = ImageLoader.getInstance();
 	
+	private ShareActionProvider mShareActionProvider;
+	
+	private String appUrl;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +98,8 @@ public class MainActivity extends RoboActionBarActivity implements
 					.setText(mTabsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+		appUrl = "http://play.google.com/store/apps/details?id=" + getPackageName();
 	}
 
 	@Override
@@ -91,7 +107,25 @@ public class MainActivity extends RoboActionBarActivity implements
 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		
+		MenuItem shareItem = menu.findItem(R.id.action_share);
+		mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+		if (mShareActionProvider != null) {
+			mShareActionProvider.setShareIntent(createShareIntent());
+			Log.i(TAG, "ShareItent set in ShareActionProvider.");
+		}
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+
+
+	private Intent createShareIntent() {
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.setType("text/plain");
+		intent.putExtra(Intent.EXTRA_SUBJECT, strExtraSubject);
+		intent.putExtra(Intent.EXTRA_TEXT, String.format(strExtraText, appUrl));
+		return intent;
 	}
 
 	@Override
@@ -126,7 +160,6 @@ public class MainActivity extends RoboActionBarActivity implements
 
 	@Override
 	public void onBackPressed() {
-//		AlertDialogHelper.showConfirmExitDialog(this, imageLoader);
 		AlertDialogHelper.showConfirmExitDialog(this);
 	}
 	

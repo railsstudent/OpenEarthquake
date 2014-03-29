@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Open Earthquake</string>
+    <string name="app_name">Simple Quake</string>
     <string name="action_settings">Settings</string>
     <string name="confirm_exit">Confirm</string>
     <string name="cancel_exit">Cancel</string>
@@ -12,7 +12,7 @@
     <string name="past_hour_title">Past Hour</string>
     <string name="past_day_title">Past Day</string>
     <string name="btnLoad">Load</string>
-    <string name="noEarthquake">No earthquake information</string>
+    <string name="noEarthquake">No quake information</string>
     <string name="magnitude">Magnitude:</string>
     <string name="place">Place:</string>
     <string name="latitude">Latitude :</string>
@@ -20,14 +20,15 @@
     <string name="depth">Depth :</string>
     <string name="kilometer">km</string>
     <string name="mile">mi</string>
-    <string name="totalEarthquake">Total earthquakes:</string>
-    <string name="title_eq_past_day">Earthquakes in Past Day</string>
-    <string name="title_eq_past_hour">Earthquakes in Past Hour</string>
+    <string name="title_eq_past_day">Quakes in Past Day</string>
+    <string name="title_eq_past_hour">Quakes in Past Hour</string>
     <string name="show_map">Show Map</string>
      <string name="time">Time :</string>
     <string name="app_title1">Simple</string>
-    <string name="app_title2">Earthquake</string>
-    <string name="strTotalFormatter">Total earthquakes: %1$d (Shown: %2$d)</string>
-    
-     <string name="contentImageLogo">Application Image in Splash Screen</string>
+    <string name="app_title2">Quake</string>
+    <string name="strTotalFormatter">Total quakes: %1$d (Shown: %2$d)</string>
+    <string name="action_share">Share</string>
+    <string name="contentImageLogo">Application Image in Splash Screen</string>
+    <string name="shareSubject">Share My Application</string>
+    <string name="shareText">I would like to share this application with you, please visit %s.</string>
 </resources>
