@@ -24,8 +24,6 @@
     <string name="title_eq_past_hour">Quakes in Past Hour</string>
     <string name="show_map">Show Map</string>
      <string name="time">Time :</string>
-    <string name="app_title1">Simple</string>
-    <string name="app_title2">Quake</string>
     <string name="strTotalFormatter">Total quakes: %1$d (Shown: %2$d)</string>
     <string name="action_share">Share</string>
     <string name="contentImageLogo">Application Image in Splash Screen</string>
