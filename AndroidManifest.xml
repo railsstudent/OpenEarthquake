@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.blueskyconnie.openearthquake"
+    package="com.blueskyconnie.simpleearthquake"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -9,14 +9,14 @@
         android:targetSdkVersion="19" />
 
     <permission
-        android:name="com.blueskyconnie.openearthquake.MAPS_RECEIVE"
+        android:name="com.blueskyconnie.simpleearthquake.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
 
-    <uses-permission android:name="com.blueskyconnie.openearthquake.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.blueskyconnie.simpleearthquake.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -38,7 +38,7 @@
             android:value="AIzaSyASS3OSaZyNQGs0ndEtIgutYKTac1GIi_M" />
 
         <activity
-            android:name="com.blueskyconnie.openearthquake.SplashActivity"
+            android:name="com.blueskyconnie.simpleearthquake.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
@@ -47,25 +47,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.blueskyconnie.openearthquake.MainActivity"
+            android:name="com.blueskyconnie.simpleearthquake.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity
-            android:name="com.blueskyconnie.openearthquake.EarthquakeMapActivity"
+            android:name="com.blueskyconnie.simpleearthquake.EarthquakeMapActivity"
             android:screenOrientation="portrait" 
-            android:parentActivityName="com.blueskyconnie.openearthquake.MainActivity">
+            android:parentActivityName="com.blueskyconnie.simpleearthquake.MainActivity">
              <meta-data android:name="android.support.PARENT_ACTIVITY"
-          			  android:value="com.blueskyconnie.openearthquake.MainActivity" />
+          			  android:value="com.blueskyconnie.simpleearthquake.MainActivity" />
         </activity>
         <activity
-            android:name="com.blueskyconnie.openearthquake.EarthquakeAllMapActivity"
+            android:name="com.blueskyconnie.simpleearthquake.EarthquakeAllMapActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName="com.blueskyconnie.openearthquake.MainActivity">
+            android:parentActivityName="com.blueskyconnie.simpleearthquake.MainActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
-          			  android:value="com.blueskyconnie.openearthquake.MainActivity" />
+          			  android:value="com.blueskyconnie.simpleearthquake.MainActivity" />
         </activity>
     </application>
 

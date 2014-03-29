@@ -24,5 +24,6 @@
     <string name="title_eq_past_day">Earthquakes in Past Day</string>
     <string name="title_eq_past_hour">Earthquakes in Past Hour</string>
     <string name="show_map">Show Map</string>
-    
+     <string name="time">Time :</string>
+    <string name="app_title">Simple\nEarthquake</string>
 </resources>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context="com.blueskyconnie.openearthquake.EarthquakeFragment" >
+    tools:context="com.blueskyconnie.simpleearthquake.EarthquakeFragment" >
 
     <LinearLayout
         android:id="@+id/bottom_control_bar"

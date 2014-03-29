@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context="com.blueskyconnie.openearthquake.EarthquakeMapActivity"
+    tools:context="com.blueskyconnie.simpleearthquake.EarthquakeMapActivity"
     tools:ignore="MergeRootFrame" >
 
     <fragment
