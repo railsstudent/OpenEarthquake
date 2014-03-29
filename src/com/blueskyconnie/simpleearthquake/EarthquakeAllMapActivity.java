@@ -19,6 +19,8 @@ import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHa
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeClusterItem;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,15 +36,15 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 	private static final String TAG = "EarthquakeAllMapActivity";
 	private static final int RQS_GOOGLE_SERVICE = 1;
 	
-	@InjectView(R.id.tvHeading)
-	private TextView tvHeading;
-	
 	private SupportMapFragment fragEarthquake;
 	private GoogleMap map;
 
 	private String restUrl;
 	private ClusterManager<EarthquakeClusterItem> mClusterManager;  
 	private EarthquakeClusterItem clickedClusterItem;
+	
+	@InjectView(R.id.adViewAll)
+	private AdView adView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 				Intent intent = getIntent();
 				if (intent != null) {
 					restUrl = intent.getStringExtra(Constants.EARTHQUAKE_REST_URL);
-					tvHeading.setText(intent.getStringExtra(Constants.EARTHQUAKE_TITLE));
+					this.setTitle(intent.getStringExtra(Constants.EARTHQUAKE_TITLE));
 					fragEarthquake.getView().setVisibility(View.INVISIBLE);
 					UsgsEarthquakeClient.get(restUrl, null, new EarthquakeJsonHttpResponseHandler(this));
 
@@ -84,6 +86,16 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 					} else {
 						GooglePlayServicesUtil.getErrorDialog(result_code, this, RQS_GOOGLE_SERVICE).show();
 					}
+				}
+				
+				if (adView != null) {
+					AdRequest adRequest = new AdRequest.Builder()
+												.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+												.addTestDevice(Constants.TABLET_DEVICE_ID)
+												.build();
+					
+					// Start loading the ad in the background.
+					adView.loadAd(adRequest);
 				}
 			}
 		}
@@ -138,6 +150,34 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 		fragEarthquake.getView().setVisibility(View.VISIBLE);
 	}
 	
+	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (adView != null) {
+			adView.resume();
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (adView != null) {
+			adView.pause();
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (adView != null) {
+			adView.destroy();
+		}
+	}
+
+
+
 	private class EarthquakeInfoWindowAdapter implements InfoWindowAdapter {
 
 		private TextView tvWinPlace;

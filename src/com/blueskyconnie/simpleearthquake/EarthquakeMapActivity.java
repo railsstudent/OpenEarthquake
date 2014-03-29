@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.blueskyconnie.simpleearthquake.R;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -50,6 +52,9 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 	
 	@InjectResource(R.string.place)
 	private String lblPlace;
+	
+	@InjectView(R.id.adView)
+	private AdView adView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,14 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 					GooglePlayServicesUtil.getErrorDialog(result_code, this, RQS_GOOGLE_SERVICE).show();
 				}
 			}
+			
+			if (adView != null) {
+				AdRequest adRequest = new AdRequest.Builder()
+										.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+										.addTestDevice(Constants.TABLET_DEVICE_ID)
+										.build();
+				adView.loadAd(adRequest);
+			}
 		}
 	}
 
@@ -117,5 +130,29 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 		        return true;
 		 }
 		 return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (adView != null) {
+			adView.resume();
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (adView != null) {
+			adView.pause();
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (adView != null) {
+			adView.destroy();
+		}
 	}
 }

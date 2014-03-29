@@ -12,3 +12,5 @@ proguard-project.txt
 .gradle
 #.project
 .settings/
+libs/
+.DS_Store

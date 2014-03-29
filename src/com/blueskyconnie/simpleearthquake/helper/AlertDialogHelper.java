@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import com.blueskyconnie.simpleearthquake.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -30,7 +29,7 @@ public final class AlertDialogHelper {
 			.show();
 	}
 	
-	public static void showConfirmExitDialog(final Activity activity, final ImageLoader imageLoader) {
+	public static void showConfirmExitDialog(final Activity activity) {
 		
 		// prompt confirmation dialog before exit
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
@@ -41,7 +40,6 @@ public final class AlertDialogHelper {
 						// close dialog and do nothing
 						if (activity != null) {
 							dialog.dismiss();
-							imageLoader.stop();
 							activity.finish();
 						} else {
 							Crouton.makeText(activity, R.string.exit_error, Style.ALERT).show();	

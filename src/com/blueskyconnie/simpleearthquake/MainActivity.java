@@ -13,11 +13,9 @@ import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.blueskyconnie.simpleearthquake.R;
 import com.blueskyconnie.simpleearthquake.adapter.TabPagerAdapter;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
 import com.blueskyconnie.simpleearthquake.helper.AlertDialogHelper;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MainActivity extends RoboActionBarActivity implements
 		ActionBar.TabListener /*,
@@ -42,7 +40,7 @@ public class MainActivity extends RoboActionBarActivity implements
 	
 	@InjectView (R.id.pager)
 	private ViewPager mViewPager;
-	private ImageLoader imageLoader = ImageLoader.getInstance();
+//	private ImageLoader imageLoader = ImageLoader.getInstance();
 	
 
 	@Override
@@ -128,7 +126,8 @@ public class MainActivity extends RoboActionBarActivity implements
 
 	@Override
 	public void onBackPressed() {
-		AlertDialogHelper.showConfirmExitDialog(this, imageLoader);
+//		AlertDialogHelper.showConfirmExitDialog(this, imageLoader);
+		AlertDialogHelper.showConfirmExitDialog(this);
 	}
 	
 }

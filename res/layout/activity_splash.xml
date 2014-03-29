@@ -17,7 +17,7 @@
         android:id="@+id/tvAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/imageView1"
+        android:layout_below="@+id/imageView1"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:text="@string/app_title"
