@@ -118,6 +118,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		});
 		if (swipeRefreshLayout != null) {
 			swipeRefreshLayout.setOnRefreshListener(this);
+			swipeRefreshLayout.setColorScheme(R.color.color1, R.color.color2, R.color.color3, R.color.color4);
 		}
 	}
 
@@ -167,6 +168,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 					btnLoad.setVisibility(View.INVISIBLE);
 					//progressbar.setVisibility(View.VISIBLE);
 					if (!isRefreshing) {
+						swipeRefreshLayout.setEnabled(false);
 						swipeRefreshLayout.setRefreshing(true);
 					}
 					isLoadingData = true;
@@ -194,9 +196,6 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		finishLoading();
 		isDataLoaded = true;
 		isLoadingData = false;
-		if (swipeRefreshLayout.isRefreshing()) {
-			swipeRefreshLayout.setRefreshing(false);
-		}
 		Log.i(TAG, "successCallback called.");
 	}
 
@@ -207,9 +206,6 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		finishLoading();
 		isDataLoaded = false;
 		isLoadingData = false;
-		if (swipeRefreshLayout.isRefreshing()) {
-			swipeRefreshLayout.setRefreshing(false);
-		}
 		Log.i(TAG, "failedCallback called.");
 	}
 	
@@ -220,6 +216,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 
 		if (swipeRefreshLayout != null) {
 			if (swipeRefreshLayout.isRefreshing()) {
+				swipeRefreshLayout.setEnabled(true);
 				swipeRefreshLayout.setRefreshing(false);
 			}
 		}
@@ -280,6 +277,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	@Override
 	public void onRefresh() {
 		// call client to get restful data
+		swipeRefreshLayout.setEnabled(false);
 		swipeRefreshLayout.setRefreshing(true);
 		loadData();
 		Log.i(TAG, "onRefresh called - resfulUrl = " + restfulUrl);
