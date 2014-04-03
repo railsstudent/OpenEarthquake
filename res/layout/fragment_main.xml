@@ -1,68 +1,77 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context="com.blueskyconnie.simpleearthquake.EarthquakeFragment" >
-
-    <LinearLayout
-        android:id="@+id/bottom_control_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="8dp"
-        android:orientation="vertical" >
-
-        <!--              style="?android:attr/buttonStyleSmall"
-         -->
-        <Button
-            android:id="@+id/btnLoad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Buttonearthquake2"
-            android:text="@string/btnLoad" />
-    </LinearLayout>
-
-     <TextView
-        android:id="@+id/tvTotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
-        android:textSize="14sp" />
-    
-    <ListView
-        android:id="@id/android:list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tvTotal"
-        android:layout_above="@+id/bottom_control_bar"
-        android:dividerHeight="1dp"
-        android:divider="@color/dividerColor"
-        style="@style/ListViewearthquake2"
-        android:background="@color/background"
-        android:listSelector="@android:color/transparent"
-        android:choiceMode="singleChoice"
-        android:layout_margin="8dp" >
-    </ListView>
-
-    <TextView
-        android:id="@id/android:empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_control_bar"
-        android:layout_below="@id/android:list"
-        android:gravity="center"
-        android:text="@string/noEarthquake"
-        android:layout_margin="8dp"
-        android:textSize="24sp" />
+    android:id="@+id/swiperefreshlayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/background"
+	tools:context="com.blueskyconnie.simpleearthquake.EarthquakeFragment">
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+		android:layout_height="match_parent">
 	
-    <ProgressBar
-            android:id="@+id/progressbar"
-        	android:layout_centerInParent="true"
-        	style="@android:style/Widget.ProgressBar.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+	    <LinearLayout
+	        android:id="@+id/bottom_control_bar"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_margin="8dp"
+	        android:orientation="vertical" >
+	
+	        <!--              style="?android:attr/buttonStyleSmall"
+	         -->
+	        <Button
+	            android:id="@+id/btnLoad"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            style="@style/Buttonearthquake2"
+	            android:text="@string/btnLoad" />
+	    </LinearLayout>
+	
+	     <TextView
+	        android:id="@+id/tvTotal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_margin="8dp"
+	        android:textSize="14sp" />
+	    
+	    <ListView
+	        android:id="@id/android:list"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_below="@+id/tvTotal"
+	        android:layout_above="@+id/bottom_control_bar"
+	        android:dividerHeight="1dp"
+	        android:divider="@color/dividerColor"
+	        style="@style/ListViewearthquake2"
+	        android:background="@color/background"
+	        android:listSelector="@android:color/transparent"
+	        android:choiceMode="singleChoice"
+	        android:layout_margin="8dp" >
+	    </ListView>
+	
+	    <TextView
+	        android:id="@id/android:empty"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_above="@+id/bottom_control_bar"
+	        android:layout_below="@id/android:list"
+	        android:gravity="center"
+	        android:text="@string/noEarthquake"
+	        android:layout_margin="8dp"
+	        android:textSize="24sp" />
+		
+	    <!--  
+	    <ProgressBar
+	            android:id="@+id/progressbar"
+	        	android:layout_centerInParent="true"
+	        	style="@android:style/Widget.ProgressBar.Large"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:visibility="gone" />
+		-->
+	</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
 
-</RelativeLayout>
+

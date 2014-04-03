@@ -11,7 +11,7 @@
     <string name="info_title">Information</string>
     <string name="past_hour_title">Past Hour</string>
     <string name="past_day_title">Past Day</string>
-    <string name="btnLoad">Load</string>
+    <string name="btnLoad">List More</string>
     <string name="noEarthquake">No quake information</string>
     <string name="magnitude">Magnitude:</string>
     <string name="place">Place:</string>
