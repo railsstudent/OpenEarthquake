@@ -9,12 +9,22 @@
         android:title="@string/action_share"
         app:showAsAction="ifRoom"
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
-        />
+     />
     
+    <item
+        android:id="@+id/action_menuActProvider"
+        android:orderInCategory="700"
+        android:title="@string/action_mainActProvider"
+       	android:icon="@drawable/ic_action_menu"
+        app:showAsAction="ifRoom"
+        app:actionProviderClass="com.blueskyconnie.simpleearthquake.actionprovider.MainMenuActionProvider"
+     />
+    
+    <!--   
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="1000"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
-
+	-->
 </menu>

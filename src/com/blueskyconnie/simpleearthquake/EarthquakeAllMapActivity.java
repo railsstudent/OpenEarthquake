@@ -61,6 +61,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 					restUrl = intent.getStringExtra(Constants.EARTHQUAKE_REST_URL);
 					this.setTitle(intent.getStringExtra(Constants.EARTHQUAKE_TITLE));
 					fragEarthquake.getView().setVisibility(View.INVISIBLE);
+					Log.i(TAG, "Load all earthquakes information to show in google map.");
 					UsgsEarthquakeClient.get(restUrl, null, new EarthquakeJsonHttpResponseHandler(this));
 
 					// make clusters
@@ -128,7 +129,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 					.lat(info.getLatitude())
 					.lng(info.getLongtitude())
 					.magnitude(info.getMagnitude())
-					.magnitudeType(info.getMagnitudeType())
+//					.magnitudeType(info.getMagnitudeType())
 					.earthquakeTime(info.getTime());
 				earthquakeList.add(builder.create());	
 			}
@@ -148,9 +149,8 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 
 	private void finishedLoading() {
 		fragEarthquake.getView().setVisibility(View.VISIBLE);
+		Log.i(TAG, "Finish loading earthquake information in EarthquakeAllMapActivity.");
 	}
-	
-	
 	
 	@Override
 	protected void onResume() {
@@ -176,8 +176,6 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 		}
 	}
 
-
-
 	private class EarthquakeInfoWindowAdapter implements InfoWindowAdapter {
 
 		private TextView tvWinPlace;
@@ -196,7 +194,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 					tvWinPlace.setText(clickedClusterItem.getPlace());
 				}
 				if (tvWinMagnitude != null) {
-					tvWinMagnitude.setText(clickedClusterItem.getMagnitude());
+					tvWinMagnitude.setText(String.valueOf(clickedClusterItem.getMagnitude()));
 				}
 				if (tvWinTime != null) { 
 					tvWinTime.setText(clickedClusterItem.getEarthquakeTime());

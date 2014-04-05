@@ -20,7 +20,7 @@ public class EarthquakeInfo implements Serializable {
 	private double depth;
 	private String url;
 	private double magnitude;
-	private String magnitudeType;
+	// private String magnitudeType;
 	private String place;
 	private long time;
 	
@@ -33,7 +33,7 @@ public class EarthquakeInfo implements Serializable {
 		private double magnitude;
 		private String place;
 		private long time;
-		private String magnitudeType;
+	//	private String magnitudeType;
 		
 		public Builder lat(final double lat) {
 			this.lat = lat;
@@ -60,10 +60,10 @@ public class EarthquakeInfo implements Serializable {
 			return this;
 		}
 		
-		public Builder magnitudeType(final String magnitudeType) {
-			this.magnitudeType = Strings.nullToEmpty(magnitudeType).toLowerCase(Locale.getDefault());
-			return this;
-		}
+//		public Builder magnitudeType(final String magnitudeType) {
+//			this.magnitudeType = Strings.nullToEmpty(magnitudeType).toLowerCase(Locale.getDefault());
+//			return this;
+//		}
 
 		public Builder place(final String place) {
 			this.place = Strings.nullToEmpty(place);
@@ -87,7 +87,7 @@ public class EarthquakeInfo implements Serializable {
 		this.magnitude = builder.magnitude;
 		this.place = builder.place;
 		this.url = builder.url;
-		this.magnitudeType = builder.magnitudeType;
+//		this.magnitudeType = builder.magnitudeType;
 		this.time = builder.time;
 	}
 	
@@ -142,13 +142,13 @@ public class EarthquakeInfo implements Serializable {
 		return sdf.format(new LocalDateTime(time).toDate());
 	}
 
-	public String getMagnitudeType() {
-		return magnitudeType;
-	}
-
-	public void setMagnitudeType(String magnitudeType) {
-		this.magnitudeType = magnitudeType;
-	}
+//	public String getMagnitudeType() {
+//		return magnitudeType;
+//	}
+//
+//	public void setMagnitudeType(String magnitudeType) {
+//		this.magnitudeType = magnitudeType;
+//	}
 
 	@Override
 	public int hashCode() {
@@ -163,8 +163,6 @@ public class EarthquakeInfo implements Serializable {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(magnitude);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result
-				+ ((magnitudeType == null) ? 0 : magnitudeType.hashCode());
 		result = prime * result + ((place == null) ? 0 : place.hashCode());
 		result = prime * result + (int) (time ^ (time >>> 32));
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
@@ -189,11 +187,6 @@ public class EarthquakeInfo implements Serializable {
 			return false;
 		if (Double.doubleToLongBits(magnitude) != Double
 				.doubleToLongBits(other.magnitude))
-			return false;
-		if (magnitudeType == null) {
-			if (other.magnitudeType != null)
-				return false;
-		} else if (!magnitudeType.equals(other.magnitudeType))
 			return false;
 		if (place == null) {
 			if (other.place != null)

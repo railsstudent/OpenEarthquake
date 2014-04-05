@@ -29,4 +29,7 @@
     <string name="contentImageLogo">Application Image in Splash Screen</string>
     <string name="shareSubject">Share My Application</string>
     <string name="shareText">I would like to share this application with you, please visit %s.</string>
+    <string name="usgs_website">http://earthquake.usgs.gov/</string>
+    <string name="action_mainActProvider">Actions</string>
+    <string name="play_store_uri">market://details?id=%s</string>
 </resources>

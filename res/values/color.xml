@@ -7,6 +7,7 @@
     <color name="blueColor">#0000ff</color>
     <color name="dividerColor">#8b8682</color>
     <color name="purpleColor">#CA0AE8</color>
+    <color name="grayColor">#8b8378</color>
     
     
     <!-- SwipeRefreshLayout: Customize colors here -->

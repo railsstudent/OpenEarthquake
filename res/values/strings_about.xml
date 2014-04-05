@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="datasource">Simple Quakes displays earthquake data in past day provided by U.S. Geological Survey (USGS).</string>
+    <string name="software_used">Software Used:</string>
+    <string name="android_maputil_software">1) Google Maps Android API Utility Library</string>
+    <string name="android_maputil_copyright">Copyright 2013, Google Inc</string>
+    <string name="roboguice_software">2) RoboGuice 2.0</string>
+    <string name="roboguice_copyright">Copyright 2012&#8211;2014, RoboGuice Authors</string>
+    <string name="asynchttpclient_software">3) Android Asychronous Http Client</string>
+    <string name="asynchttpclient_copyright">Copyright 2009&#8211;2012, James Smith and other contributors</string>
+    <string name="crouton_software">4) Crouton</string>
+    <string name="crouton_copyright">Copyright 2013, Benjamin Weiss</string>
+    <string name="guava_software">5) Google Guava</string>
+    <string name="guava_copyright">Copyright 2011, Guava Authors</string>
+    <string name="jodaTime_software">6) Joda Time</string>
+    <string name="jodaTime_copyright">Copyright 2005&#8211;2014, Mario Ivankovits, Gregory Joseph</string>
+    <string name="developer">Develop by Connie Leung</string>
+    <string name="email">cleung334@gmail.com</string>
+    <string name="copyright">Copyright</string>
+    <string name="copyright_year">2014</string>
+</resources>

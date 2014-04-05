@@ -1,7 +1,5 @@
 package com.blueskyconnie.simpleearthquake.model;
 
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -11,12 +9,12 @@ import com.google.maps.android.clustering.ClusterItem;
 public class EarthquakeClusterItem implements ClusterItem {
     private LatLng mPosition;
     private String place;
-    private String magnitude;
+    private double magnitude;
     private String earthquakeTime;
     
     public EarthquakeClusterItem(Builder builder) {
     	this.place = builder.place;
-    	this.magnitude = String.format("%f %s", builder.magnitude, builder.magnitudeType.toUpperCase(Locale.getDefault()));
+    	this.magnitude = builder.magnitude;
     	this.mPosition = new LatLng(builder.lat, builder.lng);
     	this.earthquakeTime = builder.earthquakeTime;
     }
@@ -34,14 +32,14 @@ public class EarthquakeClusterItem implements ClusterItem {
     	return place;
     }
     
-    public String getMagnitude() {
+    public double getMagnitude() {
     	return magnitude;
     }
     
     public static class Builder {
     	
     	private String place;
-    	private String magnitudeType;
+//    	private String magnitudeType;
     	private double magnitude;
     	private double lat;
     	private double lng;
@@ -57,10 +55,10 @@ public class EarthquakeClusterItem implements ClusterItem {
     		return this;
     	}
     	
-    	public Builder magnitudeType(String magnitudeType) {
-    		this.magnitudeType = magnitudeType;
-    		return this;
-    	}
+//    	public Builder magnitudeType(String magnitudeType) {
+//    		this.magnitudeType = magnitudeType;
+//    		return this;
+//    	}
 
     	public Builder lat(double lat) {
     		this.lat = lat;
@@ -91,8 +89,9 @@ public class EarthquakeClusterItem implements ClusterItem {
 				+ ((earthquakeTime == null) ? 0 : earthquakeTime.hashCode());
 		result = prime * result
 				+ ((mPosition == null) ? 0 : mPosition.hashCode());
-		result = prime * result
-				+ ((magnitude == null) ? 0 : magnitude.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(magnitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((place == null) ? 0 : place.hashCode());
 		return result;
 	}
@@ -116,10 +115,8 @@ public class EarthquakeClusterItem implements ClusterItem {
 				return false;
 		} else if (!mPosition.equals(other.mPosition))
 			return false;
-		if (magnitude == null) {
-			if (other.magnitude != null)
-				return false;
-		} else if (!magnitude.equals(other.magnitude))
+		if (Double.doubleToLongBits(magnitude) != Double
+				.doubleToLongBits(other.magnitude))
 			return false;
 		if (place == null) {
 			if (other.place != null)

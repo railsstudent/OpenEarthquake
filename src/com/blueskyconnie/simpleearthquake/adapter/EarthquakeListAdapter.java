@@ -65,7 +65,7 @@ public class EarthquakeListAdapter extends BaseAdapter {
 		Object objRowData = getItem(position);
 		if (objRowData != null) {
 			EarthquakeInfo objEarthquake = (EarthquakeInfo) objRowData;
-			holder.tvMagnitude.setText(objEarthquake.getMagnitude() + " " + objEarthquake.getMagnitudeType());
+			holder.tvMagnitude.setText("" + objEarthquake.getMagnitude());
 			holder.tvPlace.setText(objEarthquake.getPlace());
 			holder.tvTime.setText(objEarthquake.getTime());
 		}

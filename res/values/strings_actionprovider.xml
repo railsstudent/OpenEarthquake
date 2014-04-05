@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="actionProviderWebsite">Visit USGS Site</string>    
+    <string name="actionProviderAboutApp">About Simple Quakes</string>    
+	<string name="actionProviderRateApp">Rate App</string>    
+    <string name="actionProviderExit">Exit</string>    
+</resources>

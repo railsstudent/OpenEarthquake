@@ -67,6 +67,12 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY"
           			  android:value="com.blueskyconnie.simpleearthquake.MainActivity" />
         </activity>
+        <activity
+            android:name="com.blueskyconnie.simpleearthquake.AboutActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName="com.blueskyconnie.simpleearthquake.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+          			  android:value="com.blueskyconnie.simpleearthquake.MainActivity" />
+        </activity>
     </application>
-
 </manifest>

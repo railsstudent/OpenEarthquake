@@ -53,14 +53,17 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 							if (properties.has("mag")) {
 								builder.magnitude(properties.getDouble("mag"));
 							}
-							if (properties.has("magnitudeType")) {
-								builder.magnitudeType(properties.getString("magnitudeType"));
-							}
+//							if (properties.has("magnitudeType")) {
+//								builder.magnitudeType(properties.getString("magnitudeType"));
+//							}
 							if (properties.has("place")) {
 								builder.place(properties.getString("place"));
 							}
 							if (properties.has("time")) {
 								builder.time(properties.getLong("time"));
+							}
+							if (properties.has("url")) {
+								builder.url(properties.getString("url"));
 							}
 						}
 						

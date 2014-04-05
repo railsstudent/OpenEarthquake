@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -12,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.blueskyconnie.simpleearthquake.R;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.google.android.gms.ads.AdRequest;
@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+@SuppressLint("DefaultLocale")
 public class EarthquakeMapActivity extends RoboActionBarActivity {
 
 	private static final String TAG = "EarthquakeMapActivity";
@@ -83,10 +84,9 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 					GoogleMap map = fragEarthquake.getMap();
 					if (map != null) {
 						LatLng latLng = new LatLng(earthquakeInfo.getLatitude(), earthquakeInfo.getLongtitude());
-						String magnitude = String.format("%s %s", earthquakeInfo.getMagnitude(), earthquakeInfo.getMagnitudeType());
 						map.addMarker(new MarkerOptions()
 										.position(latLng)
-										.title(lblMagnitude + " " + magnitude)
+										.title(lblMagnitude + " " + earthquakeInfo.getMagnitude())
 										.snippet(lblPlace + " " + earthquakeInfo.getPlace())
 										.icon(BitmapDescriptorFactory.defaultMarker()));
 						map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
