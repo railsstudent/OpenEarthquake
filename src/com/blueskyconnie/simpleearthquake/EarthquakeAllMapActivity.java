@@ -135,6 +135,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 					.lat(info.getLatitude())
 					.lng(info.getLongtitude())
 					.magnitude(info.getMagnitude())
+					.depth(info.getDepth())
 //					.magnitudeType(info.getMagnitudeType())
 					.earthquakeTime(info.getTime());
 				earthquakeList.add(builder.create());	
