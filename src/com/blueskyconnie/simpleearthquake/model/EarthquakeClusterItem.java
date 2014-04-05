@@ -12,6 +12,7 @@ public class EarthquakeClusterItem implements ClusterItem {
     private double magnitude;
     private String earthquakeTime;
     private double depth;
+    private String url;
     
     public EarthquakeClusterItem(Builder builder) {
     	this.place = builder.place;
@@ -19,6 +20,7 @@ public class EarthquakeClusterItem implements ClusterItem {
     	this.mPosition = new LatLng(builder.lat, builder.lng);
     	this.earthquakeTime = builder.earthquakeTime;
     	this.depth = builder.depth;
+    	this.url = builder.url;
     }
     
     public String getEarthquakeTime() {
@@ -42,6 +44,10 @@ public class EarthquakeClusterItem implements ClusterItem {
     	return depth;
     }
     
+    public String getUrl() {
+    	return url;
+    }
+    
     public static class Builder {
     	
     	private String place;
@@ -51,6 +57,7 @@ public class EarthquakeClusterItem implements ClusterItem {
     	private double lng;
     	private String earthquakeTime;
     	private double depth;
+    	private String url;
     	
     	public Builder place(String place) {
     		this.place = place;
@@ -87,6 +94,11 @@ public class EarthquakeClusterItem implements ClusterItem {
     		return this;
     	}
     	
+    	public Builder url(String url) {
+    		this.url = url;
+    		return this;
+    	}
+    	
     	public EarthquakeClusterItem create() {
     		return new EarthquakeClusterItem(this);
     	}
@@ -107,6 +119,7 @@ public class EarthquakeClusterItem implements ClusterItem {
 		temp = Double.doubleToLongBits(magnitude);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((place == null) ? 0 : place.hashCode());
+		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
 	}
 
@@ -139,6 +152,11 @@ public class EarthquakeClusterItem implements ClusterItem {
 			if (other.place != null)
 				return false;
 		} else if (!place.equals(other.place))
+			return false;
+		if (url == null) {
+			if (other.url != null)
+				return false;
+		} else if (!url.equals(other.url))
 			return false;
 		return true;
 	}

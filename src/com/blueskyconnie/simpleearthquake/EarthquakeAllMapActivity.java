@@ -6,6 +6,7 @@ import java.util.List;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +28,10 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
+import com.google.common.base.Strings;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 
@@ -50,6 +53,9 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 	private String strKM;
 	@InjectResource(R.string.mile)
 	private String strMile;
+	@InjectResource(R.string.summary_tag)
+	private String summaryTag;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +86,10 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 							mClusterManager = new ClusterManager<EarthquakeClusterItem>(this, map);
 							map.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 							mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new EarthquakeInfoWindowAdapter());
+							mClusterManager.getMarkerCollection().setOnInfoWindowClickListener(infoWindowClickListener);
 							map.setOnCameraChangeListener(mClusterManager);
 							map.setOnMarkerClickListener(mClusterManager);
+							map.setOnInfoWindowClickListener(mClusterManager);
 							mClusterManager.setOnClusterItemClickListener(new OnClusterItemClickListener<EarthquakeClusterItem>() {
 								@Override
 								public boolean onClusterItemClick(EarthquakeClusterItem item) {
@@ -136,6 +144,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 					.lng(info.getLongtitude())
 					.magnitude(info.getMagnitude())
 					.depth(info.getDepth())
+					.url(Strings.nullToEmpty(info.getUrl()).trim() + Strings.nullToEmpty(summaryTag).trim())
 //					.magnitudeType(info.getMagnitudeType())
 					.earthquakeTime(info.getTime());
 				earthquakeList.add(builder.create());	
@@ -232,6 +241,18 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 		}
 	}
 	
+	private OnInfoWindowClickListener infoWindowClickListener = 
+			new OnInfoWindowClickListener() {
+
+		@Override
+		public void onInfoWindowClick(Marker marker) {
+			Log.i(TAG, "onInfoWindowClik fired. Url = ");
+			if (clickedClusterItem != null) {
+				Uri uri = Uri.parse(clickedClusterItem.getUrl());
+				startActivity(new Intent(Intent.ACTION_VIEW, uri));
+			}
+		}
+	};
 	
 	public boolean onCreateOptionsMenu (Menu menu) {
 		getMenuInflater().inflate(R.menu.earthquake_all_map, menu);
