@@ -3,6 +3,7 @@ package com.blueskyconnie.simpleearthquake;
 import java.util.ArrayList;
 import java.util.List;
 
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +46,10 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 	
 	@InjectView(R.id.adViewAll)
 	private AdView adView;
+	@InjectResource(R.string.kilometer)
+	private String strKM;
+	@InjectResource(R.string.mile)
+	private String strMile;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +188,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 		private TextView tvWinMagnitude;
 		private TextView tvWinTime;
 		private TextView tvWinCoordinate;
+		private TextView tvWinDepth;
 		
 		@Override
 		public View getInfoContents(Marker marker) {
@@ -192,6 +198,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 			tvWinMagnitude = (TextView) view.findViewById(R.id.tvWinMagnitude);
 			tvWinTime = (TextView) view.findViewById(R.id.tvWinTime);
 			tvWinCoordinate = (TextView) view.findViewById(R.id.tvWinCoordinate);
+			tvWinDepth = (TextView) view.findViewById(R.id.tvWinDepth);
 			
 			if (clickedClusterItem != null) {
 				if (tvWinPlace != null) {
@@ -207,6 +214,12 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 					String coordinate = clickedClusterItem.getPosition().latitude + "," 
 								+ clickedClusterItem.getPosition().longitude;
 					tvWinCoordinate.setText(coordinate);
+				}
+				if (tvWinDepth != null) {
+					double mile = clickedClusterItem.getDepth() * Constants.KM_2_MILE;
+					tvWinDepth.setText(String.format("%s %s (%s %s)", 
+							Constants.df.format(clickedClusterItem.getDepth()), strKM, 
+							Constants.df.format(mile), strMile));
 				}
 			}
 			return view;

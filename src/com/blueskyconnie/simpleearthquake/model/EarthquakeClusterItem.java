@@ -11,12 +11,14 @@ public class EarthquakeClusterItem implements ClusterItem {
     private String place;
     private double magnitude;
     private String earthquakeTime;
+    private double depth;
     
     public EarthquakeClusterItem(Builder builder) {
     	this.place = builder.place;
     	this.magnitude = builder.magnitude;
     	this.mPosition = new LatLng(builder.lat, builder.lng);
     	this.earthquakeTime = builder.earthquakeTime;
+    	this.depth = builder.depth;
     }
     
     public String getEarthquakeTime() {
@@ -36,6 +38,10 @@ public class EarthquakeClusterItem implements ClusterItem {
     	return magnitude;
     }
     
+    public double getDepth() {
+    	return depth;
+    }
+    
     public static class Builder {
     	
     	private String place;
@@ -44,6 +50,7 @@ public class EarthquakeClusterItem implements ClusterItem {
     	private double lat;
     	private double lng;
     	private String earthquakeTime;
+    	private double depth;
     	
     	public Builder place(String place) {
     		this.place = place;
@@ -75,6 +82,11 @@ public class EarthquakeClusterItem implements ClusterItem {
     		return this;
     	}
     	
+    	public Builder depth(double depth) {
+    		this.depth = depth;
+    		return this;
+    	}
+    	
     	public EarthquakeClusterItem create() {
     		return new EarthquakeClusterItem(this);
     	}
@@ -85,11 +97,13 @@ public class EarthquakeClusterItem implements ClusterItem {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(depth);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result
 				+ ((earthquakeTime == null) ? 0 : earthquakeTime.hashCode());
 		result = prime * result
 				+ ((mPosition == null) ? 0 : mPosition.hashCode());
-		long temp;
 		temp = Double.doubleToLongBits(magnitude);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((place == null) ? 0 : place.hashCode());
@@ -105,6 +119,9 @@ public class EarthquakeClusterItem implements ClusterItem {
 		if (getClass() != obj.getClass())
 			return false;
 		EarthquakeClusterItem other = (EarthquakeClusterItem) obj;
+		if (Double.doubleToLongBits(depth) != Double
+				.doubleToLongBits(other.depth))
+			return false;
 		if (earthquakeTime == null) {
 			if (other.earthquakeTime != null)
 				return false;

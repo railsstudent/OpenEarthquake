@@ -1,7 +1,5 @@
 package com.blueskyconnie.simpleearthquake;
 
-import java.text.DecimalFormat;
-
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
@@ -30,14 +28,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.common.base.Strings;
 
+
 @SuppressLint("DefaultLocale")
 @ContentView(R.layout.activity_earthquake_map)
 public class EarthquakeMapActivity extends RoboActionBarActivity {
 
 	private static final String TAG = "EarthquakeMapActivity";
 	private static final int RQS_GOOGLE_SERVICE = 1;
-	private static final double KM_2_MILE = 0.621371;
-	private static final DecimalFormat df = new DecimalFormat("#.##");
+//	private static final double KM_2_MILE = 0.621371;
+//	private static final DecimalFormat df = new DecimalFormat("#.##");
 	
 	@InjectView(R.id.tvLatitude)
 	private TextView tvLat;
@@ -82,9 +81,10 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 				tvLat.setText(String.valueOf(earthquakeInfo.getLatitude()));
 				tvLng.setText(String.valueOf(earthquakeInfo.getLongtitude()));
 				
-				double mile = earthquakeInfo.getDepth() * KM_2_MILE;
+				double mile = earthquakeInfo.getDepth() * Constants.KM_2_MILE;
 				tvDepth.setText(String.format("%s %s (%s %s)", 
-						df.format(earthquakeInfo.getDepth()), strKM, df.format(mile), strMile));
+						Constants.df.format(earthquakeInfo.getDepth()), strKM, 
+						Constants.df.format(mile), strMile));
 			}
 			fragEarthquake = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragEarthquake);
 			if (fragEarthquake != null) {
