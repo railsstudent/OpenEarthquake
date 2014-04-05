@@ -4,4 +4,8 @@
     <string name="actionProviderAboutApp">About Simple Quakes</string>    
 	<string name="actionProviderRateApp">Rate App</string>    
     <string name="actionProviderExit">Exit</string>    
+    <string name="actionProviderDidUFeelIt">Did you feel it?</string>
+    <string name="actionProviderSummary">Summary</string>
+    <string name="didufeelit_tag">#dyfi_form</string>
+    <string name="summary_tag">#summary</string>
 </resources>

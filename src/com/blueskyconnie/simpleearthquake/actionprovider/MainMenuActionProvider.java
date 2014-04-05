@@ -14,23 +14,31 @@ import android.view.View;
 
 import com.blueskyconnie.simpleearthquake.AboutActivity;
 import com.blueskyconnie.simpleearthquake.R;
+import com.blueskyconnie.simpleearthquake.model.ActionProviderContext;
+import com.blueskyconnie.simpleearthquake.model.IActionProviderContext;
 
 /**
  * Create a main menu action provider with menu items
  * @author connie
  *
  */
-public class MainMenuActionProvider extends ActionProvider implements OnMenuItemClickListener {
+public class MainMenuActionProvider extends ActionProvider implements OnMenuItemClickListener
+	, IActionProviderContext {
 
 	private static final String TAG = "MainMenuActionProvider";
-	private static final int GROUP_ID = 0;
+	protected static final int GROUP_ID = 0;
 
-	private static final int MENU_ITEM_WEBSITE = Menu.FIRST; 
-	private static final int MENU_ITEM_ABOUT_APP = Menu.FIRST + 1; 
-	private static final int MENU_ITEM_RATE_MY_APP = Menu.FIRST + 2; 
-	private static final int MENU_ITEM_EXIT_APP = Menu.FIRST + 3;
-	
-	private Context mContext;
+	protected static final int MI_WEBSITE = Menu.FIRST; 
+	protected static final int MI_ABOUT_APP = Menu.FIRST + 10; 
+	protected static final int MI_RATE_MY_APP = Menu.FIRST + 20; 
+	protected static final int MI_EXIT_APP = Menu.FIRST + 30;
+
+	protected static final int MI_WEBSITE_ORDER = 0; 
+	protected static final int MI_ABOUT_APP_ORDER = 10; 
+	protected static final int MI_RATE_MY_APP_ORDER = 20; 
+	protected static final int MI_EXIT_APP_ORDER = 30;
+
+	protected Context mContext;
 	private boolean isSubMenuCreated;
 	
 	private String strUsgsSite;
@@ -56,7 +64,6 @@ public class MainMenuActionProvider extends ActionProvider implements OnMenuItem
 
 	@Override
 	public boolean onPerformDefaultAction() {
-		// TODO Auto-generated method stub
 		return super.onPerformDefaultAction();
 	}
 
@@ -66,27 +73,23 @@ public class MainMenuActionProvider extends ActionProvider implements OnMenuItem
 		
 		if (!isSubMenuCreated) {
 			isSubMenuCreated = true;
-			int order = 0;
 			Log.i(TAG, "OnPrepareSubMenu begins.");
 
 			// add menu item to go to USGS web site
-			subMenu.add(GROUP_ID, MENU_ITEM_WEBSITE, order, R.string.actionProviderWebsite)
+			subMenu.add(GROUP_ID, MI_WEBSITE, MI_WEBSITE_ORDER, R.string.actionProviderWebsite)
 				.setOnMenuItemClickListener(this);
-			order++;
 			Log.i(TAG, "Add menu item to launch website.");
 
 			// add menu item to rate my app in google play store
-			subMenu.add(GROUP_ID, MENU_ITEM_ABOUT_APP, order, R.string.actionProviderAboutApp)
+			subMenu.add(GROUP_ID, MI_ABOUT_APP, MI_ABOUT_APP_ORDER, R.string.actionProviderAboutApp)
 				.setOnMenuItemClickListener(this);
-			order++;
 			
 			// add menu item to show about SimpleQuake activity
-			subMenu.add(GROUP_ID, MENU_ITEM_RATE_MY_APP, order, R.string.actionProviderRateApp)
+			subMenu.add(GROUP_ID, MI_RATE_MY_APP, MI_RATE_MY_APP_ORDER, R.string.actionProviderRateApp)
 				.setOnMenuItemClickListener(this);
-			order++;
 			
 			// add menu item to exit this application
-			subMenu.add(GROUP_ID, MENU_ITEM_EXIT_APP, order, R.string.actionProviderExit)
+			subMenu.add(GROUP_ID, MI_EXIT_APP, MI_EXIT_APP_ORDER, R.string.actionProviderExit)
 				.setOnMenuItemClickListener(this);
 			Log.i(TAG, "OnPrepareSubMenu ends.");
 		}
@@ -96,24 +99,28 @@ public class MainMenuActionProvider extends ActionProvider implements OnMenuItem
 	public boolean onMenuItemClick(MenuItem item) {
 		
 		switch (item.getItemId()) {
-			case MENU_ITEM_WEBSITE:
+			case MI_WEBSITE:
 				Log.i(TAG, "onMenuItemClick - Visit USGS website clicked.");
 				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(strUsgsSite)));
 				return true;
-			case MENU_ITEM_ABOUT_APP:
+			case MI_ABOUT_APP:
 				Log.i(TAG, "onMenuItemClick - About my application clicked.");
 				mContext.startActivity(new Intent(mContext, AboutActivity.class));
 				return true;
-			case MENU_ITEM_RATE_MY_APP:
+			case MI_RATE_MY_APP:
 				Log.i(TAG, "onMenuItemClick - Rate my application clicked.");
 				String playStoreFullUrl = String.format(strPlayStore, mContext.getPackageName());
 				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(playStoreFullUrl)));
 				return true;
-			case MENU_ITEM_EXIT_APP:
+			case MI_EXIT_APP:
 				Log.i(TAG, "onMenuItemClick - Exit my application clicked.");
 				((Activity) mContext).finish();
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void initializeData(ActionProviderContext context) {
 	}
 }

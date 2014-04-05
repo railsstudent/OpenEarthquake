@@ -8,14 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.blueskyconnie.simpleearthquake.R;
 import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHandler;
-import com.blueskyconnie.simpleearthquake.asynchttp.UsgsEarthquakeClient;
 import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHandler.HttpResponseCallback;
+import com.blueskyconnie.simpleearthquake.asynchttp.UsgsEarthquakeClient;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeClusterItem;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
@@ -71,6 +71,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 						// http://stackoverflow.com/questions/21885225/showing-custom-infowindow-for-android-maps-utility-library-for-android
 						if (map != null) {
 							map.clear();
+							map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 							mClusterManager = new ClusterManager<EarthquakeClusterItem>(this, map);
 							map.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 							mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new EarthquakeInfoWindowAdapter());
@@ -92,7 +93,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 				if (adView != null) {
 					AdRequest adRequest = new AdRequest.Builder()
 												.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-												.addTestDevice(Constants.TABLET_DEVICE_ID)
+//												.addTestDevice(Constants.TABLET_DEVICE_ID)
 												.build();
 					
 					// Start loading the ad in the background.
@@ -181,6 +182,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 		private TextView tvWinPlace;
 		private TextView tvWinMagnitude;
 		private TextView tvWinTime;
+		private TextView tvWinCoordinate;
 		
 		@Override
 		public View getInfoContents(Marker marker) {
@@ -189,6 +191,8 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 			tvWinPlace = (TextView) view.findViewById(R.id.tvWinPlace);
 			tvWinMagnitude = (TextView) view.findViewById(R.id.tvWinMagnitude);
 			tvWinTime = (TextView) view.findViewById(R.id.tvWinTime);
+			tvWinCoordinate = (TextView) view.findViewById(R.id.tvWinCoordinate);
+			
 			if (clickedClusterItem != null) {
 				if (tvWinPlace != null) {
 					tvWinPlace.setText(clickedClusterItem.getPlace());
@@ -199,6 +203,11 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 				if (tvWinTime != null) { 
 					tvWinTime.setText(clickedClusterItem.getEarthquakeTime());
 				}
+				if (tvWinCoordinate != null) {
+					String coordinate = clickedClusterItem.getPosition().latitude + "," 
+								+ clickedClusterItem.getPosition().longitude;
+					tvWinCoordinate.setText(coordinate);
+				}
 			}
 			return view;
 		}
@@ -208,4 +217,11 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 			return null;
 		}
 	}
+	
+	
+	public boolean onCreateOptionsMenu (Menu menu) {
+		getMenuInflater().inflate(R.menu.earthquake_all_map, menu);
+		return true;
+	}
+	
 }

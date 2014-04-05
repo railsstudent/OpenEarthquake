@@ -1,12 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.blueskyconnie.openearthquake.EarthquakeMapActivity" >
+    tools:context="com.blueskyconnie.simpleearthquake.EarthquakeMapActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_mapMenuActProvider"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        android:title="@string/action_mainActProvider"
+       	android:icon="@drawable/ic_action_menu"
+        app:showAsAction="ifRoom"
+        app:actionProviderClass="com.blueskyconnie.simpleearthquake.actionprovider.MapActivityActionProvider" />
 
 </menu>

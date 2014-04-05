@@ -2,18 +2,21 @@ package com.blueskyconnie.simpleearthquake;
 
 import java.text.DecimalFormat;
 
+import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.blueskyconnie.simpleearthquake.actionprovider.MapActivityActionProvider;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
+import com.blueskyconnie.simpleearthquake.model.ActionProviderContext;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -25,8 +28,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.common.base.Strings;
 
 @SuppressLint("DefaultLocale")
+@ContentView(R.layout.activity_earthquake_map)
 public class EarthquakeMapActivity extends RoboActionBarActivity {
 
 	private static final String TAG = "EarthquakeMapActivity";
@@ -57,13 +62,18 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 	@InjectView(R.id.adView)
 	private AdView adView;
 	
+	@InjectResource(R.string.didufeelit_tag)
+	private String strDidUFeelItTag;
+	
+	@InjectResource(R.string.summary_tag)
+	private String strSummaryTag;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_earthquake_map);
+		// setContentView(R.layout.activity_earthquake_map);
 
-		ActionBar actionbar = this.getSupportActionBar();
-		actionbar.setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		if (savedInstanceState == null) {
 			Intent intent = getIntent();
@@ -78,16 +88,16 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 			}
 			fragEarthquake = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragEarthquake);
 			if (fragEarthquake != null) {
-				// todo set pin and stuff
 				int result_code = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 				if (ConnectionResult.SUCCESS == result_code) {
 					GoogleMap map = fragEarthquake.getMap();
 					if (map != null) {
 						LatLng latLng = new LatLng(earthquakeInfo.getLatitude(), earthquakeInfo.getLongtitude());
+						map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 						map.addMarker(new MarkerOptions()
 										.position(latLng)
 										.title(lblMagnitude + " " + earthquakeInfo.getMagnitude())
-										.snippet(lblPlace + " " + earthquakeInfo.getPlace())
+										.snippet(String.format("%s %s", lblPlace, earthquakeInfo.getPlace()))
 										.icon(BitmapDescriptorFactory.defaultMarker()));
 						map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 						map.animateCamera(CameraUpdateFactory.zoomTo(8));
@@ -100,7 +110,7 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 			if (adView != null) {
 				AdRequest adRequest = new AdRequest.Builder()
 										.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-										.addTestDevice(Constants.TABLET_DEVICE_ID)
+//										.addTestDevice(Constants.TABLET_DEVICE_ID)
 										.build();
 				adView.loadAd(adRequest);
 			}
@@ -112,6 +122,22 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.earthquake_map, menu);
+		MenuItem menu_action = menu.findItem(R.id.action_mapMenuActProvider);
+		
+		if (earthquakeInfo != null) {
+			MapActivityActionProvider actionProvider = 
+					(MapActivityActionProvider) MenuItemCompat.getActionProvider(menu_action);
+
+			ActionProviderContext apContext = new ActionProviderContext();
+			apContext.setDidUFeelItUrl(
+					String.format("%s%s", Strings.nullToEmpty(earthquakeInfo.getUrl()).trim(),
+							strDidUFeelItTag));
+			apContext.setSummaryUrl(
+					String.format("%s%s", Strings.nullToEmpty(earthquakeInfo.getUrl()).trim(),
+							strSummaryTag));
+			
+			actionProvider.initializeData(apContext);
+		}
 		return true;
 	}
 
@@ -155,4 +181,6 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 			adView.destroy();
 		}
 	}
+	
+	
 }

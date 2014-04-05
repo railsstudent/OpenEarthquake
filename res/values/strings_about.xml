@@ -13,9 +13,7 @@
     <string name="crouton_copyright">Copyright 2013, Benjamin Weiss</string>
     <string name="guava_software">5) Google Guava</string>
     <string name="guava_copyright">Copyright 2011, Guava Authors</string>
-    <string name="jodaTime_software">6) Joda Time</string>
-    <string name="jodaTime_copyright">Copyright 2005&#8211;2014, Mario Ivankovits, Gregory Joseph</string>
-    <string name="developer">Develop by Connie Leung</string>
+    <string name="developer">Developed by Connie Leung</string>
     <string name="email">cleung334@gmail.com</string>
     <string name="copyright">Copyright</string>
     <string name="copyright_year">2014</string>
