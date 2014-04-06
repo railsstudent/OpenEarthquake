@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="actionProviderWebsite">瀏覽USGS網站</string>    
+    <string name="actionProviderAboutApp">關於Simple Quakes</string>    
+	<string name="actionProviderRateApp">給我的程式評分</string>    
+    <string name="actionProviderExit">離開</string>    
+    <string name="actionProviderDidUFeelIt">你感覺到了嗎？</string>
+    <string name="actionProviderSummary">摘要</string>
+    <string name="didufeelit_tag">#dyfi_form</string>
+    <string name="summary_tag">#summary</string>
+</resources>

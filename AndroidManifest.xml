@@ -55,6 +55,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity
             android:name="com.blueskyconnie.simpleearthquake.EarthquakeMapActivity"
+            android:label="@string/title_single_earthquake"
             android:screenOrientation="portrait" 
             android:parentActivityName="com.blueskyconnie.simpleearthquake.MainActivity">
              <meta-data android:name="android.support.PARENT_ACTIVITY"

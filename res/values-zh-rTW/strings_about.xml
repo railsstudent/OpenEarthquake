@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="datasource">Simple Quakes從美國地質調查局（USGS）提供在過去一天的地震數據。</string>
+    <string name="software_used">使用的軟件：</string>
+    <string name="developer">由 Connie Leung 開發</string>
+    <string name="email">cleung334@gmail.com</string>
+    <string name="copyright">版權</string>
+    <string name="copyright_year">2014</string>
+</resources>
