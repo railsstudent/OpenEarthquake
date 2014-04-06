@@ -13,6 +13,7 @@ public class EarthquakeClusterItem implements ClusterItem {
     private String earthquakeTime;
     private double depth;
     private String url;
+//    private double dmin;
     
     public EarthquakeClusterItem(Builder builder) {
     	this.place = builder.place;
@@ -21,6 +22,7 @@ public class EarthquakeClusterItem implements ClusterItem {
     	this.earthquakeTime = builder.earthquakeTime;
     	this.depth = builder.depth;
     	this.url = builder.url;
+//    	this.dmin = builder.dmin;
     }
     
     public String getEarthquakeTime() {
@@ -48,6 +50,10 @@ public class EarthquakeClusterItem implements ClusterItem {
     	return url;
     }
     
+//	public double getDmin() {
+//		return dmin;
+//	}
+    
     public static class Builder {
     	
     	private String place;
@@ -58,6 +64,7 @@ public class EarthquakeClusterItem implements ClusterItem {
     	private String earthquakeTime;
     	private double depth;
     	private String url;
+//    	private double dmin;
     	
     	public Builder place(String place) {
     		this.place = place;
@@ -99,7 +106,12 @@ public class EarthquakeClusterItem implements ClusterItem {
     		return this;
     	}
     	
-    	public EarthquakeClusterItem create() {
+//    	public Builder dmin(double dmin) {
+//    		this.dmin = dmin;
+//    		return this;
+//    	}
+
+		public EarthquakeClusterItem create() {
     		return new EarthquakeClusterItem(this);
     	}
     	

@@ -144,6 +144,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 					.lng(info.getLongtitude())
 					.magnitude(info.getMagnitude())
 					.depth(info.getDepth())
+//					.dmin(info.getDmin())
 					.url(Strings.nullToEmpty(info.getUrl()).trim() + Strings.nullToEmpty(summaryTag).trim())
 //					.magnitudeType(info.getMagnitudeType())
 					.earthquakeTime(info.getTime());
@@ -152,7 +153,8 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 			mClusterManager.addItems(earthquakeList);
 			if (earthquakeList != null && earthquakeList.size() > 0) {	
 				map.moveCamera(CameraUpdateFactory.newLatLng(earthquakeList.get(0).getPosition()));
-				map.animateCamera(CameraUpdateFactory.zoomTo(8));
+//				map.animateCamera(CameraUpdateFactory.zoomTo(8));
+				map.animateCamera(CameraUpdateFactory.zoomTo(2));
 			}		
 		}
 		finishedLoading();
@@ -246,7 +248,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 
 		@Override
 		public void onInfoWindowClick(Marker marker) {
-			Log.i(TAG, "onInfoWindowClik fired. Url = ");
+			Log.i(TAG, "onInfoWindowClick fired. Url = ");
 			if (clickedClusterItem != null) {
 				Uri uri = Uri.parse(clickedClusterItem.getUrl());
 				startActivity(new Intent(Intent.ACTION_VIEW, uri));

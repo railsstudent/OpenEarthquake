@@ -3,7 +3,6 @@ package com.blueskyconnie.simpleearthquake;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -29,14 +28,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.common.base.Strings;
 
 
-@SuppressLint("DefaultLocale")
 @ContentView(R.layout.activity_earthquake_map)
 public class EarthquakeMapActivity extends RoboActionBarActivity {
 
 	private static final String TAG = "EarthquakeMapActivity";
 	private static final int RQS_GOOGLE_SERVICE = 1;
-//	private static final double KM_2_MILE = 0.621371;
-//	private static final DecimalFormat df = new DecimalFormat("#.##");
 	
 	@InjectView(R.id.tvLatitude)
 	private TextView tvLat;
@@ -94,13 +90,23 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 					if (map != null) {
 						LatLng latLng = new LatLng(earthquakeInfo.getLatitude(), earthquakeInfo.getLongtitude());
 						map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+						
+//   					    CircleOptions circleOptions = new CircleOptions()
+//							  .center(latLng)   //set center
+//							  .radius(Constants.RADIUS_METER * earthquakeInfo.getDmin())   //set radius in meters
+//							  .fillColor(0x40ff0000)  //semi-transparent
+//							  .strokeColor(Color.RED)
+//							  .strokeWidth(2);
+						
 						map.addMarker(new MarkerOptions()
 										.position(latLng)
 										.title(lblMagnitude + " " + earthquakeInfo.getMagnitude())
 										.snippet(String.format("%s %s", lblPlace, earthquakeInfo.getPlace()))
 										.icon(BitmapDescriptorFactory.defaultMarker()));
+//						map.addCircle(circleOptions);
 						map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-						map.animateCamera(CameraUpdateFactory.zoomTo(8));
+//						map.animateCamera(CameraUpdateFactory.zoomTo(8));
+						map.animateCamera(CameraUpdateFactory.zoomTo(6));
 					}
 				} else {
 					GooglePlayServicesUtil.getErrorDialog(result_code, this, RQS_GOOGLE_SERVICE).show();

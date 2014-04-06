@@ -23,6 +23,7 @@ public class EarthquakeInfo implements Serializable {
 	// private String magnitudeType;
 	private String place;
 	private long time;
+	private double dmin;
 	
 	public static class Builder {
 		
@@ -34,6 +35,7 @@ public class EarthquakeInfo implements Serializable {
 		private String place;
 		private long time;
 	//	private String magnitudeType;
+//		private double dmin;
 		
 		public Builder lat(final double lat) {
 			this.lat = lat;
@@ -75,6 +77,11 @@ public class EarthquakeInfo implements Serializable {
 			return this;
 		}
 		
+//		public Builder dmin(final double dmin) {
+//			this.dmin = dmin;
+//			return this;
+//		}
+		
 		public EarthquakeInfo create() {
 			return new EarthquakeInfo(this);
 		}
@@ -89,6 +96,7 @@ public class EarthquakeInfo implements Serializable {
 		this.url = builder.url;
 //		this.magnitudeType = builder.magnitudeType;
 		this.time = builder.time;
+//		this.dmin = builder.dmin;
 	}
 	
 	public double getLatitude() {
@@ -141,7 +149,7 @@ public class EarthquakeInfo implements Serializable {
 	public String getTime() {
 		return sdf.format(new LocalDateTime(time).toDate());
 	}
-
+	
 //	public String getMagnitudeType() {
 //		return magnitudeType;
 //	}
@@ -150,12 +158,18 @@ public class EarthquakeInfo implements Serializable {
 //		this.magnitudeType = magnitudeType;
 //	}
 
+//	public double getDmin() {
+//		return dmin;
+//	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		long temp;
 		temp = Double.doubleToLongBits(depth);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(dmin);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(lat);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -180,6 +194,9 @@ public class EarthquakeInfo implements Serializable {
 		EarthquakeInfo other = (EarthquakeInfo) obj;
 		if (Double.doubleToLongBits(depth) != Double
 				.doubleToLongBits(other.depth))
+			return false;
+		if (Double.doubleToLongBits(dmin) != Double
+				.doubleToLongBits(other.dmin))
 			return false;
 		if (Double.doubleToLongBits(lat) != Double.doubleToLongBits(other.lat))
 			return false;

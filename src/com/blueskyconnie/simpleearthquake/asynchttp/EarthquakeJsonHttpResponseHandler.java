@@ -65,6 +65,13 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 							if (properties.has("url")) {
 								builder.url(properties.getString("url"));
 							}
+//							if (properties.has("dmin")) {
+//								if (properties.isNull("dmin")) {
+//									builder.dmin(0);
+//								} else {
+//									builder.dmin(properties.getDouble("dmin"));
+//								}
+//							}
 						}
 						
 						if (feature.has("geometry")) {
