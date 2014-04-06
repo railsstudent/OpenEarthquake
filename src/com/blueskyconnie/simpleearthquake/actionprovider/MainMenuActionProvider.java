@@ -1,6 +1,5 @@
 package com.blueskyconnie.simpleearthquake.actionprovider;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,12 +30,12 @@ public class MainMenuActionProvider extends ActionProvider implements OnMenuItem
 	protected static final int MI_WEBSITE = Menu.FIRST; 
 	protected static final int MI_ABOUT_APP = Menu.FIRST + 10; 
 	protected static final int MI_RATE_MY_APP = Menu.FIRST + 20; 
-	protected static final int MI_EXIT_APP = Menu.FIRST + 30;
+//	protected static final int MI_EXIT_APP = Menu.FIRST + 30;
 
 	protected static final int MI_WEBSITE_ORDER = 0; 
 	protected static final int MI_ABOUT_APP_ORDER = 10; 
 	protected static final int MI_RATE_MY_APP_ORDER = 20; 
-	protected static final int MI_EXIT_APP_ORDER = 30;
+//	protected static final int MI_EXIT_APP_ORDER = 30;
 
 	protected Context mContext;
 	private boolean isSubMenuCreated;
@@ -89,8 +88,8 @@ public class MainMenuActionProvider extends ActionProvider implements OnMenuItem
 				.setOnMenuItemClickListener(this);
 			
 			// add menu item to exit this application
-			subMenu.add(GROUP_ID, MI_EXIT_APP, MI_EXIT_APP_ORDER, R.string.actionProviderExit)
-				.setOnMenuItemClickListener(this);
+//			subMenu.add(GROUP_ID, MI_EXIT_APP, MI_EXIT_APP_ORDER, R.string.actionProviderExit)
+//				.setOnMenuItemClickListener(this);
 			Log.i(TAG, "OnPrepareSubMenu ends.");
 		}
 	}
@@ -112,10 +111,10 @@ public class MainMenuActionProvider extends ActionProvider implements OnMenuItem
 				String playStoreFullUrl = String.format(strPlayStore, mContext.getPackageName());
 				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(playStoreFullUrl)));
 				return true;
-			case MI_EXIT_APP:
-				Log.i(TAG, "onMenuItemClick - Exit my application clicked.");
-				((Activity) mContext).finish();
-				return true;
+//			case MI_EXIT_APP:
+//				Log.i(TAG, "onMenuItemClick - Exit my application clicked.");
+//				((Activity) mContext).finish();
+//				return true;
 		}
 		return false;
 	}

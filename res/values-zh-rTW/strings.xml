@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">簡單地震</string>
     <string name="confirm_exit">確認</string>
     <string name="cancel_exit">取消</string>
     <string name="title_confirm_exit">確認離開？</string>

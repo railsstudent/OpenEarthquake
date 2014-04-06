@@ -23,7 +23,7 @@ public class EarthquakeInfo implements Serializable {
 	// private String magnitudeType;
 	private String place;
 	private long time;
-	private double dmin;
+	//private double dmin;
 	
 	public static class Builder {
 		
@@ -169,8 +169,6 @@ public class EarthquakeInfo implements Serializable {
 		long temp;
 		temp = Double.doubleToLongBits(depth);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(dmin);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(lat);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(lng);
@@ -194,9 +192,6 @@ public class EarthquakeInfo implements Serializable {
 		EarthquakeInfo other = (EarthquakeInfo) obj;
 		if (Double.doubleToLongBits(depth) != Double
 				.doubleToLongBits(other.depth))
-			return false;
-		if (Double.doubleToLongBits(dmin) != Double
-				.doubleToLongBits(other.dmin))
 			return false;
 		if (Double.doubleToLongBits(lat) != Double.doubleToLongBits(other.lat))
 			return false;

@@ -20,7 +20,6 @@ import android.view.MenuItem;
 
 import com.blueskyconnie.simpleearthquake.adapter.TabPagerAdapter;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
-import com.blueskyconnie.simpleearthquake.helper.AlertDialogHelper;
 
 public class MainActivity extends RoboActionBarActivity implements
 		ActionBar.TabListener /*,
@@ -158,9 +157,9 @@ public class MainActivity extends RoboActionBarActivity implements
 			FragmentTransaction fragmentTransaction) {
 	}
 
-	@Override
-	public void onBackPressed() {
-		AlertDialogHelper.showConfirmExitDialog(this);
-	}
+//	@Override
+//	public void onBackPressed() {
+//		AlertDialogHelper.showConfirmExitDialog(this);
+//	}
 	
 }

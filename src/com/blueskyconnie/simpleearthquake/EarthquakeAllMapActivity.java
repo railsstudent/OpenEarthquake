@@ -3,6 +3,7 @@ package com.blueskyconnie.simpleearthquake;
 import java.util.ArrayList;
 import java.util.List;
 
+import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import com.google.common.base.Strings;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 
+@ContentView(R.layout.activity_earthquake_all_map)
 public class EarthquakeAllMapActivity extends RoboActionBarActivity implements HttpResponseCallback {
 
 	private static final String TAG = "EarthquakeAllMapActivity";
@@ -60,7 +62,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_earthquake_all_map);
+		// setContentView(R.layout.activity_earthquake_all_map);
 		
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		if (savedInstanceState == null) {
