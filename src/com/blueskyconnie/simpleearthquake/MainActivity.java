@@ -20,12 +20,10 @@ import android.view.MenuItem;
 
 import com.blueskyconnie.simpleearthquake.adapter.TabPagerAdapter;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
+import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 
 public class MainActivity extends RoboActionBarActivity implements
-		ActionBar.TabListener /*,
-		GooglePlayServicesClient.ConnectionCallbacks,
-		GooglePlayServicesClient.OnConnectionFailedListener, 
-		LocationListener*/ {
+		ActionBar.TabListener {
 
 	private static final String TAG = "MainActivity";
 	
@@ -50,7 +48,6 @@ public class MainActivity extends RoboActionBarActivity implements
 	
 	@InjectView (R.id.pager)
 	private ViewPager mViewPager;
-//	private ImageLoader imageLoader = ImageLoader.getInstance();
 	
 	private ShareActionProvider mShareActionProvider;
 	
@@ -69,9 +66,9 @@ public class MainActivity extends RoboActionBarActivity implements
 		// primary sections of the activity.
 		List<Fragment> lstFragment = new ArrayList<Fragment>();
 		lstFragment.add(EarthquakeFragment.newInstance(getString(R.string.title_eq_past_hour), 
-					"all_hour.geojson"));
+					"all_hour.geojson", EarthquakeInfo.INFO_TYPE.HOURLY));
 		lstFragment.add(EarthquakeFragment.newInstance(getString(R.string.title_eq_past_day), 
-					"all_day.geojson"));
+					"all_day.geojson", EarthquakeInfo.INFO_TYPE.DAILY));
 		mTabsPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), this, lstFragment);
 
 		// Set up the ViewPager with the sections adapter.
@@ -127,18 +124,6 @@ public class MainActivity extends RoboActionBarActivity implements
 		return intent;
 	}
 
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		// Handle action bar item clicks here. The action bar will
-//		// automatically handle clicks on the Home/Up button, so long
-//		// as you specify a parent activity in AndroidManifest.xml.
-//		int id = item.getItemId();
-//		if (id == R.id.action_settings) {
-//			return true;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
@@ -156,10 +141,4 @@ public class MainActivity extends RoboActionBarActivity implements
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
-
-//	@Override
-//	public void onBackPressed() {
-//		AlertDialogHelper.showConfirmExitDialog(this);
-//	}
-	
 }

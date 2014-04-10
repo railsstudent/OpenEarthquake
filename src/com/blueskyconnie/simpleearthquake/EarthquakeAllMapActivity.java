@@ -1,6 +1,5 @@
 package com.blueskyconnie.simpleearthquake;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import roboguice.inject.ContentView;
@@ -16,11 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHandler;
-import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHandler.HttpResponseCallback;
-import com.blueskyconnie.simpleearthquake.asynchttp.UsgsEarthquakeClient;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
-import com.blueskyconnie.simpleearthquake.model.EarthquakeClusterItem;
+import com.blueskyconnie.simpleearthquake.db.QuakeDataSource;
+import com.blueskyconnie.simpleearthquake.db.QuakeSQLiteOpenHelper;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -32,12 +29,11 @@ import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
-import com.google.common.base.Strings;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 
 @ContentView(R.layout.activity_earthquake_all_map)
-public class EarthquakeAllMapActivity extends RoboActionBarActivity implements HttpResponseCallback {
+public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements HttpResponseCallback*/ {
 
 	private static final String TAG = "EarthquakeAllMapActivity";
 	private static final int RQS_GOOGLE_SERVICE = 1;
@@ -45,9 +41,10 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 	private SupportMapFragment fragEarthquake;
 	private GoogleMap map;
 
-	private String restUrl;
-	private ClusterManager<EarthquakeClusterItem> mClusterManager;  
-	private EarthquakeClusterItem clickedClusterItem;
+	// private String restUrl;
+//	private ClusterManager<EarthquakeClusterItem> mClusterManager;  
+	private ClusterManager<EarthquakeInfo> mClusterManager;  
+	private EarthquakeInfo clickedClusterItem;
 	
 	@InjectView(R.id.adViewAll)
 	private AdView adView;
@@ -58,6 +55,9 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 	@InjectResource(R.string.summary_tag)
 	private String summaryTag;
 
+	private QuakeSQLiteOpenHelper dbHelper;
+	private QuakeDataSource quakeDS;
+	private String infoType;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +71,20 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 			if (fragEarthquake != null) {
 				Intent intent = getIntent();
 				if (intent != null) {
-					restUrl = intent.getStringExtra(Constants.EARTHQUAKE_REST_URL);
-					this.setTitle(intent.getStringExtra(Constants.EARTHQUAKE_TITLE));
-					fragEarthquake.getView().setVisibility(View.INVISIBLE);
+					// restUrl = intent.getStringExtra(Constants.EARTHQUAKE_REST_URL);
+					setTitle(intent.getStringExtra(Constants.EARTHQUAKE_TITLE));
+					//fragEarthquake.getView().setVisibility(View.INVISIBLE);
 					Log.i(TAG, "Load all earthquakes information to show in google map.");
-					UsgsEarthquakeClient.get(restUrl, null, new EarthquakeJsonHttpResponseHandler(this));
+					//UsgsEarthquakeClient.get(restUrl, null, new EarthquakeJsonHttpResponseHandler(this, this, "DAILY"));
 
+					dbHelper = new QuakeSQLiteOpenHelper(this);
+					quakeDS = new QuakeDataSource(dbHelper.getReadableDatabase());
+					infoType = getIntent().getStringExtra(Constants.EARTHQUAKE_TYPE);
+					
+					List<EarthquakeInfo> earthquakeList = quakeDS.query(QuakeDataSource.TABLE_NAME, "TYPE = ? ", 
+							new String[] { infoType }, QuakeDataSource.COLUMN_ID);
+					Log.i(TAG, "Number of earthquake data retrieved: " + earthquakeList.size());
+					
 					// make clusters
 					int result_code = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 					if (ConnectionResult.SUCCESS == result_code) {
@@ -85,20 +93,30 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 						if (map != null) {
 							map.clear();
 							map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-							mClusterManager = new ClusterManager<EarthquakeClusterItem>(this, map);
+//							mClusterManager = new ClusterManager<EarthquakeClusterItem>(this, map);
+							mClusterManager = new ClusterManager<EarthquakeInfo>(this, map);
 							map.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 							mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new EarthquakeInfoWindowAdapter());
 							mClusterManager.getMarkerCollection().setOnInfoWindowClickListener(infoWindowClickListener);
 							map.setOnCameraChangeListener(mClusterManager);
 							map.setOnMarkerClickListener(mClusterManager);
 							map.setOnInfoWindowClickListener(mClusterManager);
-							mClusterManager.setOnClusterItemClickListener(new OnClusterItemClickListener<EarthquakeClusterItem>() {
+							mClusterManager.setOnClusterItemClickListener(new OnClusterItemClickListener<EarthquakeInfo>() {
 								@Override
-								public boolean onClusterItemClick(EarthquakeClusterItem item) {
+								public boolean onClusterItemClick(EarthquakeInfo item) {
 									clickedClusterItem = item;
 									return false;
 								}
 							});
+
+//							mClusterManager.setOnClusterItemClickListener(new OnClusterItemClickListener<EarthquakeClusterItem>() {
+//								@Override
+//								public boolean onClusterItemClick(EarthquakeClusterItem item) {
+//									clickedClusterItem = item;
+//									return false;
+//								}
+//							});
+							convertToClusterItems(earthquakeList);	
 						}
 					} else {
 						GooglePlayServicesUtil.getErrorDialog(result_code, this, RQS_GOOGLE_SERVICE).show();
@@ -135,42 +153,66 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 		 return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void successCallback(List<EarthquakeInfo> newResults) {
+//	@Override
+//	public void successCallback(List<EarthquakeInfo> newResults) {
+//		if (newResults != null) {
+//			List<EarthquakeClusterItem> earthquakeList = new ArrayList<EarthquakeClusterItem>();
+//			for (EarthquakeInfo info : newResults) {
+//				EarthquakeClusterItem.Builder builder = new EarthquakeClusterItem.Builder();
+//				builder.place(info.getPlace())
+//					.lat(info.getLatitude())
+//					.lng(info.getLongtitude())
+//					.magnitude(info.getMagnitude())
+//					.depth(info.getDepth())
+////					.dmin(info.getDmin())
+//					.url(Strings.nullToEmpty(info.getUrl()).trim() + Strings.nullToEmpty(summaryTag).trim())
+////					.magnitudeType(info.getMagnitudeType())
+//					.earthquakeTime(info.getLocalTime());
+//				earthquakeList.add(builder.create());	
+//			}
+//			mClusterManager.addItems(earthquakeList);
+//			if (earthquakeList != null && earthquakeList.size() > 0) {	
+//				map.moveCamera(CameraUpdateFactory.newLatLng(earthquakeList.get(0).getPosition()));
+////				map.animateCamera(CameraUpdateFactory.zoomTo(8));
+//				map.animateCamera(CameraUpdateFactory.zoomTo(2));
+//			}		
+//		}
+//		finishedLoading();
+//	}
+	
+	private void convertToClusterItems (List<EarthquakeInfo> newResults) {
 		if (newResults != null) {
-			List<EarthquakeClusterItem> earthquakeList = new ArrayList<EarthquakeClusterItem>();
+//			List<EarthquakeClusterItem> earthquakeList = new ArrayList<EarthquakeClusterItem>();
 			for (EarthquakeInfo info : newResults) {
-				EarthquakeClusterItem.Builder builder = new EarthquakeClusterItem.Builder();
-				builder.place(info.getPlace())
-					.lat(info.getLatitude())
-					.lng(info.getLongtitude())
-					.magnitude(info.getMagnitude())
-					.depth(info.getDepth())
-//					.dmin(info.getDmin())
-					.url(Strings.nullToEmpty(info.getUrl()).trim() + Strings.nullToEmpty(summaryTag).trim())
-//					.magnitudeType(info.getMagnitudeType())
-					.earthquakeTime(info.getTime());
-				earthquakeList.add(builder.create());	
+//				EarthquakeClusterItem.Builder builder = new EarthquakeClusterItem.Builder();
+//				builder.place(info.getPlace())
+//					.lat(info.getLatitude())
+//					.lng(info.getLongtitude())
+//					.magnitude(info.getMagnitude())
+//					.depth(info.getDepth())
+//					.url(Strings.nullToEmpty(info.getUrl()).trim() + Strings.nullToEmpty(summaryTag).trim())
+//					.earthquakeTime(info.getLocalTime());
+//				earthquakeList.add(builder.create());	
+				info.setSummaryTag(summaryTag);
 			}
-			mClusterManager.addItems(earthquakeList);
-			if (earthquakeList != null && earthquakeList.size() > 0) {	
-				map.moveCamera(CameraUpdateFactory.newLatLng(earthquakeList.get(0).getPosition()));
-//				map.animateCamera(CameraUpdateFactory.zoomTo(8));
+			mClusterManager.addItems(newResults);
+			if (newResults != null && newResults.size() > 0) {	
+				map.moveCamera(CameraUpdateFactory.newLatLng(newResults.get(0).getPosition()));
 				map.animateCamera(CameraUpdateFactory.zoomTo(2));
 			}		
 		}
-		finishedLoading();
 	}
+	
 
-	@Override
-	public void failedCallback() {
-		finishedLoading();
-	}
-
-	private void finishedLoading() {
-		fragEarthquake.getView().setVisibility(View.VISIBLE);
-		Log.i(TAG, "Finish loading earthquake information in EarthquakeAllMapActivity.");
-	}
+//	@Override
+//	public void failedCallback() {
+//		finishedLoading();
+//	}
+//
+//	private void finishedLoading() {
+//		fragEarthquake.getView().setVisibility(View.VISIBLE);
+//		Log.i(TAG, "Finish loading earthquake information in EarthquakeAllMapActivity.");
+//	}
 	
 	@Override
 	protected void onResume() {
@@ -222,7 +264,9 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 					tvWinMagnitude.setText(String.valueOf(clickedClusterItem.getMagnitude()));
 				}
 				if (tvWinTime != null) { 
-					tvWinTime.setText(clickedClusterItem.getEarthquakeTime());
+//					tvWinTime.setText(clickedClusterItem.getEarthquakeTime());
+					tvWinTime.setText(clickedClusterItem.getLocalTime());
+
 				}
 				if (tvWinCoordinate != null) {
 					String coordinate = clickedClusterItem.getPosition().latitude + "," 
@@ -252,7 +296,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity implements H
 		public void onInfoWindowClick(Marker marker) {
 			Log.i(TAG, "onInfoWindowClick fired. Url = ");
 			if (clickedClusterItem != null) {
-				Uri uri = Uri.parse(clickedClusterItem.getUrl());
+				Uri uri = Uri.parse(clickedClusterItem.getSummaryUrl());
 				startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			}
 		}

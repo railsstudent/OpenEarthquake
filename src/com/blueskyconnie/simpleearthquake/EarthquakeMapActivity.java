@@ -90,20 +90,11 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 					if (map != null) {
 						LatLng latLng = new LatLng(earthquakeInfo.getLatitude(), earthquakeInfo.getLongtitude());
 						map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-						
-//   					    CircleOptions circleOptions = new CircleOptions()
-//							  .center(latLng)   //set center
-//							  .radius(Constants.RADIUS_METER * earthquakeInfo.getDmin())   //set radius in meters
-//							  .fillColor(0x40ff0000)  //semi-transparent
-//							  .strokeColor(Color.RED)
-//							  .strokeWidth(2);
-						
 						map.addMarker(new MarkerOptions()
 										.position(latLng)
 										.title(lblMagnitude + " " + earthquakeInfo.getMagnitude())
 										.snippet(String.format("%s %s", lblPlace, earthquakeInfo.getPlace()))
 										.icon(BitmapDescriptorFactory.defaultMarker()));
-//						map.addCircle(circleOptions);
 						map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 //						map.animateCamera(CameraUpdateFactory.zoomTo(8));
 						map.animateCamera(CameraUpdateFactory.zoomTo(6));

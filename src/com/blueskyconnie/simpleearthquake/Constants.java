@@ -6,7 +6,8 @@ public class Constants {
 
 	public static final String EARTHQUAKE_INFO_KEY = "earthquake_info_key";
 	public static final String EARTHQUAKE_TITLE = "earthquake_info_key";
-	public static final String EARTHQUAKE_REST_URL = "earthquake_rest_url";
+//	public static final String EARTHQUAKE_REST_URL = "earthquake_rest_url";
+	public static final String EARTHQUAKE_TYPE = "earthquake_type";
 	public static final double KM_2_MILE = 0.621371;
 	public static final DecimalFormat df = new DecimalFormat("#.##");	
 //	public static final double RADIUS_METER = 111.2 * 1000;

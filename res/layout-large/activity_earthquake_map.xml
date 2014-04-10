@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context="com.blueskyconnie.simpleearthquake.EarthquakeMapActivity"
+    tools:ignore="MergeRootFrame">
+    
+  <fragment
+        android:id="@+id/fragEarthquake"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rel_bottom"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        class="com.google.android.gms.maps.SupportMapFragment" />
+
+    <RelativeLayout
+        android:id="@+id/rel_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_above="@+id/adView" >
+
+        <TableLayout
+            android:id="@+id/table_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/lblLatitude"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blueColor"
+                    android:text="@string/latitude"
+                    android:textSize="20sp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/tvLatitude"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/purpleColor"
+                    android:textSize="20sp"
+                    android:layout_weight="3" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+                <TextView
+                    android:id="@+id/lblLongtitude"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blueColor"
+                    android:text="@string/longtitude"
+                    android:textSize="20sp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/tvLongtitude"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/purpleColor"
+                    android:textSize="20sp"
+                    android:layout_weight="3" />
+                
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            
+                <TextView
+                    android:id="@+id/lblDepth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blueColor"
+                    android:text="@string/depth"
+                    android:textSize="20sp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/tvDepth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/purpleColor"
+                    android:textSize="20sp"
+                    android:layout_weight="3" />
+            </TableRow>
+
+        </TableLayout>
+    </RelativeLayout>
+    
+    <com.google.android.gms.ads.AdView
+	        android:id="@+id/adView"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        ads:adSize="SMART_BANNER"
+	        ads:adUnitId="a153369fad29288" />
+</RelativeLayout>

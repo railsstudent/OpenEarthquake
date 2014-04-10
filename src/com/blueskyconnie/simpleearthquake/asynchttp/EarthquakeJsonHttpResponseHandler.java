@@ -7,9 +7,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.blueskyconnie.simpleearthquake.db.QuakeDataSource;
+import com.blueskyconnie.simpleearthquake.db.QuakeSQLiteOpenHelper;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
+import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo.INFO_TYPE;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
@@ -17,15 +21,22 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 	private static final String TAG = "EarthquakeJsonHttpResponseHandler";
 	private HttpResponseCallback callback;
 	
+	private QuakeSQLiteOpenHelper dbHelper;
+	private String infoType;
+	private QuakeDataSource quakeDS;
+	
 	public interface HttpResponseCallback {
 		void successCallback(List<EarthquakeInfo> newResults);
 		void failedCallback();
 	}
 	
-	public EarthquakeJsonHttpResponseHandler(HttpResponseCallback callback) {
+	public EarthquakeJsonHttpResponseHandler(Context context, 
+			HttpResponseCallback callback, String infoType) {
 		this.callback = callback;
+		this.infoType = infoType;
+		dbHelper = new QuakeSQLiteOpenHelper(context);
+		quakeDS = new QuakeDataSource(dbHelper.getWritableDatabase());
 	}
-	
 	
 	@Override
 	public void onFailure(Throwable e, JSONObject errorResponse) {
@@ -42,6 +53,10 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 		
 		try {
 			ArrayList<EarthquakeInfo> lst = new ArrayList<EarthquakeInfo>();
+			
+			// clear database
+			quakeDS.delete(QuakeDataSource.TABLE_NAME, "TYPE = ? ", new String[] { infoType });
+			
 			if (response.has("features")) {
 				JSONArray features = response.getJSONArray("features");
 				if (features != null) {
@@ -53,9 +68,6 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 							if (properties.has("mag")) {
 								builder.magnitude(properties.getDouble("mag"));
 							}
-//							if (properties.has("magnitudeType")) {
-//								builder.magnitudeType(properties.getString("magnitudeType"));
-//							}
 							if (properties.has("place")) {
 								builder.place(properties.getString("place"));
 							}
@@ -65,13 +77,10 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 							if (properties.has("url")) {
 								builder.url(properties.getString("url"));
 							}
-//							if (properties.has("dmin")) {
-//								if (properties.isNull("dmin")) {
-//									builder.dmin(0);
-//								} else {
-//									builder.dmin(properties.getDouble("dmin"));
-//								}
-//							}
+						}
+						
+						if (feature.has("id")) {
+							builder.id(feature.getString("id"));
 						}
 						
 						if (feature.has("geometry")) {
@@ -89,7 +98,11 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 								}
 							}
 						}
-						lst.add(builder.create());
+						
+						builder.type(INFO_TYPE.valueOf(infoType));
+						EarthquakeInfo info = builder.create();
+						quakeDS.insert(QuakeDataSource.TABLE_NAME, info);
+						lst.add(info);
 					}
 				}
 			}
