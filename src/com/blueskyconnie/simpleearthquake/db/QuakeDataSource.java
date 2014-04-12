@@ -25,6 +25,8 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 	 public static final String COLUMN_PLACE = "PLACE";
 	 public static final String COLUMN_TIME = "TIME";
 	 public static final String COLUMN_TYPE = "TYPE";
+	 public static final String COLUMN_INT_SEQ = "INTERNAL_SEQ";
+	 
 	 
 	 private static final String[] RETRIEVE_COLUMNS = {
 		   COLUMN_ID
@@ -35,11 +37,13 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 		 , COLUMN_MAGNITUDE
 		 , COLUMN_PLACE
 		 , COLUMN_TIME
+		 , COLUMN_INT_SEQ
 	 };
 	 
 	 // Database creation sql statement
 	 public static final String SQL_CREATE_TABLE = "create table " + TABLE_NAME
 	             + "(" + COLUMN_ID + " VARCHAR(30) primary key not null "
+	             + "," + COLUMN_INT_SEQ + " INTEGER NOT NULL DEFAULT 1"
 	             + "," + COLUMN_LAT + " DECIMAL(10, 5) NOT NULL DEFAULT 0"
 	             + "," + COLUMN_LNG + " DECIMAL(10, 5) NOT NULL DEFAULT 0"
 	             + "," + COLUMN_DEPTH + " DECIMAL(10, 5) NOT NULL DEFAULT 0"
@@ -67,6 +71,7 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 		values.put(COLUMN_PLACE, entity.getPlace());
 		values.put(COLUMN_TIME, entity.getTime());
 		values.put(COLUMN_TYPE, entity.getType().toString());
+		values.put(COLUMN_INT_SEQ, entity.getInternalSequence());
 		long result = database.insert(table, null, values);
 		return result != -1;
 	}
@@ -96,6 +101,7 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 			double longtitude = CursorUtils.getDouble(COLUMN_LNG, cursor);
 			long time = CursorUtils.getLong(COLUMN_TIME, cursor);
 			String id = CursorUtils.getString(COLUMN_ID, cursor);
+			int seq = CursorUtils.getInt(COLUMN_INT_SEQ, cursor);
 			
 			EarthquakeInfo info = builder
 									.depth(depth)
@@ -106,6 +112,7 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 									.url(url)
 									.time(time)
 									.id(id)
+									.internalSequence(seq)
 									.create();
 			list.add(info);
 			cursor.moveToNext();
@@ -131,6 +138,7 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 			double longtitude = CursorUtils.getDouble(COLUMN_LNG, cursor);
 			long time = CursorUtils.getLong(COLUMN_TIME, cursor);
 			String id = CursorUtils.getString(COLUMN_ID, cursor);
+			int seq = CursorUtils.getInt(COLUMN_INT_SEQ, cursor);
 
 			EarthquakeInfo info = builder
 									.depth(depth)
@@ -141,6 +149,7 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 									.url(url)
 									.time(time)
 									.id(id)
+									.internalSequence(seq)
 									.create();
 			list.add(info);
 			cursor.moveToNext();
@@ -161,6 +170,7 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 		values.put(COLUMN_PLACE, entity.getPlace());
 		values.put(COLUMN_TIME, entity.getTime());
 		values.put(COLUMN_TYPE, entity.getType().toString());
+		values.put(COLUMN_INT_SEQ, entity.getInternalSequence());
 		
 		int count = database.update(table, values, whereClause, whereArgs);
 		return count > 0;

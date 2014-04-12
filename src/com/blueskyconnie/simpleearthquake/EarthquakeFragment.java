@@ -29,36 +29,36 @@ import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo.INFO_TYPE;
 
 //@ContentView(R.layout.fragment_main)
-public class EarthquakeFragment extends RoboListFragment implements HttpResponseCallback, LoadDataCallback,
-	SwipeRefreshLayout.OnRefreshListener  {
-	
+public class EarthquakeFragment extends RoboListFragment implements
+		HttpResponseCallback, LoadDataCallback,
+		SwipeRefreshLayout.OnRefreshListener {
+
 	private static final String TAG = "EarthquakeFragment";
-	
+
 	private EarthquakeListAdapter earthquakeAdapter;
 	private String restfulUrl;
 	private String title_earthquake_map;
 	private boolean isDataLoaded;
 	private boolean isLoadingData;
-	
+
 	/**
-	 * The fragment argument representing the section number for this
-	 * fragment.
+	 * The fragment argument representing the section number for this fragment.
 	 */
 	private static final String ARG_URL = "restfulUrl";
 
 	private static final String ARG_TITLE = "eq_title";
 
 	private static final String ARG_TYPE = "eq_info_type";
-	
-	@InjectView (R.id.btnLoad)
+
+	@InjectView(R.id.btnLoad)
 	private Button btnLoad;
-	
-	@InjectView (android.R.id.list)
+
+	@InjectView(android.R.id.list)
 	private ListView lstView;
-	
-//	@InjectView (R.id.progressbar)
-//	private ProgressBar progressbar;
-	
+
+	// @InjectView (R.id.progressbar)
+	// private ProgressBar progressbar;
+
 	@InjectView(R.id.tvTotal)
 	private TextView tvTotal;
 
@@ -67,16 +67,19 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 
 	@InjectResource(R.string.strTotalFormatter)
 	private String strTotalFormatter;
-	
+
 	private int totalRecords;
-	
+
 	private EarthquakeJsonHttpResponseHandler handler;
 	private String infoType;
 	
+	private MenuItem menuShowMap;
+
 	/**
 	 * Returns a new instance of this fragment for the given section number.
 	 */
-	public static EarthquakeFragment newInstance(String title, String url, INFO_TYPE infoType) {
+	public static EarthquakeFragment newInstance(String title, String url,
+			INFO_TYPE infoType) {
 		EarthquakeFragment fragment = new EarthquakeFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_URL, url);
@@ -100,19 +103,22 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		}
 		isDataLoaded = false;
 		isLoadingData = false;
-		handler = new EarthquakeJsonHttpResponseHandler(this.getActivity(), this, infoType);
+		handler = new EarthquakeJsonHttpResponseHandler(this.getActivity(),
+				this, infoType);
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_main, container, false);
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
-		earthquakeAdapter = new EarthquakeListAdapter(getActivity(), R.layout.earthquake_row_layout, this);
+
+		earthquakeAdapter = new EarthquakeListAdapter(getActivity(),
+				R.layout.earthquake_row_layout, this);
 		setListAdapter(earthquakeAdapter);
 		// by experiment, control is injected here
 		btnLoad.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +131,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		});
 		if (swipeRefreshLayout != null) {
 			swipeRefreshLayout.setOnRefreshListener(this);
-			swipeRefreshLayout.setColorScheme(R.color.color1, R.color.color2, 
+			swipeRefreshLayout.setColorScheme(R.color.color1, R.color.color2,
 					R.color.color3, R.color.color4);
 		}
 	}
@@ -133,17 +139,17 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	@Override
 	public void onPause() {
 		super.onPause();
-//		if (progressbar != null) {
-//			if (progressbar.isShown()) {
-//				progressbar.setVisibility(View.INVISIBLE);
-//			}
-//		}
+		// if (progressbar != null) {
+		// if (progressbar.isShown()) {
+		// progressbar.setVisibility(View.INVISIBLE);
+		// }
+		// }
 		if (this.swipeRefreshLayout != null) {
 			if (swipeRefreshLayout.isRefreshing()) {
 				swipeRefreshLayout.setRefreshing(false);
 			}
 		}
-		
+
 		// cancel requests
 		Activity activity = getActivity();
 		if (activity != null) {
@@ -157,7 +163,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		loadData();
 		Log.i(TAG, "onResume called - resfulUrl = " + restfulUrl);
 	}
-	
+
 	private void loadData() {
 		if (isLoadingData) {
 			Log.i(TAG, "loadData() - isLoadingData = " + isLoadingData + ", exit early.");
@@ -175,6 +181,8 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 					btnLoad.setEnabled(false);
 					btnLoad.setVisibility(View.INVISIBLE);
 					//progressbar.setVisibility(View.VISIBLE);
+					// hide menu items 
+					setMenuItemVisible(false);
 					if (!isRefreshing) {
 						swipeRefreshLayout.setEnabled(false);
 						swipeRefreshLayout.setRefreshing(true);
@@ -185,7 +193,7 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 			}
 		} 
 	}
-	
+
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
@@ -200,7 +208,8 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	public void successCallback(List<EarthquakeInfo> newResults) {
 		this.earthquakeAdapter.addEarthquake(newResults);
 		totalRecords = newResults.size();
-		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
+		tvTotal.setText(String.format(strTotalFormatter, totalRecords,
+				earthquakeAdapter.getCount()));
 		finishLoading();
 		isDataLoaded = true;
 		isLoadingData = false;
@@ -210,17 +219,18 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	@Override
 	public void failedCallback() {
 		totalRecords = 0;
-		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
+		tvTotal.setText(String.format(strTotalFormatter, totalRecords,
+				earthquakeAdapter.getCount()));
 		finishLoading();
 		isDataLoaded = false;
 		isLoadingData = false;
 		Log.i(TAG, "failedCallback called.");
 	}
-	
+
 	private void finishLoading() {
-//		if (progressbar != null) {
-//			progressbar.setVisibility(View.GONE);
-//		}
+		// if (progressbar != null) {
+		// progressbar.setVisibility(View.GONE);
+		// }
 
 		if (swipeRefreshLayout != null) {
 			if (swipeRefreshLayout.isRefreshing()) {
@@ -228,19 +238,21 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 				swipeRefreshLayout.setRefreshing(false);
 			}
 		}
-		
+
 		if (tvTotal != null) {
 			tvTotal.setVisibility(View.VISIBLE);
 		}
-		
+
 		if (lstView != null) {
 			lstView.setVisibility(View.VISIBLE);
 		}
-		
+
 		if (btnLoad != null) {
 			btnLoad.setEnabled(true);
 			btnLoad.setVisibility(View.VISIBLE);
 		}
+
+		setMenuItemVisible(true);
 		
 		Log.i(TAG, "finishLoading called.");
 	}
@@ -251,7 +263,8 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		Object obj = l.getItemAtPosition(position);
 		if (obj != null && obj instanceof EarthquakeInfo) {
 			EarthquakeInfo info = (EarthquakeInfo) obj;
-			Intent mapIntent = new Intent(getActivity(), EarthquakeMapActivity.class);
+			Intent mapIntent = new Intent(getActivity(),
+					EarthquakeMapActivity.class);
 			mapIntent.putExtra(Constants.EARTHQUAKE_INFO_KEY, info);
 			startActivity(mapIntent);
 		}
@@ -261,26 +274,30 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.earthquake_fragment_menu, menu);
+		menuShowMap = menu.findItem(R.id.action_map);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
+
 		switch (item.getItemId()) {
-			case R.id.action_map:
-				Intent mapIntent = new Intent(getActivity(), EarthquakeAllMapActivity.class);
-			//	mapIntent.putExtra(Constants.EARTHQUAKE_REST_URL, restfulUrl);
-				mapIntent.putExtra(Constants.EARTHQUAKE_TITLE, title_earthquake_map);
-				mapIntent.putExtra(Constants.EARTHQUAKE_TYPE, infoType);
-				startActivity(mapIntent);
-				return true;
+		case R.id.action_map:
+			Intent mapIntent = new Intent(getActivity(),
+					EarthquakeAllMapActivity.class);
+			// mapIntent.putExtra(Constants.EARTHQUAKE_REST_URL, restfulUrl);
+			mapIntent
+					.putExtra(Constants.EARTHQUAKE_TITLE, title_earthquake_map);
+			mapIntent.putExtra(Constants.EARTHQUAKE_TYPE, infoType);
+			startActivity(mapIntent);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onAfterDataLoad() {
-		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
+		tvTotal.setText(String.format(strTotalFormatter, totalRecords,
+				earthquakeAdapter.getCount()));
 	}
 
 	@Override
@@ -290,5 +307,11 @@ public class EarthquakeFragment extends RoboListFragment implements HttpResponse
 		swipeRefreshLayout.setRefreshing(true);
 		loadData();
 		Log.i(TAG, "onRefresh called - resfulUrl = " + restfulUrl);
+	}
+	
+	private void setMenuItemVisible(boolean visible) {
+		if (menuShowMap != null) {
+			menuShowMap.setVisible(visible);
+		}
 	}
 }

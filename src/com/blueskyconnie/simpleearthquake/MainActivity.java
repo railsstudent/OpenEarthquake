@@ -108,7 +108,7 @@ public class MainActivity extends RoboActionBarActivity implements
 		mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 		if (mShareActionProvider != null) {
 			mShareActionProvider.setShareIntent(createShareIntent());
-			Log.i(TAG, "ShareItent set in ShareActionProvider.");
+			Log.i(TAG, "ShareIntent set in ShareActionProvider.");
 		}
 		
 		return super.onCreateOptionsMenu(menu);

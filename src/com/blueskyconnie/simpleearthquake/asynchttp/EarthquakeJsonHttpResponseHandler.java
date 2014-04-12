@@ -55,11 +55,12 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 			ArrayList<EarthquakeInfo> lst = new ArrayList<EarthquakeInfo>();
 			
 			// clear database
-			quakeDS.delete(QuakeDataSource.TABLE_NAME, "TYPE = ? ", new String[] { infoType });
-			
+			boolean isDeleted = quakeDS.delete(QuakeDataSource.TABLE_NAME, "TYPE = ? ", new String[] { infoType });
+			Log.i(TAG, "Is row deleted? " + isDeleted);
 			if (response.has("features")) {
 				JSONArray features = response.getJSONArray("features");
 				if (features != null) {
+					long internalSeq = 1;
 					for (int i = 0; i < features.length(); i++) {
 						EarthquakeInfo.Builder builder = new EarthquakeInfo.Builder();
 						JSONObject feature = features.getJSONObject(i);
@@ -99,10 +100,12 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 							}
 						}
 						
-						builder.type(INFO_TYPE.valueOf(infoType));
+						builder.type(INFO_TYPE.valueOf(infoType))
+								.internalSequence(internalSeq);
 						EarthquakeInfo info = builder.create();
 						quakeDS.insert(QuakeDataSource.TABLE_NAME, info);
 						lst.add(info);
+						internalSeq++;
 					}
 				}
 			}

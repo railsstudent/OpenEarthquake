@@ -32,6 +32,7 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 	private INFO_TYPE type;
 	private String doYouFeelItTag;
 	private String summaryTag;
+	private long internalSequence;
 	
 	public static class Builder {
 		
@@ -46,6 +47,7 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 //		private double dmin;
 		private String id;
 		private INFO_TYPE type;
+		private long internalSequence;
 		
 		public Builder lat(final double lat) {
 			this.lat = lat;
@@ -102,6 +104,11 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 			return this;
 		}
 		
+		public Builder internalSequence(final long internalSequence) {
+			this.internalSequence = internalSequence;
+			return this;
+		}
+		
 		public EarthquakeInfo create() {
 			return new EarthquakeInfo(this);
 		}
@@ -119,9 +126,14 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 		this.time = builder.time;
 		this.type = builder.type;
 		this.id = builder.id;
+		this.internalSequence = builder.internalSequence;
 //		this.dmin = builder.dmin;
 	}
 	
+	public long getInternalSequence() {
+		return internalSequence;
+	}
+
 	public double getLatitude() {
 		return lat;
 	}
@@ -183,6 +195,15 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 	}
 
 	@Override
+	public LatLng getPosition() {
+		return new LatLng(lat, lng);
+	}
+
+	public void setSummaryTag(String summaryTag) {
+		this.summaryTag = summaryTag;
+	}
+	
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -192,6 +213,8 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 		result = prime * result
 				+ ((doYouFeelItTag == null) ? 0 : doYouFeelItTag.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ (int) (internalSequence ^ (internalSequence >>> 32));
 		temp = Double.doubleToLongBits(lat);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(lng);
@@ -229,6 +252,8 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (internalSequence != other.internalSequence)
+			return false;
 		if (Double.doubleToLongBits(lat) != Double.doubleToLongBits(other.lat))
 			return false;
 		if (Double.doubleToLongBits(lng) != Double.doubleToLongBits(other.lng))
@@ -257,14 +282,4 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 			return false;
 		return true;
 	}
-
-	@Override
-	public LatLng getPosition() {
-		return new LatLng(lat, lng);
-	}
-
-	public void setSummaryTag(String summaryTag) {
-		this.summaryTag = summaryTag;
-	}
-	
 }

@@ -82,7 +82,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 					infoType = getIntent().getStringExtra(Constants.EARTHQUAKE_TYPE);
 					
 					List<EarthquakeInfo> earthquakeList = quakeDS.query(QuakeDataSource.TABLE_NAME, "TYPE = ? ", 
-							new String[] { infoType }, QuakeDataSource.COLUMN_ID);
+							new String[] { infoType }, QuakeDataSource.COLUMN_INT_SEQ);
 					Log.i(TAG, "Number of earthquake data retrieved: " + earthquakeList.size());
 					
 					// make clusters
