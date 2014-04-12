@@ -27,7 +27,6 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 	 public static final String COLUMN_TYPE = "TYPE";
 	 public static final String COLUMN_INT_SEQ = "INTERNAL_SEQ";
 	 
-	 
 	 private static final String[] RETRIEVE_COLUMNS = {
 		   COLUMN_ID
 		 , COLUMN_LAT

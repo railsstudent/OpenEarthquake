@@ -11,7 +11,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.blueskyconnie.simpleearthquake.db.QuakeDataSource;
-import com.blueskyconnie.simpleearthquake.db.QuakeSQLiteOpenHelper;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo.INFO_TYPE;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -21,7 +20,7 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 	private static final String TAG = "EarthquakeJsonHttpResponseHandler";
 	private HttpResponseCallback callback;
 	
-	private QuakeSQLiteOpenHelper dbHelper;
+//	private QuakeSQLiteOpenHelper dbHelper;
 	private String infoType;
 	private QuakeDataSource quakeDS;
 	
@@ -31,11 +30,13 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 	}
 	
 	public EarthquakeJsonHttpResponseHandler(Context context, 
-			HttpResponseCallback callback, String infoType) {
+			HttpResponseCallback callback, String infoType, QuakeDataSource quakeDS) {
 		this.callback = callback;
 		this.infoType = infoType;
-		dbHelper = new QuakeSQLiteOpenHelper(context);
-		quakeDS = new QuakeDataSource(dbHelper.getWritableDatabase());
+		this.quakeDS = quakeDS;
+
+		// dbHelper = new QuakeSQLiteOpenHelper(context);
+		//new QuakeDataSource(dbHelper.getWritableDatabase());
 	}
 	
 	@Override

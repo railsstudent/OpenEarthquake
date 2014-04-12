@@ -22,7 +22,8 @@
     <string name="title_eq_past_day">過去一天的地震</string>
     <string name="title_eq_past_hour">過去一小時的地震</string>
     <string name="show_map">顯示地圖</string>
-     <string name="time">時間：</string>
+    <string name="search">尋找</string>
+    <string name="time">時間：</string>
     <string name="strTotalFormatter">地震總數：%1$d （顯示： %2$d）</string>
     <string name="action_share">分享</string>
     <string name="contentImageLogo">開機畫面圖像</string>

@@ -1,5 +1,6 @@
 package com.blueskyconnie.simpleearthquake;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import roboguice.fragment.RoboListFragment;
@@ -8,7 +9,9 @@ import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,13 +28,17 @@ import com.blueskyconnie.simpleearthquake.adapter.EarthquakeListAdapter.LoadData
 import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHandler;
 import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHandler.HttpResponseCallback;
 import com.blueskyconnie.simpleearthquake.asynchttp.UsgsEarthquakeClient;
+import com.blueskyconnie.simpleearthquake.db.QuakeDataSource;
+import com.blueskyconnie.simpleearthquake.db.QuakeSQLiteOpenHelper;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo.INFO_TYPE;
+import com.google.common.base.Strings;
 
 //@ContentView(R.layout.fragment_main)
 public class EarthquakeFragment extends RoboListFragment implements
 		HttpResponseCallback, LoadDataCallback,
-		SwipeRefreshLayout.OnRefreshListener {
+		SwipeRefreshLayout.OnRefreshListener, 
+		SearchView.OnQueryTextListener {
 
 	private static final String TAG = "EarthquakeFragment";
 
@@ -74,6 +81,10 @@ public class EarthquakeFragment extends RoboListFragment implements
 	private String infoType;
 	
 	private MenuItem menuShowMap;
+	private SearchView mSearchView;
+	
+	private QuakeSQLiteOpenHelper dbHelper;
+	private QuakeDataSource quakeDS;
 
 	/**
 	 * Returns a new instance of this fragment for the given section number.
@@ -103,8 +114,10 @@ public class EarthquakeFragment extends RoboListFragment implements
 		}
 		isDataLoaded = false;
 		isLoadingData = false;
+		dbHelper = new QuakeSQLiteOpenHelper(getActivity());
+		quakeDS = new QuakeDataSource(dbHelper.getWritableDatabase());
 		handler = new EarthquakeJsonHttpResponseHandler(this.getActivity(),
-				this, infoType);
+				this, infoType, quakeDS);
 	}
 
 	@Override
@@ -275,6 +288,11 @@ public class EarthquakeFragment extends RoboListFragment implements
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.earthquake_fragment_menu, menu);
 		menuShowMap = menu.findItem(R.id.action_map);
+		MenuItem menuSearchItem = menu.findItem(R.id.action_search);
+		mSearchView = (SearchView) MenuItemCompat.getActionView(menuSearchItem);
+		mSearchView.setOnQueryTextListener(this);
+		mSearchView.setIconifiedByDefault(false);
+		mSearchView.setSubmitButtonEnabled(true);
 	}
 
 	@Override
@@ -313,5 +331,45 @@ public class EarthquakeFragment extends RoboListFragment implements
 		if (menuShowMap != null) {
 			menuShowMap.setVisible(visible);
 		}
+	}
+
+	private void searchPlace(String query) {
+		String filter = "";
+		String[] selectArgs = null;
+		List<EarthquakeInfo> lstEarthquake = null;
+		
+		if (Strings.isNullOrEmpty(query)) {
+			filter = QuakeDataSource.COLUMN_TYPE + " =  ? ";
+			selectArgs = new String[] { infoType };
+		} else {
+			filter = QuakeDataSource.COLUMN_TYPE + " =  ? AND " + QuakeDataSource.COLUMN_PLACE + " like '?%' ";
+			selectArgs = new String[] { infoType, query.trim() };
+		}
+		lstEarthquake = quakeDS.query(QuakeDataSource.TABLE_NAME, filter, selectArgs, QuakeDataSource.COLUMN_INT_SEQ);
+		if (lstEarthquake == null) {
+			lstEarthquake = new ArrayList<EarthquakeInfo>();
+		}
+		earthquakeAdapter.addEarthquake(lstEarthquake);
+		totalRecords = lstEarthquake.size();
+		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
+	}
+	
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		
+		if (Strings.isNullOrEmpty(newText)) {
+			// show all result in database
+			searchPlace(newText);
+			Log.i(TAG, "onQueryTextChange called - newText = " + newText);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// search database
+		searchPlace(query);
+		Log.i(TAG, "onQueryTextSubmit called - query = " + query);
+		return false;
 	}
 }

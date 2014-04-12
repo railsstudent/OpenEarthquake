@@ -23,6 +23,7 @@
     <string name="title_eq_past_day">Quakes in Past Day</string>
     <string name="title_eq_past_hour">Quakes in Past Hour</string>
     <string name="show_map">Show Map</string>
+    <string name="search">Search Place</string>
      <string name="time">Time :</string>
     <string name="strTotalFormatter">Total quakes: %1$d (Shown: %2$d)</string>
     <string name="action_share">Share</string>
