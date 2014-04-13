@@ -7,4 +7,10 @@
     <string name="email">cleung334@gmail.com</string>
     <string name="copyright">版權</string>
     <string name="copyright_year">2014</string>
+    <string name="android_maputil_copyright">版權 2013, Google Inc</string>
+    <string name="roboguice_copyright">版權 2012&#8211;2014, RoboGuice Authors</string>
+    <string name="asynchttpclient_copyright">版權 2009&#8211;2012, James Smith and other contributors</string>
+    <string name="crouton_copyright">版權 2013, Benjamin Weiss</string>
+    <string name="guava_copyright">版權 2011, Guava Authors</string>
+    
 </resources>
