@@ -34,4 +34,5 @@
     <string name="action_mainActProvider">Actions</string>
     <string name="play_store_uri">market://details?id=%s</string>
     <string name="title_single_earthquake">Show Earthquake Map</string>
+    <string name="filterPlaceHint">Filter by Place</string>
 </resources>

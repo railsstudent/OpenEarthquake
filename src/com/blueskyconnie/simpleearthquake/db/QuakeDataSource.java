@@ -6,11 +6,14 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 
 public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 
+	 private static final String TAG = "QuakeDataSource";
+	 
 	 public static final int DATABASE_VERSION = 1;
 	 public static final String DATABASE_NAME = "Quake.db";
 	 
@@ -78,6 +81,7 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 	@Override
 	public boolean delete(String table, String whereClause, String[] whereArgs) {
 		int count  = database.delete(table, whereClause, whereArgs);
+		Log.i(TAG, "Number of record deleted = " + count);
 		return count > 0;
 	}
 

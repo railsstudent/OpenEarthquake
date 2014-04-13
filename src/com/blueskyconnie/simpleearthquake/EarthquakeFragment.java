@@ -218,11 +218,9 @@ public class EarthquakeFragment extends RoboListFragment implements
 	}
 
 	@Override
-	public void successCallback(List<EarthquakeInfo> newResults) {
-		this.earthquakeAdapter.addEarthquake(newResults);
-		totalRecords = newResults.size();
-		tvTotal.setText(String.format(strTotalFormatter, totalRecords,
-				earthquakeAdapter.getCount()));
+	public void successCallback() {
+		
+		filterPlace(mSearchView.getQuery().toString());
 		finishLoading();
 		isDataLoaded = true;
 		isLoadingData = false;
@@ -333,7 +331,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 		}
 	}
 
-	private void searchPlace(String query) {
+	private void filterPlace(String query) {
 		String filter = "";
 		String[] selectArgs = null;
 		List<EarthquakeInfo> lstEarthquake = null;
@@ -342,8 +340,8 @@ public class EarthquakeFragment extends RoboListFragment implements
 			filter = QuakeDataSource.COLUMN_TYPE + " =  ? ";
 			selectArgs = new String[] { infoType };
 		} else {
-			filter = QuakeDataSource.COLUMN_TYPE + " =  ? AND " + QuakeDataSource.COLUMN_PLACE + " like '?%' ";
-			selectArgs = new String[] { infoType, query.trim() };
+			filter = QuakeDataSource.COLUMN_TYPE + " =  ? AND " + QuakeDataSource.COLUMN_PLACE + " LIKE ? ";
+			selectArgs = new String[] { infoType, "%" + query.trim() + "%" };
 		}
 		lstEarthquake = quakeDS.query(QuakeDataSource.TABLE_NAME, filter, selectArgs, QuakeDataSource.COLUMN_INT_SEQ);
 		if (lstEarthquake == null) {
@@ -356,10 +354,15 @@ public class EarthquakeFragment extends RoboListFragment implements
 	
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		
+
 		if (Strings.isNullOrEmpty(newText)) {
+			if (this.isLoadingData) {
+				Log.i(TAG, "onQueryTextChange - isLoadingData = " + isLoadingData + ", skip query.");
+				return false;
+			}
+
 			// show all result in database
-			searchPlace(newText);
+			filterPlace(newText);
 			Log.i(TAG, "onQueryTextChange called - newText = " + newText);
 		}
 		return false;
@@ -368,8 +371,9 @@ public class EarthquakeFragment extends RoboListFragment implements
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		// search database
-		searchPlace(query);
+		filterPlace(query);
 		Log.i(TAG, "onQueryTextSubmit called - query = " + query);
 		return false;
 	}
+
 }

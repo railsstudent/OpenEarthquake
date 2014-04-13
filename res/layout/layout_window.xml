@@ -15,12 +15,14 @@
             android:layout_height="wrap_content"
             android:text="@string/place"
             android:layout_marginRight="8dp"
+            android:color="@color/blackColor"
             android:textSize="14sp" />
         
         <TextView
             android:id="@+id/tvWinPlace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:color="@color/blackColor"
             android:textSize="14sp" />
 
     </TableRow>
@@ -36,12 +38,14 @@
             android:layout_height="wrap_content"
             android:text="@string/coordinate"
             android:layout_marginRight="8dp"
+            android:color="@color/grayColor"
             android:textSize="12sp" />
         
         <TextView
             android:id="@+id/tvWinCoordinate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:color="@color/grayColor"
             android:textSize="12sp" />
     </TableRow>
     
@@ -56,12 +60,14 @@
             android:layout_height="wrap_content"
             android:text="@string/magnitude"
             android:layout_marginRight="8dp"
+            android:color="@color/grayColor"
             android:textSize="12sp" />
         
         <TextView
             android:id="@+id/tvWinMagnitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:color="@color/grayColor"
             android:textSize="12sp" />
 
     </TableRow>
@@ -77,12 +83,14 @@
             android:layout_height="wrap_content"
             android:text="@string/depth"
             android:layout_marginRight="8dp"
+            android:color="@color/grayColor"
             android:textSize="12sp" />
         
         <TextView
             android:id="@+id/tvWinDepth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:color="@color/grayColor"
             android:textSize="12sp" />
 
     </TableRow>
@@ -98,11 +106,13 @@
             android:layout_height="wrap_content"
             android:text="@string/time"
             android:layout_marginRight="8dp"
+            android:color="@color/grayColor"
             android:textSize="12sp" />
         <TextView
             android:id="@+id/tvWinTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:color="@color/grayColor"
             android:textSize="12sp" />
 
     </TableRow>

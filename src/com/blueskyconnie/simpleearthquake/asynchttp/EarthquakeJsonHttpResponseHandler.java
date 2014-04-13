@@ -1,8 +1,5 @@
 package com.blueskyconnie.simpleearthquake.asynchttp;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +22,8 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 	private QuakeDataSource quakeDS;
 	
 	public interface HttpResponseCallback {
-		void successCallback(List<EarthquakeInfo> newResults);
+//		void successCallback(List<EarthquakeInfo> newResults);
+		void successCallback();
 		void failedCallback();
 	}
 	
@@ -53,7 +51,7 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 		super.onSuccess(response);
 		
 		try {
-			ArrayList<EarthquakeInfo> lst = new ArrayList<EarthquakeInfo>();
+		//	ArrayList<EarthquakeInfo> lst = new ArrayList<EarthquakeInfo>();
 			
 			// clear database
 			boolean isDeleted = quakeDS.delete(QuakeDataSource.TABLE_NAME, "TYPE = ? ", new String[] { infoType });
@@ -105,13 +103,13 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 								.internalSequence(internalSeq);
 						EarthquakeInfo info = builder.create();
 						quakeDS.insert(QuakeDataSource.TABLE_NAME, info);
-						lst.add(info);
+	//					lst.add(info);
 						internalSeq++;
 					}
 				}
 			}
 			if (callback != null) {
-				callback.successCallback(lst);
+				callback.successCallback();
 			}
 			Log.i(TAG, "onSuccess ends.");
 		} catch (JSONException e) {

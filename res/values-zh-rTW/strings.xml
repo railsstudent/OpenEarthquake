@@ -29,8 +29,7 @@
     <string name="contentImageLogo">開機畫面圖像</string>
     <string name="shareSubject">分享我的程式</string>
     <string name="shareText">我想與你分享這個程式，請瀏覽 %s.</string>
-    <string name="usgs_website">http://earthquake.usgs.gov/</string>
     <string name="action_mainActProvider">操作</string>
-    <string name="play_store_uri">market://details?id=%s</string>
     <string name="title_single_earthquake">顯示地震地圖</string>
+    <string name="filterPlaceHint">篩選地方</string>
 </resources>
