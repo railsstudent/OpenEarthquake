@@ -75,6 +75,9 @@ public class EarthquakeFragment extends RoboListFragment implements
 	@InjectResource(R.string.strTotalFormatter)
 	private String strTotalFormatter;
 
+	@InjectResource(R.string.filterPlaceHint)
+	private String queryHint;
+	
 	private int totalRecords;
 
 	private EarthquakeJsonHttpResponseHandler handler;
@@ -291,6 +294,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 		mSearchView.setOnQueryTextListener(this);
 		mSearchView.setIconifiedByDefault(false);
 		mSearchView.setSubmitButtonEnabled(true);
+		mSearchView.setQueryHint(queryHint);
 	}
 
 	@Override
