@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.blueskyconnie.simpleearthquake.Constants;
 import com.blueskyconnie.simpleearthquake.R;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 
@@ -64,6 +65,7 @@ public class EarthquakeListAdapter extends BaseAdapter {
 			holder.tvMagnitude = (TextView) convertView.findViewById(R.id.tvMagnitude);
 			holder.tvPlace = (TextView) convertView.findViewById(R.id.tvPlace);
 			holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
+			holder.tvDepth = (TextView) convertView.findViewById(R.id.tvDepth);
 			convertView.setTag(holder);
 		} else {
 			holder = (EarthquakeHolder) convertView.getTag();
@@ -71,9 +73,13 @@ public class EarthquakeListAdapter extends BaseAdapter {
 		Object objRowData = getItem(position);
 		if (objRowData != null) {
 			EarthquakeInfo objEarthquake = (EarthquakeInfo) objRowData;
-			holder.tvMagnitude.setText("" + objEarthquake.getMagnitude());
+			holder.tvMagnitude.setText(Constants.df.format(objEarthquake.getMagnitude()));
 			holder.tvPlace.setText(objEarthquake.getPlace());
 			holder.tvTime.setText(objEarthquake.getLocalTime());
+			String adapterDepth = context.getString(R.string.adapterDepth);
+			adapterDepth = String.format(adapterDepth, Constants.df.format(objEarthquake.getDepth()), 
+					context.getString(R.string.kilometer));
+			holder.tvDepth.setText(adapterDepth);
 		}
 		return convertView;
 	}
@@ -111,6 +117,7 @@ public class EarthquakeListAdapter extends BaseAdapter {
 		TextView tvMagnitude;
 		TextView tvPlace;
 		TextView tvTime;
+		TextView tvDepth;
 	}
 	
 	public interface LoadDataCallback {

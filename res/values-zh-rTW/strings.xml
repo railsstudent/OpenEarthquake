@@ -32,4 +32,6 @@
     <string name="action_mainActProvider">操作</string>
     <string name="title_single_earthquake">顯示地震地圖</string>
     <string name="filterPlaceHint">篩選地方</string>
+    <string name="adapterDepth">深度：  %1$s%2$s</string>
+    
 </resources>

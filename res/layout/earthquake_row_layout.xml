@@ -6,28 +6,38 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/ll_horiz"
+        android:id="@+id/tbl_firstrow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="4dp" >
 
-        <TextView
-            android:id="@+id/lblMagnitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/magnitude"
-            android:textColor="@color/blackColor"
-            android:textSize="14sp" />
+       <TextView
+           android:id="@+id/lblMagnitude"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/magnitude"
+           android:textColor="@color/blackColor"
+           android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/tvMagnitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/redColor"
-            android:layout_marginLeft="4dp"
-            android:textSize="24sp" />
+       <TextView
+           android:id="@+id/tvMagnitude"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/redColor"
+           android:layout_marginLeft="8dp"
+           android:textSize="24sp" />
+       
+       <TextView
+        android:id="@+id/tvDepth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/adapterDepth"
+        android:textColor="@color/grayColor"
+        android:layout_marginLeft="24dp"
+        android:textSize="14sp" />
+       
     </LinearLayout>
 
     <TextView

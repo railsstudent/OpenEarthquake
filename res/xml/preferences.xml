@@ -10,6 +10,13 @@
                 android:entries="@array/magnitude_entries"
                 android:defaultValue="all"
                 android:entryValues="@array/magnitude_values" />
+       	 <ListPreference
+                android:key="pref_key_depth"
+                android:title="@string/pref_depth_title"
+                android:summary="@string/pref_depth_summary_title"
+                android:entries="@array/depth_entries"
+                android:defaultValue="all"
+                android:entryValues="@array/depth_values" />
     </PreferenceCategory>
 
 </PreferenceScreen>

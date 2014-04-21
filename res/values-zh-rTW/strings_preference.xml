@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_earthquake_title">地震</string>
+    <string name="pref_earthquake_title">地震過濾數值</string>
     <string name="pref_magnitude_title">震級</string>
     <string name="pref_magnitude_summary_title">顯示這個震級或以上的地震</string>
     <string name="title_settings">設定</string>
+    
+    <string name="pref_depth_title">深度</string>
+    <string name="pref_depth_summary_title">顯示這個深度以內的地震</string>
+ 
+    <string-array name="depth_entries">
+        <item>All</item>
+        <item>&lt;=5千米</item>
+        <item>&lt;=10千米</item>
+        <item>&lt;=25千米</item>
+        <item>&lt;=50千米</item>
+        <item>&lt;=100千米</item>
+        <item>&lt;=250千米</item>
+        <item>&lt;=500千米</item>
+    </string-array>
+    
 </resources>

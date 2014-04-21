@@ -3,30 +3,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-	<LinearLayout
-        android:id="@+id/ll_horiz"
+
+    <LinearLayout
+        android:id="@+id/tbl_firstrow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="4dp" >
 
-        <TextView
-            android:id="@+id/lblMagnitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/magnitude"
-            android:textColor="@color/blackColor"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/lblMagnitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/magnitude"
+                android:textColor="@color/blackColor"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvMagnitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/redColor"
-            android:layout_marginLeft="4dp"
-            android:textSize="28sp" />
+            <TextView
+                android:id="@+id/tvMagnitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/redColor"
+                android:layout_marginLeft="8dp"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/tvDepth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/depth"
+                android:textColor="@color/grayColor"
+                android:layout_marginLeft="24dp"
+                android:textSize="20sp" />
     </LinearLayout>
 
     <TextView
@@ -48,5 +57,5 @@
         android:layout_marginTop="4dp"
         android:textColor="@color/blackColor"
         android:textSize="20sp" />
-    
+
 </LinearLayout>

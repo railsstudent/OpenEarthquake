@@ -242,7 +242,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 	@Override
 	public void successCallback() {
 		
-		filterPlace(mSearchView.getQuery().toString());
+		filterData(mSearchView.getQuery().toString());
 		finishLoading();
 		isDataLoaded = true;
 		isLoadingData = false;
@@ -354,7 +354,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 		}
 	}
 
-	private void filterPlace(String query) {
+	private void filterData(String query) {
 		String filter = "";
 		String[] selectArgs = null;
 		List<EarthquakeInfo> lstEarthquake = null;
@@ -369,12 +369,23 @@ public class EarthquakeFragment extends RoboListFragment implements
 		}
 		
 		if (mPref != null) {
-			String strPrefMagValue = mPref.getString("pref_key_magnitude", "all");
+			String strPrefMagValue = mPref.getString(Constants.PREF_KEY_MAGNITUDE, "all");
 			if (!strPrefMagValue.equals("all")) {
 				try {
 					 filter = filter + " AND " + QuakeDataSource.COLUMN_MAGNITUDE + " >= ? ";
 					 lstSelectArgs.add(strPrefMagValue);
 					 Log.i(TAG, "prefMagValue = " + strPrefMagValue);
+				} catch (NumberFormatException ex) {
+					Log.i(TAG, ex.getMessage());
+				}
+			}
+			
+			String strPrefDepthValue = mPref.getString(Constants.PREF_KEY_DEPTH, "all");
+			if (!strPrefDepthValue.equals("all")) {
+				try {
+					 filter = filter + " AND " + QuakeDataSource.COLUMN_DEPTH + " <= ? ";
+					 lstSelectArgs.add(strPrefDepthValue);
+					 Log.i(TAG, "prefDepthValue = " + strPrefDepthValue);
 				} catch (NumberFormatException ex) {
 					Log.i(TAG, ex.getMessage());
 				}
@@ -403,7 +414,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 			}
 
 			// show all result in database
-			filterPlace(newText);
+			filterData(newText);
 			Log.i(TAG, "onQueryTextChange called - newText = " + newText);
 		}
 		return false;
@@ -412,7 +423,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		// search database
-		filterPlace(query);
+		filterData(query);
 		Log.i(TAG, "onQueryTextSubmit called - query = " + query);
 		return false;
 	}

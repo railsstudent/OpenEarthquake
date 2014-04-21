@@ -36,6 +36,6 @@
     <string name="title_single_earthquake">Show Earthquake Map</string>
     <string name="filterPlaceHint">Filter by Place</string>
     <string name="strLoading">Loading image</string>
-    <string name="action_settings">Settings</string>
-
+	<string name="adapterDepth">Depth : %1$s%2$s</string>
+        
 </resources>
