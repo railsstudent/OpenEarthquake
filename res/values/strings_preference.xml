@@ -22,7 +22,7 @@
     </string-array>
     
     <string name="pref_depth_title">Depth</string>
-    <string name="pref_depth_summary_title">Display earthquakes less than the default depth</string>
+    <string name="pref_depth_summary_title">Display earthquakes no more than this depth</string>
     <string-array name="depth_entries">
         <item>All</item>
         <item>&lt;=5km</item>
