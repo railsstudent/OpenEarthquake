@@ -1,6 +1,5 @@
 package com.blueskyconnie.simpleearthquake;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import roboguice.fragment.RoboListFragment;
