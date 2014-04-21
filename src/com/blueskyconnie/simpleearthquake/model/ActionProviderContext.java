@@ -1,6 +1,6 @@
 package com.blueskyconnie.simpleearthquake.model;
 
-public class ActionProviderContext {
+public final class ActionProviderContext {
 	
 	private String didUFeelItUrl;
 	private String summaryUrl;

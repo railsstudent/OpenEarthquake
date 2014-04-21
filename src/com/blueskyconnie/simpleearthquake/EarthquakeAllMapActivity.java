@@ -6,8 +6,10 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,8 +43,6 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 	private SupportMapFragment fragEarthquake;
 	private GoogleMap map;
 
-	// private String restUrl;
-//	private ClusterManager<EarthquakeClusterItem> mClusterManager;  
 	private ClusterManager<EarthquakeInfo> mClusterManager;  
 	private EarthquakeInfo clickedClusterItem;
 	
@@ -58,28 +58,29 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 	private QuakeSQLiteOpenHelper dbHelper;
 	private QuakeDataSource quakeDS;
 	private String infoType;
+	private String searchPlace;
+	private SharedPreferences mPref;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.activity_earthquake_all_map);
 		
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		mPref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (savedInstanceState == null) {
 			fragEarthquake = (SupportMapFragment) getSupportFragmentManager()
 								.findFragmentById(R.id.fragEarthquakeAll);
 			if (fragEarthquake != null) {
 				Intent intent = getIntent();
 				if (intent != null) {
-					// restUrl = intent.getStringExtra(Constants.EARTHQUAKE_REST_URL);
 					setTitle(intent.getStringExtra(Constants.EARTHQUAKE_TITLE));
-					//fragEarthquake.getView().setVisibility(View.INVISIBLE);
 					Log.i(TAG, "Load all earthquakes information to show in google map.");
 					//UsgsEarthquakeClient.get(restUrl, null, new EarthquakeJsonHttpResponseHandler(this, this, "DAILY"));
 
 					dbHelper = new QuakeSQLiteOpenHelper(this);
 					quakeDS = new QuakeDataSource(dbHelper.getReadableDatabase());
 					infoType = getIntent().getStringExtra(Constants.EARTHQUAKE_TYPE);
+					searchPlace = getIntent().getStringExtra(Constants.SEARCH_PLACE);
 					
 					List<EarthquakeInfo> earthquakeList = quakeDS.query(QuakeDataSource.TABLE_NAME, "TYPE = ? ", 
 							new String[] { infoType }, QuakeDataSource.COLUMN_INT_SEQ);

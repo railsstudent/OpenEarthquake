@@ -32,8 +32,10 @@ import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHa
 import com.blueskyconnie.simpleearthquake.asynchttp.UsgsEarthquakeClient;
 import com.blueskyconnie.simpleearthquake.db.QuakeDataSource;
 import com.blueskyconnie.simpleearthquake.db.QuakeSQLiteOpenHelper;
+import com.blueskyconnie.simpleearthquake.helper.SearchDataHelper;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo.INFO_TYPE;
+import com.blueskyconnie.simpleearthquake.model.SearchCriteria;
 import com.google.common.base.Strings;
 
 public class EarthquakeFragment extends RoboListFragment implements
@@ -91,6 +93,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 	private QuakeDataSource quakeDS;
 	
 	private SharedPreferences mPref;
+	private SearchDataHelper searchHelper;
 
 	/**
 	 * Returns a new instance of this fragment for the given section number.
@@ -124,6 +127,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 		quakeDS = new QuakeDataSource(dbHelper.getWritableDatabase());
 		handler = new EarthquakeJsonHttpResponseHandler(this.getActivity(),
 				this, infoType, quakeDS);
+		searchHelper = new SearchDataHelper(quakeDS);
 	}
 
 	@Override
@@ -320,15 +324,20 @@ public class EarthquakeFragment extends RoboListFragment implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.action_map:
-			Intent mapIntent = new Intent(getActivity(),
-					EarthquakeAllMapActivity.class);
-			// mapIntent.putExtra(Constants.EARTHQUAKE_REST_URL, restfulUrl);
-			mapIntent
-					.putExtra(Constants.EARTHQUAKE_TITLE, title_earthquake_map);
-			mapIntent.putExtra(Constants.EARTHQUAKE_TYPE, infoType);
-			startActivity(mapIntent);
-			return true;
+			case R.id.action_map:
+				Intent mapIntent = new Intent(getActivity(),
+						EarthquakeAllMapActivity.class);
+				mapIntent
+						.putExtra(Constants.EARTHQUAKE_TITLE, title_earthquake_map);
+				mapIntent.putExtra(Constants.EARTHQUAKE_TYPE, infoType);
+				if (mSearchView != null && mSearchView.getQuery() != null) {
+					Log.i(TAG, "mSearchView.getQuery = " + mSearchView.getQuery().toString());
+					mapIntent.putExtra(Constants.SEARCH_PLACE, mSearchView.getQuery().toString());
+				} else {
+					mapIntent.putExtra(Constants.SEARCH_PLACE, "");
+				}
+				startActivity(mapIntent);
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -355,50 +364,22 @@ public class EarthquakeFragment extends RoboListFragment implements
 	}
 
 	private void filterData(String query) {
-		String filter = "";
-		String[] selectArgs = null;
 		List<EarthquakeInfo> lstEarthquake = null;
-		List<String> lstSelectArgs = new ArrayList<String>();
-		
-		lstSelectArgs.add(infoType);
-		if (Strings.isNullOrEmpty(query)) {
-			filter = QuakeDataSource.COLUMN_TYPE + " =  ? ";
-		} else {
-			filter = QuakeDataSource.COLUMN_TYPE + " =  ? AND " + QuakeDataSource.COLUMN_PLACE + " LIKE ? ";
-			lstSelectArgs.add("%" + query.trim() + "%");
-		}
+		String strPrefMagValue = "all";
+		String strPrefDepthValue = "all";
 		
 		if (mPref != null) {
-			String strPrefMagValue = mPref.getString(Constants.PREF_KEY_MAGNITUDE, "all");
-			if (!strPrefMagValue.equals("all")) {
-				try {
-					 filter = filter + " AND " + QuakeDataSource.COLUMN_MAGNITUDE + " >= ? ";
-					 lstSelectArgs.add(strPrefMagValue);
-					 Log.i(TAG, "prefMagValue = " + strPrefMagValue);
-				} catch (NumberFormatException ex) {
-					Log.i(TAG, ex.getMessage());
-				}
-			}
-			
-			String strPrefDepthValue = mPref.getString(Constants.PREF_KEY_DEPTH, "all");
-			if (!strPrefDepthValue.equals("all")) {
-				try {
-					 filter = filter + " AND " + QuakeDataSource.COLUMN_DEPTH + " <= ? ";
-					 lstSelectArgs.add(strPrefDepthValue);
-					 Log.i(TAG, "prefDepthValue = " + strPrefDepthValue);
-				} catch (NumberFormatException ex) {
-					Log.i(TAG, ex.getMessage());
-				}
-			}
+			strPrefMagValue = mPref.getString(Constants.PREF_KEY_MAGNITUDE, "all");
+			strPrefDepthValue = mPref.getString(Constants.PREF_KEY_DEPTH, "all");
 		}
 		
-		Log.i(TAG, String.format("filter critiera = %s", filter));
-		selectArgs = new String[lstSelectArgs.size()];
-		lstSelectArgs.toArray(selectArgs);
-		lstEarthquake = quakeDS.query(QuakeDataSource.TABLE_NAME, filter, selectArgs, QuakeDataSource.COLUMN_INT_SEQ);
-		if (lstEarthquake == null) {
-			lstEarthquake = new ArrayList<EarthquakeInfo>();
-		}
+		SearchCriteria criteria = new SearchCriteria();
+		criteria.setInfoType(infoType);
+		criteria.setPlace(query);
+		criteria.setStrPrefDepthValue(strPrefDepthValue);
+		criteria.setStrPrefMagValue(strPrefMagValue);
+		lstEarthquake = searchHelper.search(criteria);
+		
 		earthquakeAdapter.addEarthquake(lstEarthquake);
 		totalRecords = lstEarthquake.size();
 		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
