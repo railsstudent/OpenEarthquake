@@ -2,7 +2,6 @@ package com.blueskyconnie.simpleearthquake;
 
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
 
-import roboguice.activity.RoboFragmentActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
