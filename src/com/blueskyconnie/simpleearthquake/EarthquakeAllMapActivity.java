@@ -83,6 +83,9 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 					
 					List<EarthquakeInfo> earthquakeList = quakeDS.query(QuakeDataSource.TABLE_NAME, "TYPE = ? ", 
 							new String[] { infoType }, QuakeDataSource.COLUMN_INT_SEQ);
+					
+					
+					
 					Log.i(TAG, "Number of earthquake data retrieved: " + earthquakeList.size());
 					
 					// make clusters
@@ -93,7 +96,6 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 						if (map != null) {
 							map.clear();
 							map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-//							mClusterManager = new ClusterManager<EarthquakeClusterItem>(this, map);
 							mClusterManager = new ClusterManager<EarthquakeInfo>(this, map);
 							map.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 							mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new EarthquakeInfoWindowAdapter());
@@ -108,14 +110,6 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 									return false;
 								}
 							});
-
-//							mClusterManager.setOnClusterItemClickListener(new OnClusterItemClickListener<EarthquakeClusterItem>() {
-//								@Override
-//								public boolean onClusterItemClick(EarthquakeClusterItem item) {
-//									clickedClusterItem = item;
-//									return false;
-//								}
-//							});
 							convertToClusterItems(earthquakeList);	
 						}
 					} else {
@@ -153,46 +147,9 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 		 return super.onOptionsItemSelected(item);
 	}
 
-//	@Override
-//	public void successCallback(List<EarthquakeInfo> newResults) {
-//		if (newResults != null) {
-//			List<EarthquakeClusterItem> earthquakeList = new ArrayList<EarthquakeClusterItem>();
-//			for (EarthquakeInfo info : newResults) {
-//				EarthquakeClusterItem.Builder builder = new EarthquakeClusterItem.Builder();
-//				builder.place(info.getPlace())
-//					.lat(info.getLatitude())
-//					.lng(info.getLongtitude())
-//					.magnitude(info.getMagnitude())
-//					.depth(info.getDepth())
-////					.dmin(info.getDmin())
-//					.url(Strings.nullToEmpty(info.getUrl()).trim() + Strings.nullToEmpty(summaryTag).trim())
-////					.magnitudeType(info.getMagnitudeType())
-//					.earthquakeTime(info.getLocalTime());
-//				earthquakeList.add(builder.create());	
-//			}
-//			mClusterManager.addItems(earthquakeList);
-//			if (earthquakeList != null && earthquakeList.size() > 0) {	
-//				map.moveCamera(CameraUpdateFactory.newLatLng(earthquakeList.get(0).getPosition()));
-////				map.animateCamera(CameraUpdateFactory.zoomTo(8));
-//				map.animateCamera(CameraUpdateFactory.zoomTo(2));
-//			}		
-//		}
-//		finishedLoading();
-//	}
-	
 	private void convertToClusterItems (List<EarthquakeInfo> newResults) {
 		if (newResults != null) {
-//			List<EarthquakeClusterItem> earthquakeList = new ArrayList<EarthquakeClusterItem>();
 			for (EarthquakeInfo info : newResults) {
-//				EarthquakeClusterItem.Builder builder = new EarthquakeClusterItem.Builder();
-//				builder.place(info.getPlace())
-//					.lat(info.getLatitude())
-//					.lng(info.getLongtitude())
-//					.magnitude(info.getMagnitude())
-//					.depth(info.getDepth())
-//					.url(Strings.nullToEmpty(info.getUrl()).trim() + Strings.nullToEmpty(summaryTag).trim())
-//					.earthquakeTime(info.getLocalTime());
-//				earthquakeList.add(builder.create());	
 				info.setSummaryTag(summaryTag);
 			}
 			mClusterManager.addItems(newResults);
@@ -264,7 +221,6 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 					tvWinMagnitude.setText(String.valueOf(clickedClusterItem.getMagnitude()));
 				}
 				if (tvWinTime != null) { 
-//					tvWinTime.setText(clickedClusterItem.getEarthquakeTime());
 					tvWinTime.setText(clickedClusterItem.getLocalTime());
 
 				}
