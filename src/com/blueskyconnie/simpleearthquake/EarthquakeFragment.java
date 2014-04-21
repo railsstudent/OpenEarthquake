@@ -8,7 +8,9 @@ import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
@@ -34,7 +36,6 @@ import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo.INFO_TYPE;
 import com.google.common.base.Strings;
 
-//@ContentView(R.layout.fragment_main)
 public class EarthquakeFragment extends RoboListFragment implements
 		HttpResponseCallback, LoadDataCallback,
 		SwipeRefreshLayout.OnRefreshListener, 
@@ -88,6 +89,8 @@ public class EarthquakeFragment extends RoboListFragment implements
 	
 	private QuakeSQLiteOpenHelper dbHelper;
 	private QuakeDataSource quakeDS;
+	
+	private SharedPreferences mPref;
 
 	/**
 	 * Returns a new instance of this fragment for the given section number.
@@ -136,6 +139,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 		earthquakeAdapter = new EarthquakeListAdapter(getActivity(),
 				R.layout.earthquake_row_layout, this);
 		setListAdapter(earthquakeAdapter);
+//		setListAdapter(new EndlessQuakeAdapter(earthquakeAdapter, quakeDS, infoType, 8));
 		// by experiment, control is injected here
 		btnLoad.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -176,6 +180,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
+		mPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		loadData();
 		Log.i(TAG, "onResume called - resfulUrl = " + restfulUrl);
 	}
@@ -185,11 +190,25 @@ public class EarthquakeFragment extends RoboListFragment implements
 			Log.i(TAG, "loadData() - isLoadingData = " + isLoadingData + ", exit early.");
 			return;
 		}
-
+		
 		boolean isRefreshing = (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing());
 		Log.i(TAG, "loadData - isRefreshing = " + isRefreshing);
-		if (!isDataLoaded || isRefreshing) {
+		
+		Activity activity = this.getActivity();
+		EarthquakeApplication application = null;
+		if (activity != null) {
+			application = (EarthquakeApplication) activity.getApplicationContext();
+		}
+		boolean isPreferenceChanged = (application != null ? application.isPreferenceChanged() : false);
+		Log.i(TAG, "loadData - isPreferenceChanged = " + isPreferenceChanged);
+		
+//		if (!isDataLoaded || isRefreshing) {
+		if (!isDataLoaded || isRefreshing || isPreferenceChanged) {
 			if (this.getUserVisibleHint()) {
+				if (isPreferenceChanged) {
+					application.setPreferenceChanged(false);
+				}
+				
 				// call client to get restful data
 				if (lstView != null && btnLoad != null /*&& progressbar != null*/) {
 					tvTotal.setVisibility(View.INVISIBLE);
@@ -339,14 +358,32 @@ public class EarthquakeFragment extends RoboListFragment implements
 		String filter = "";
 		String[] selectArgs = null;
 		List<EarthquakeInfo> lstEarthquake = null;
+		List<String> lstSelectArgs = new ArrayList<String>();
 		
+		lstSelectArgs.add(infoType);
 		if (Strings.isNullOrEmpty(query)) {
 			filter = QuakeDataSource.COLUMN_TYPE + " =  ? ";
-			selectArgs = new String[] { infoType };
 		} else {
 			filter = QuakeDataSource.COLUMN_TYPE + " =  ? AND " + QuakeDataSource.COLUMN_PLACE + " LIKE ? ";
-			selectArgs = new String[] { infoType, "%" + query.trim() + "%" };
+			lstSelectArgs.add("%" + query.trim() + "%");
 		}
+		
+		if (mPref != null) {
+			String strPrefMagValue = mPref.getString("pref_key_magnitude", "all");
+			if (!strPrefMagValue.equals("all")) {
+				try {
+					 filter = filter + " AND " + QuakeDataSource.COLUMN_MAGNITUDE + " >= ? ";
+					 lstSelectArgs.add(strPrefMagValue);
+					 Log.i(TAG, "prefMagValue = " + strPrefMagValue);
+				} catch (NumberFormatException ex) {
+					Log.i(TAG, ex.getMessage());
+				}
+			}
+		}
+		
+		Log.i(TAG, String.format("filter critiera = %s", filter));
+		selectArgs = new String[lstSelectArgs.size()];
+		lstSelectArgs.toArray(selectArgs);
 		lstEarthquake = quakeDS.query(QuakeDataSource.TABLE_NAME, filter, selectArgs, QuakeDataSource.COLUMN_INT_SEQ);
 		if (lstEarthquake == null) {
 			lstEarthquake = new ArrayList<EarthquakeInfo>();

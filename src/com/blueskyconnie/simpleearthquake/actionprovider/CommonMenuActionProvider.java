@@ -1,5 +1,10 @@
 package com.blueskyconnie.simpleearthquake.actionprovider;
 
+import com.blueskyconnie.simpleearthquake.AboutActivity;
+import com.blueskyconnie.simpleearthquake.R;
+import com.blueskyconnie.simpleearthquake.model.ActionProviderContext;
+import com.blueskyconnie.simpleearthquake.model.IActionProviderContext;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,35 +12,28 @@ import android.support.v4.view.ActionProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.SubMenu;
 import android.view.View;
-
-import com.blueskyconnie.simpleearthquake.AboutActivity;
-import com.blueskyconnie.simpleearthquake.R;
-import com.blueskyconnie.simpleearthquake.model.ActionProviderContext;
-import com.blueskyconnie.simpleearthquake.model.IActionProviderContext;
+import android.view.MenuItem.OnMenuItemClickListener;
 
 /**
- * Create a main menu action provider with menu items
- * @author connie
+ * 
+ * @author connieleung
  *
  */
-public class MainMenuActionProvider extends ActionProvider implements OnMenuItemClickListener
-	, IActionProviderContext {
+public  class CommonMenuActionProvider extends ActionProvider implements OnMenuItemClickListener
+	, IActionProviderContext  {
 
-	private static final String TAG = "MainMenuActionProvider";
+	private static final String TAG = "CommonMenuActionProvider";
 	protected static final int GROUP_ID = 0;
 
 	protected static final int MI_WEBSITE = Menu.FIRST; 
 	protected static final int MI_ABOUT_APP = Menu.FIRST + 10; 
 	protected static final int MI_RATE_MY_APP = Menu.FIRST + 20; 
-//	protected static final int MI_EXIT_APP = Menu.FIRST + 30;
 
 	protected static final int MI_WEBSITE_ORDER = 0; 
 	protected static final int MI_ABOUT_APP_ORDER = 10; 
 	protected static final int MI_RATE_MY_APP_ORDER = 20; 
-//	protected static final int MI_EXIT_APP_ORDER = 30;
 
 	protected Context mContext;
 	private boolean isSubMenuCreated;
@@ -43,7 +41,7 @@ public class MainMenuActionProvider extends ActionProvider implements OnMenuItem
 	private String strUsgsSite;
 	private String strPlayStore;
 	
-	public MainMenuActionProvider(Context context) {
+	public CommonMenuActionProvider(Context context) {
 		super(context);
 		mContext = context;
 		strUsgsSite = context.getString(R.string.usgs_website);
@@ -82,14 +80,13 @@ public class MainMenuActionProvider extends ActionProvider implements OnMenuItem
 			// add menu item to rate my app in google play store
 			subMenu.add(GROUP_ID, MI_ABOUT_APP, MI_ABOUT_APP_ORDER, R.string.actionProviderAboutApp)
 				.setOnMenuItemClickListener(this);
+			Log.i(TAG, "Add menu item to open about app activity.");
 			
 			// add menu item to show about SimpleQuake activity
 			subMenu.add(GROUP_ID, MI_RATE_MY_APP, MI_RATE_MY_APP_ORDER, R.string.actionProviderRateApp)
 				.setOnMenuItemClickListener(this);
+			Log.i(TAG, "Add menu item to launch google play store to rate this application.");
 			
-			// add menu item to exit this application
-//			subMenu.add(GROUP_ID, MI_EXIT_APP, MI_EXIT_APP_ORDER, R.string.actionProviderExit)
-//				.setOnMenuItemClickListener(this);
 			Log.i(TAG, "OnPrepareSubMenu ends.");
 		}
 	}
@@ -111,15 +108,12 @@ public class MainMenuActionProvider extends ActionProvider implements OnMenuItem
 				String playStoreFullUrl = String.format(strPlayStore, mContext.getPackageName());
 				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(playStoreFullUrl)));
 				return true;
-//			case MI_EXIT_APP:
-//				Log.i(TAG, "onMenuItemClick - Exit my application clicked.");
-//				((Activity) mContext).finish();
-//				return true;
 		}
 		return false;
 	}
 
 	@Override
 	public void initializeData(ActionProviderContext context) {
+		
 	}
 }

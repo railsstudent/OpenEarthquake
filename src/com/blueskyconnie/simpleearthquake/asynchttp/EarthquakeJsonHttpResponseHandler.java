@@ -51,11 +51,10 @@ public class EarthquakeJsonHttpResponseHandler extends JsonHttpResponseHandler {
 		super.onSuccess(response);
 		
 		try {
-		//	ArrayList<EarthquakeInfo> lst = new ArrayList<EarthquakeInfo>();
-			
 			// clear database
 			boolean isDeleted = quakeDS.delete(QuakeDataSource.TABLE_NAME, "TYPE = ? ", new String[] { infoType });
 			Log.i(TAG, "Is row deleted? " + isDeleted);
+			
 			if (response.has("features")) {
 				JSONArray features = response.getJSONArray("features");
 				if (features != null) {

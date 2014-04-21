@@ -8,4 +8,5 @@
     <string name="actionProviderSummary">Summary</string>
     <string name="didufeelit_tag">#dyfi_form</string>
     <string name="summary_tag">#summary</string>
+	<string name="actionProviderSettings">Settings</string>    
 </resources>

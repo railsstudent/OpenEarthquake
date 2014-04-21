@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_earthquake_title">地震</string>
+    <string name="pref_magnitude_title">震級</string>
+    <string name="pref_magnitude_summary_title">顯示這個震級或以上的地震</string>
+    <string name="title_settings">設定</string>
+</resources>

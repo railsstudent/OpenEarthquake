@@ -29,6 +29,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:name="com.blueskyconnie.simpleearthquake.EarthquakeApplication"
         android:theme="@style/Theme.Earthquake" >
         <meta-data
             android:name="com.google.android.gms.version"
@@ -43,6 +44,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -56,24 +58,32 @@
         <activity
             android:name="com.blueskyconnie.simpleearthquake.EarthquakeMapActivity"
             android:label="@string/title_single_earthquake"
-            android:screenOrientation="portrait" 
-            android:parentActivityName="com.blueskyconnie.simpleearthquake.MainActivity">
-             <meta-data android:name="android.support.PARENT_ACTIVITY"
-          			  android:value="com.blueskyconnie.simpleearthquake.MainActivity" />
+            android:parentActivityName="com.blueskyconnie.simpleearthquake.MainActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.blueskyconnie.simpleearthquake.MainActivity" />
         </activity>
         <activity
             android:name="com.blueskyconnie.simpleearthquake.EarthquakeAllMapActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName="com.blueskyconnie.simpleearthquake.MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-          			  android:value="com.blueskyconnie.simpleearthquake.MainActivity" />
+            android:parentActivityName="com.blueskyconnie.simpleearthquake.MainActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.blueskyconnie.simpleearthquake.MainActivity" />
         </activity>
         <activity
             android:name="com.blueskyconnie.simpleearthquake.AboutActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName="com.blueskyconnie.simpleearthquake.MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-          			  android:value="com.blueskyconnie.simpleearthquake.MainActivity" />
+            android:parentActivityName="com.blueskyconnie.simpleearthquake.MainActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.blueskyconnie.simpleearthquake.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.blueskyconnie.simpleearthquake.EarthquakePreferenceActivity"
+            android:label="@string/title_settings" >
         </activity>
     </application>
+
 </manifest>

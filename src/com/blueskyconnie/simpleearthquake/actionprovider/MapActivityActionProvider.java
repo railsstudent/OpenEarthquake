@@ -10,7 +10,7 @@ import android.view.SubMenu;
 import com.blueskyconnie.simpleearthquake.R;
 import com.blueskyconnie.simpleearthquake.model.ActionProviderContext;
 
-public class MapActivityActionProvider extends MainMenuActionProvider {
+public class MapActivityActionProvider extends CommonMenuActionProvider {
 
 	private static final String TAG = "MapActivityActionProvider";
 
@@ -31,7 +31,6 @@ public class MapActivityActionProvider extends MainMenuActionProvider {
 
 	@Override
 	public void initializeData(ActionProviderContext context) {
-		super.initializeData(context);
 		didUFeelItUrl = context.getDidUFeelItUrl();
 		summaryUrl = context.getSummaryUrl();
 	}

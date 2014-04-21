@@ -39,12 +39,18 @@ public class EarthquakeListAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		return lstInfo.get(position);
+		if (position < lstInfo.size()) { 
+			return lstInfo.get(position);
+		}
+		return null;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return getItem(position).hashCode();
+		if (position < lstInfo.size()) {
+			return getItem(position).hashCode();
+		}
+		return - 1;
 	}
 
 	@Override
@@ -92,6 +98,14 @@ public class EarthquakeListAdapter extends BaseAdapter {
 		count = Math.min(count, lstInfo.size());
 		this.notifyDataSetChanged();
 	}
+	
+	public void addEarthquake(EarthquakeInfo newEarthquake) {
+		this.lstInfo.add(newEarthquake);
+		count = count + 1;
+		count = Math.min(count, lstInfo.size());
+		this.notifyDataSetChanged();
+	}
+	
 	
 	private static class EarthquakeHolder {
 		TextView tvMagnitude;

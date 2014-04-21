@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_earthquake_title">Earthquake</string>
+    <string name="pref_magnitude_title">Magnitude</string>
+    <string name="pref_magnitude_summary_title">Display earthquakes at least this magnitude</string>
+    <string name="title_settings">Settings</string>
+    
+    
+    <string-array name="magnitude_entries">
+    	<item>All</item>
+    	<item>M 2.5+</item>    
+    	<item>M 3.5+</item>
+    </string-array>
+
+    <string-array name="magnitude_values">
+        <item>all</item>
+        <item>2.5</item>
+        <item>3.5</item>
+    </string-array>
+    
+</resources>

@@ -14,7 +14,7 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 
 	 private static final String TAG = "QuakeDataSource";
 	 
-	 public static final int DATABASE_VERSION = 1;
+	 public static final int DATABASE_VERSION = 2;
 	 public static final String DATABASE_NAME = "Quake.db";
 	 
 	 public static final String TABLE_NAME = "Tbl_Quakes";
@@ -44,8 +44,9 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 	 
 	 // Database creation sql statement
 	 public static final String SQL_CREATE_TABLE = "create table " + TABLE_NAME
-	             + "(" + COLUMN_ID + " VARCHAR(30) primary key not null "
-	             + "," + COLUMN_INT_SEQ + " INTEGER NOT NULL DEFAULT 1"
+//	             + "(" + COLUMN_ID + " VARCHAR(30) primary key not null "
+				 + "(" + COLUMN_ID + " VARCHAR(30) not null "	
+				 + "," + COLUMN_INT_SEQ + " INTEGER NOT NULL DEFAULT 1"
 	             + "," + COLUMN_LAT + " DECIMAL(10, 5) NOT NULL DEFAULT 0"
 	             + "," + COLUMN_LNG + " DECIMAL(10, 5) NOT NULL DEFAULT 0"
 	             + "," + COLUMN_DEPTH + " DECIMAL(10, 5) NOT NULL DEFAULT 0"
@@ -53,16 +54,19 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 	             + "," + COLUMN_MAGNITUDE + " DECIMAL(10, 5)"
 	             + "," + COLUMN_PLACE + " VARCHAR(250) NOT NULL DEFAULT ''"
 	             + "," + COLUMN_TIME + " INTEGER NOT NULL DEFAULT 0"
-	             + "," + COLUMN_TYPE + " VARCHAR(20) NOT NULL DEFAULT '');";
+	             + "," + COLUMN_TYPE + " VARCHAR(20) NOT NULL DEFAULT '' " 
+	             + ", constraint pkey primary key (" 
+	             + COLUMN_ID + "," + COLUMN_TYPE + "));";
 	
 	private SQLiteDatabase database;
+	
 	public QuakeDataSource(SQLiteDatabase database) {
 		this.database = database;
 	}
-
+	
 	@Override
 	public boolean insert(String table, EarthquakeInfo entity) {
-		
+				
 		ContentValues  values = new ContentValues();
 		values.put(COLUMN_ID, entity.getId());
 		values.put(COLUMN_LAT, entity.getLatitude());
@@ -93,32 +97,36 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 				null, null, orderBy, limit);
 		List<EarthquakeInfo> list = new ArrayList<EarthquakeInfo>();
 		
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			EarthquakeInfo.Builder builder = new EarthquakeInfo.Builder();
-			String place = CursorUtils.getString(COLUMN_PLACE, cursor);
-			String url = CursorUtils.getString(COLUMN_URL, cursor);
-			double depth = CursorUtils.getDouble(COLUMN_DEPTH, cursor);
-			double magnitude = CursorUtils.getDouble(COLUMN_MAGNITUDE, cursor);
-			double latitude = CursorUtils.getDouble(COLUMN_LAT, cursor);
-			double longtitude = CursorUtils.getDouble(COLUMN_LNG, cursor);
-			long time = CursorUtils.getLong(COLUMN_TIME, cursor);
-			String id = CursorUtils.getString(COLUMN_ID, cursor);
-			int seq = CursorUtils.getInt(COLUMN_INT_SEQ, cursor);
-			
-			EarthquakeInfo info = builder
-									.depth(depth)
-									.lat(latitude)
-									.lng(longtitude)
-									.place(place)
-									.magnitude(magnitude)
-									.url(url)
-									.time(time)
-									.id(id)
-									.internalSequence(seq)
-									.create();
-			list.add(info);
-			cursor.moveToNext();
+		try {
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				EarthquakeInfo.Builder builder = new EarthquakeInfo.Builder();
+				String place = CursorUtils.getString(COLUMN_PLACE, cursor);
+				String url = CursorUtils.getString(COLUMN_URL, cursor);
+				double depth = CursorUtils.getDouble(COLUMN_DEPTH, cursor);
+				double magnitude = CursorUtils.getDouble(COLUMN_MAGNITUDE, cursor);
+				double latitude = CursorUtils.getDouble(COLUMN_LAT, cursor);
+				double longtitude = CursorUtils.getDouble(COLUMN_LNG, cursor);
+				long time = CursorUtils.getLong(COLUMN_TIME, cursor);
+				String id = CursorUtils.getString(COLUMN_ID, cursor);
+				int seq = CursorUtils.getInt(COLUMN_INT_SEQ, cursor);
+				
+				EarthquakeInfo info = builder
+										.depth(depth)
+										.lat(latitude)
+										.lng(longtitude)
+										.place(place)
+										.magnitude(magnitude)
+										.url(url)
+										.time(time)
+										.id(id)
+										.internalSequence(seq)
+										.create();
+				list.add(info);
+				cursor.moveToNext();
+			}
+		} finally {
+			cursor.close();
 		}
 		return list;
 	}
@@ -130,32 +138,38 @@ public class QuakeDataSource implements DataSource<EarthquakeInfo> {
 				null, null, orderBy);
 		List<EarthquakeInfo> list = new ArrayList<EarthquakeInfo>();
 		
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			EarthquakeInfo.Builder builder = new EarthquakeInfo.Builder();
-			String place = CursorUtils.getString(COLUMN_PLACE, cursor);
-			String url = CursorUtils.getString(COLUMN_URL, cursor);
-			double depth = CursorUtils.getDouble(COLUMN_DEPTH, cursor);
-			double magnitude = CursorUtils.getDouble(COLUMN_MAGNITUDE, cursor);
-			double latitude = CursorUtils.getDouble(COLUMN_LAT, cursor);
-			double longtitude = CursorUtils.getDouble(COLUMN_LNG, cursor);
-			long time = CursorUtils.getLong(COLUMN_TIME, cursor);
-			String id = CursorUtils.getString(COLUMN_ID, cursor);
-			int seq = CursorUtils.getInt(COLUMN_INT_SEQ, cursor);
-
-			EarthquakeInfo info = builder
-									.depth(depth)
-									.lat(latitude)
-									.lng(longtitude)
-									.place(place)
-									.magnitude(magnitude)
-									.url(url)
-									.time(time)
-									.id(id)
-									.internalSequence(seq)
-									.create();
-			list.add(info);
-			cursor.moveToNext();
+		try {
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				EarthquakeInfo.Builder builder = new EarthquakeInfo.Builder();
+				String place = CursorUtils.getString(COLUMN_PLACE, cursor);
+				String url = CursorUtils.getString(COLUMN_URL, cursor);
+				double depth = CursorUtils.getDouble(COLUMN_DEPTH, cursor);
+				double magnitude = CursorUtils.getDouble(COLUMN_MAGNITUDE, cursor);
+				double latitude = CursorUtils.getDouble(COLUMN_LAT, cursor);
+				double longtitude = CursorUtils.getDouble(COLUMN_LNG, cursor);
+				long time = CursorUtils.getLong(COLUMN_TIME, cursor);
+				String id = CursorUtils.getString(COLUMN_ID, cursor);
+				int seq = CursorUtils.getInt(COLUMN_INT_SEQ, cursor);
+	
+				EarthquakeInfo info = builder
+										.depth(depth)
+										.lat(latitude)
+										.lng(longtitude)
+										.place(place)
+										.magnitude(magnitude)
+										.url(url)
+										.time(time)
+										.id(id)
+										.internalSequence(seq)
+										.create();
+				list.add(info);
+				cursor.moveToNext();
+			}
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
 		}
 		return list;
 	}

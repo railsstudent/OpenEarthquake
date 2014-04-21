@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory 
+        android:title="@string/pref_earthquake_title"
+        android:key="pref_key_earthquake_settings">
+       	 <ListPreference
+                android:key="pref_key_magnitude"
+                android:title="@string/pref_magnitude_title"
+                android:summary="@string/pref_magnitude_summary_title"
+                android:entries="@array/magnitude_entries"
+                android:defaultValue="all"
+                android:entryValues="@array/magnitude_values" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

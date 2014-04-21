@@ -24,7 +24,7 @@
     <string name="title_eq_past_hour">Quakes in Past Hour</string>
     <string name="show_map">Show Map</string>
     <string name="search">Search Place</string>
-     <string name="time">Time :</string>
+    <string name="time">Time :</string>
     <string name="strTotalFormatter">Total quakes: %1$d (Shown: %2$d)</string>
     <string name="action_share">Share</string>
     <string name="contentImageLogo">Application Image in Splash Screen</string>
@@ -35,4 +35,7 @@
     <string name="play_store_uri">market://details?id=%s</string>
     <string name="title_single_earthquake">Show Earthquake Map</string>
     <string name="filterPlaceHint">Filter by Place</string>
+    <string name="strLoading">Loading image</string>
+    <string name="action_settings">Settings</string>
+
 </resources>

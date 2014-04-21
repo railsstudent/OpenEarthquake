@@ -52,7 +52,7 @@ public class MainActivity extends RoboActionBarActivity implements
 	private ShareActionProvider mShareActionProvider;
 	
 	private String appUrl;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -141,4 +141,5 @@ public class MainActivity extends RoboActionBarActivity implements
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
+
 }
