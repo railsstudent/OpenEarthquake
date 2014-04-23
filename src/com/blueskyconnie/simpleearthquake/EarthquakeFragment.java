@@ -364,12 +364,12 @@ public class EarthquakeFragment extends RoboListFragment implements
 
 	private void filterData(String query) {
 		List<EarthquakeInfo> lstEarthquake = null;
-		String strPrefMagValue = "all";
-		String strPrefDepthValue = "all";
+		String strPrefMagValue = Constants.ALL;
+		String strPrefDepthValue = Constants.ALL;
 		
 		if (mPref != null) {
-			strPrefMagValue = mPref.getString(Constants.PREF_KEY_MAGNITUDE, "all");
-			strPrefDepthValue = mPref.getString(Constants.PREF_KEY_DEPTH, "all");
+			strPrefMagValue = mPref.getString(Constants.PREF_KEY_MAGNITUDE, Constants.ALL);
+			strPrefDepthValue = mPref.getString(Constants.PREF_KEY_DEPTH, Constants.ALL);
 		}
 		
 		SearchCriteria criteria = new SearchCriteria();

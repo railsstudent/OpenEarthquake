@@ -20,7 +20,9 @@ import android.widget.TextView;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
 import com.blueskyconnie.simpleearthquake.db.QuakeDataSource;
 import com.blueskyconnie.simpleearthquake.db.QuakeSQLiteOpenHelper;
+import com.blueskyconnie.simpleearthquake.helper.SearchDataHelper;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
+import com.blueskyconnie.simpleearthquake.model.SearchCriteria;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
@@ -60,6 +62,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 	private String infoType;
 	private String searchPlace;
 	private SharedPreferences mPref;
+	private SearchDataHelper searchHelper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 		
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		mPref = PreferenceManager.getDefaultSharedPreferences(this);
+		
 		if (savedInstanceState == null) {
 			fragEarthquake = (SupportMapFragment) getSupportFragmentManager()
 								.findFragmentById(R.id.fragEarthquakeAll);
@@ -75,17 +79,29 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 				if (intent != null) {
 					setTitle(intent.getStringExtra(Constants.EARTHQUAKE_TITLE));
 					Log.i(TAG, "Load all earthquakes information to show in google map.");
-					//UsgsEarthquakeClient.get(restUrl, null, new EarthquakeJsonHttpResponseHandler(this, this, "DAILY"));
 
 					dbHelper = new QuakeSQLiteOpenHelper(this);
 					quakeDS = new QuakeDataSource(dbHelper.getReadableDatabase());
+					searchHelper = new SearchDataHelper(quakeDS);
+
 					infoType = getIntent().getStringExtra(Constants.EARTHQUAKE_TYPE);
 					searchPlace = getIntent().getStringExtra(Constants.SEARCH_PLACE);
 					
-					List<EarthquakeInfo> earthquakeList = quakeDS.query(QuakeDataSource.TABLE_NAME, "TYPE = ? ", 
-							new String[] { infoType }, QuakeDataSource.COLUMN_INT_SEQ);
-					
-					
+					String strPrefDepthValue = Constants.ALL;
+					String strPrefMagValue = Constants.ALL;
+					if (mPref != null) {
+						strPrefDepthValue = mPref.getString(Constants.PREF_KEY_DEPTH, Constants.ALL);
+						strPrefMagValue = mPref.getString(Constants.PREF_KEY_MAGNITUDE, Constants.ALL);
+					}
+//					List<EarthquakeInfo> earthquakeList = quakeDS.query(QuakeDataSource.TABLE_NAME, "TYPE = ? ", 
+//							new String[] { infoType }, QuakeDataSource.COLUMN_INT_SEQ);
+
+					SearchCriteria criteria = new SearchCriteria();
+					criteria.setInfoType(infoType);
+					criteria.setPlace(searchPlace);
+					criteria.setStrPrefDepthValue(strPrefDepthValue);
+					criteria.setStrPrefMagValue(strPrefMagValue);
+					List<EarthquakeInfo> earthquakeList = searchHelper.search(criteria);
 					
 					Log.i(TAG, "Number of earthquake data retrieved: " + earthquakeList.size());
 					
