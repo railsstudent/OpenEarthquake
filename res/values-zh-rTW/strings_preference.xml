@@ -19,4 +19,14 @@
         <item>&lt;=500千米</item>
     </string-array>
     
+    <string name="pref_map_title">地圖過濾數值</string>
+    <string name="pref_maptype_title">地圖類型</string>
+    
+    <string-array name="maptype_entries">
+        <item>衛星</item>
+        <item>地勢</item>
+    </string-array>
+    
+    <string name="pref_currLocation_title">我的位置</string>
+    
 </resources>

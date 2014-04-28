@@ -16,6 +16,8 @@ public class Constants {
 	public static final String PREF_KEY_MAGNITUDE = "pref_key_magnitude";
 	public static final String PREF_KEY_DEPTH = "pref_key_depth";
 	public static final String ALL = "all";
+	public static final String PREF_KEY_MAPTYPE = "pref_key_maptype";
+	public static final Object PREF_KEY_CURRENTLOC = "pref_key_currLocation";
 
 
 }

@@ -33,6 +33,7 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 	private String doYouFeelItTag;
 	private String summaryTag;
 	private long internalSequence;
+	private double distance;
 	
 	public static class Builder {
 		
@@ -48,6 +49,7 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 		private String id;
 		private INFO_TYPE type;
 		private long internalSequence;
+		private double distance = 0;
 		
 		public Builder lat(final double lat) {
 			this.lat = lat;
@@ -109,6 +111,11 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 			return this;
 		}
 		
+		public Builder distance(final double distance) {
+			this.distance = distance;
+			return this;
+		}
+		
 		public EarthquakeInfo create() {
 			return new EarthquakeInfo(this);
 		}
@@ -128,6 +135,7 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 		this.id = builder.id;
 		this.internalSequence = builder.internalSequence;
 //		this.dmin = builder.dmin;
+		this.distance = builder.distance;
 	}
 	
 	public long getInternalSequence() {
@@ -203,12 +211,18 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 		this.summaryTag = summaryTag;
 	}
 	
+	public double getDistance() {
+		return distance;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		long temp;
 		temp = Double.doubleToLongBits(depth);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(distance);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result
 				+ ((doYouFeelItTag == null) ? 0 : doYouFeelItTag.hashCode());
@@ -241,6 +255,9 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 		EarthquakeInfo other = (EarthquakeInfo) obj;
 		if (Double.doubleToLongBits(depth) != Double
 				.doubleToLongBits(other.depth))
+			return false;
+		if (Double.doubleToLongBits(distance) != Double
+				.doubleToLongBits(other.distance))
 			return false;
 		if (doYouFeelItTag == null) {
 			if (other.doYouFeelItTag != null)

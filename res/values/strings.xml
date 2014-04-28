@@ -37,5 +37,6 @@
     <string name="filterPlaceHint">Filter by Place</string>
     <string name="strLoading">Loading image</string>
 	<string name="adapterDepth">Depth : %1$s%2$s</string>
+    <string name="no_googleplayservice_error">No Google Play Service. Close Application.</string>	
         
 </resources>

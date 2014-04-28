@@ -6,10 +6,8 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,8 +18,10 @@ import android.widget.TextView;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
 import com.blueskyconnie.simpleearthquake.db.QuakeDataSource;
 import com.blueskyconnie.simpleearthquake.db.QuakeSQLiteOpenHelper;
+import com.blueskyconnie.simpleearthquake.helper.PreferenceHelper;
 import com.blueskyconnie.simpleearthquake.helper.SearchDataHelper;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
+import com.blueskyconnie.simpleearthquake.model.PreferenceContext;
 import com.blueskyconnie.simpleearthquake.model.SearchCriteria;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -61,7 +61,6 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 	private QuakeDataSource quakeDS;
 	private String infoType;
 	private String searchPlace;
-	private SharedPreferences mPref;
 	private SearchDataHelper searchHelper;
 	
 	@Override
@@ -69,8 +68,6 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 		super.onCreate(savedInstanceState);
 		
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		mPref = PreferenceManager.getDefaultSharedPreferences(this);
-		
 		if (savedInstanceState == null) {
 			fragEarthquake = (SupportMapFragment) getSupportFragmentManager()
 								.findFragmentById(R.id.fragEarthquakeAll);
@@ -87,20 +84,15 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 					infoType = getIntent().getStringExtra(Constants.EARTHQUAKE_TYPE);
 					searchPlace = getIntent().getStringExtra(Constants.SEARCH_PLACE);
 					
-					String strPrefDepthValue = Constants.ALL;
-					String strPrefMagValue = Constants.ALL;
-					if (mPref != null) {
-						strPrefDepthValue = mPref.getString(Constants.PREF_KEY_DEPTH, Constants.ALL);
-						strPrefMagValue = mPref.getString(Constants.PREF_KEY_MAGNITUDE, Constants.ALL);
-					}
 //					List<EarthquakeInfo> earthquakeList = quakeDS.query(QuakeDataSource.TABLE_NAME, "TYPE = ? ", 
 //							new String[] { infoType }, QuakeDataSource.COLUMN_INT_SEQ);
 
+					PreferenceContext prefContext = PreferenceHelper.load(this);
 					SearchCriteria criteria = new SearchCriteria();
 					criteria.setInfoType(infoType);
 					criteria.setPlace(searchPlace);
-					criteria.setStrPrefDepthValue(strPrefDepthValue);
-					criteria.setStrPrefMagValue(strPrefMagValue);
+					criteria.setStrPrefDepthValue(prefContext.getDepthValue());
+					criteria.setStrPrefMagValue(prefContext.getMagValue());
 					List<EarthquakeInfo> earthquakeList = searchHelper.search(criteria);
 					
 					Log.i(TAG, "Number of earthquake data retrieved: " + earthquakeList.size());
@@ -112,7 +104,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 						// http://stackoverflow.com/questions/21885225/showing-custom-infowindow-for-android-maps-utility-library-for-android
 						if (map != null) {
 							map.clear();
-							map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+							map.setMapType(prefContext.getMapType());
 							mClusterManager = new ClusterManager<EarthquakeInfo>(this, map);
 							map.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 							mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new EarthquakeInfoWindowAdapter());

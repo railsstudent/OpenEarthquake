@@ -7,9 +7,7 @@ import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
@@ -31,9 +29,11 @@ import com.blueskyconnie.simpleearthquake.asynchttp.EarthquakeJsonHttpResponseHa
 import com.blueskyconnie.simpleearthquake.asynchttp.UsgsEarthquakeClient;
 import com.blueskyconnie.simpleearthquake.db.QuakeDataSource;
 import com.blueskyconnie.simpleearthquake.db.QuakeSQLiteOpenHelper;
+import com.blueskyconnie.simpleearthquake.helper.PreferenceHelper;
 import com.blueskyconnie.simpleearthquake.helper.SearchDataHelper;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo.INFO_TYPE;
+import com.blueskyconnie.simpleearthquake.model.PreferenceContext;
 import com.blueskyconnie.simpleearthquake.model.SearchCriteria;
 import com.google.common.base.Strings;
 
@@ -90,8 +90,6 @@ public class EarthquakeFragment extends RoboListFragment implements
 	
 	private QuakeSQLiteOpenHelper dbHelper;
 	private QuakeDataSource quakeDS;
-	
-	private SharedPreferences mPref;
 	private SearchDataHelper searchHelper;
 
 	/**
@@ -161,6 +159,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 
 	@Override
 	public void onPause() {
+
 		super.onPause();
 		// if (progressbar != null) {
 		// if (progressbar.isShown()) {
@@ -183,7 +182,6 @@ public class EarthquakeFragment extends RoboListFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		mPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		loadData();
 		Log.i(TAG, "onResume called - resfulUrl = " + restfulUrl);
 	}
@@ -364,24 +362,19 @@ public class EarthquakeFragment extends RoboListFragment implements
 
 	private void filterData(String query) {
 		List<EarthquakeInfo> lstEarthquake = null;
-		String strPrefMagValue = Constants.ALL;
-		String strPrefDepthValue = Constants.ALL;
-		
-		if (mPref != null) {
-			strPrefMagValue = mPref.getString(Constants.PREF_KEY_MAGNITUDE, Constants.ALL);
-			strPrefDepthValue = mPref.getString(Constants.PREF_KEY_DEPTH, Constants.ALL);
-		}
+		PreferenceContext prefContext = PreferenceHelper.load(getActivity());
 		
 		SearchCriteria criteria = new SearchCriteria();
 		criteria.setInfoType(infoType);
 		criteria.setPlace(query);
-		criteria.setStrPrefDepthValue(strPrefDepthValue);
-		criteria.setStrPrefMagValue(strPrefMagValue);
+		criteria.setStrPrefDepthValue(prefContext.getDepthValue());
+		criteria.setStrPrefMagValue(prefContext.getMagValue());
 		lstEarthquake = searchHelper.search(criteria);
-		
 		earthquakeAdapter.addEarthquake(lstEarthquake);
 		totalRecords = lstEarthquake.size();
 		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
+
+		prefContext = null;
 	}
 	
 	@Override
@@ -407,5 +400,6 @@ public class EarthquakeFragment extends RoboListFragment implements
 		Log.i(TAG, "onQueryTextSubmit called - query = " + query);
 		return false;
 	}
+
 
 }

@@ -45,4 +45,19 @@
         <item>500</item>
     </string-array>
     
+    <string name="pref_map_title">Map Default Values</string>
+    <string name="pref_maptype_title">Map Type</string>
+    
+    <string-array name="maptype_entries">
+        <item>Satellite</item>
+        <item>Terrain</item>
+    </string-array>
+    
+    <string-array name="maptype_values">
+        <item>MAP_TYPE_SATELLITE</item>
+        <item>MAP_TYPE_TERRAIN</item>
+    </string-array>
+    
+    <string name="pref_currLocation_title">Current Location</string>
+    
 </resources>

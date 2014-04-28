@@ -18,5 +18,21 @@
                 android:defaultValue="all"
                 android:entryValues="@array/depth_values" />
     </PreferenceCategory>
+    
+    <PreferenceCategory 
+        android:title="@string/pref_map_title"
+        android:key="pref_key_map_settings">
+       	 <Preference
+       	   android:key="pref_key_currLocation"
+       	   android:title="@string/pref_currLocation_title"  
+       	   android:summary=""
+       	 />
+       	 <ListPreference
+                android:key="pref_key_maptype"
+                android:title="@string/pref_maptype_title"
+                android:entries="@array/maptype_entries"
+                android:defaultValue="MAP_TYPE_SATELLITE"
+                android:entryValues="@array/maptype_values" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

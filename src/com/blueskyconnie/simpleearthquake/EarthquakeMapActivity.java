@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.blueskyconnie.simpleearthquake.actionprovider.MapActivityActionProvider;
 import com.blueskyconnie.simpleearthquake.base.RoboActionBarActivity;
+import com.blueskyconnie.simpleearthquake.helper.PreferenceHelper;
 import com.blueskyconnie.simpleearthquake.model.ActionProviderContext;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
+import com.blueskyconnie.simpleearthquake.model.PreferenceContext;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
@@ -89,7 +91,8 @@ public class EarthquakeMapActivity extends RoboActionBarActivity {
 					GoogleMap map = fragEarthquake.getMap();
 					if (map != null) {
 						LatLng latLng = new LatLng(earthquakeInfo.getLatitude(), earthquakeInfo.getLongtitude());
-						map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+						PreferenceContext prefContext = PreferenceHelper.load(this);
+						map.setMapType(prefContext.getMapType());
 						map.addMarker(new MarkerOptions()
 										.position(latLng)
 										.title(lblMagnitude + " " + earthquakeInfo.getMagnitude())
