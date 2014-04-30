@@ -32,7 +32,9 @@
     <string name="action_mainActProvider">操作</string>
     <string name="title_single_earthquake">顯示地震地圖</string>
     <string name="filterPlaceHint">篩選地方</string>
-    <string name="adapterDepth">深度：  %1$s%2$s</string>
+    <string name="adapterDepth">深度：  %1$s %2$s</string>
     <string name="no_googleplayservice_error">沒有Google Play Service。關閉應用程式。</string>	
+    <string name="adapterDist">距離：  %1$s %2$s</string>
+    <string name="access_mylocation_error">我的位置是關閉的，關閉應用程式。</string>
     
 </resources>

@@ -51,7 +51,6 @@ public class EarthquakePreferenceFragment extends PreferenceFragment implements 
 
 	}
 	
-
 	@Override
 	public void onPause() {
 		if (mPref != null) {
@@ -60,7 +59,6 @@ public class EarthquakePreferenceFragment extends PreferenceFragment implements 
 		}
 		super.onPause();
 	}
-
 
 	@Override
 	public void onResume() {

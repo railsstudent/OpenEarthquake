@@ -66,6 +66,7 @@ public class EarthquakeListAdapter extends BaseAdapter {
 			holder.tvPlace = (TextView) convertView.findViewById(R.id.tvPlace);
 			holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
 			holder.tvDepth = (TextView) convertView.findViewById(R.id.tvDepth);
+			holder.tvDist = (TextView) convertView.findViewById(R.id.tvDist);
 			convertView.setTag(holder);
 		} else {
 			holder = (EarthquakeHolder) convertView.getTag();
@@ -80,6 +81,11 @@ public class EarthquakeListAdapter extends BaseAdapter {
 			adapterDepth = String.format(adapterDepth, Constants.df.format(objEarthquake.getDepth()), 
 					context.getString(R.string.kilometer));
 			holder.tvDepth.setText(adapterDepth);
+
+			String adapterDist = context.getString(R.string.adapterDist);
+			adapterDist = String.format(adapterDepth, Constants.df.format(objEarthquake.getDistance()), 
+					context.getString(R.string.kilometer));
+			holder.tvDist.setText(adapterDist);
 		}
 		return convertView;
 	}
@@ -118,6 +124,7 @@ public class EarthquakeListAdapter extends BaseAdapter {
 		TextView tvPlace;
 		TextView tvTime;
 		TextView tvDepth;
+		TextView tvDist;
 	}
 	
 	public interface LoadDataCallback {

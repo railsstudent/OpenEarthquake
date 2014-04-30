@@ -1,14 +1,18 @@
 package com.blueskyconnie.simpleearthquake;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
+import roboguice.inject.InjectResource;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
+import android.provider.Settings.SettingNotFoundException;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.blueskyconnie.simpleearthquake.helper.AlertDialogHelper;
 import com.blueskyconnie.simpleearthquake.helper.ConnectionDetector;
@@ -29,9 +33,9 @@ public class SplashActivity extends RoboActivity implements
 //	private static final int DELAY_SECONDS = (int) 2.5 * 1000;
 	
 	private static final long ONE_MIN = 1000 * 60;
-	private static final long TWO_MIN = ONE_MIN * 2;
+//	private static final long TWO_MIN = ONE_MIN * 2;
 	private static final long FIVE_MIN = ONE_MIN * 5;
-	private static final long MEASURE_TIME = 1000 * 30;
+//	private static final long MEASURE_TIME = 1000 * 30;
 	private static final long POLLING_FREQ = 1000 * 10;
 	private static final long FASTES_UPDATE_FREQ = 1000 * 2;
 	private static final float MIN_ACCURACY = 25.0f;
@@ -48,7 +52,15 @@ public class SplashActivity extends RoboActivity implements
 	private Location mBestReading;
 	
 	private boolean isNextActivityStarted;
+
+	@InjectResource(R.string.latitude)
+	private String strLatitude;
+
+	@InjectResource(R.string.longtitude)
+	private String strLongtitude;
 	
+	@TargetApi(Build.VERSION_CODES.KITKAT)
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,9 +72,30 @@ public class SplashActivity extends RoboActivity implements
 		} else {
 
 			if (!servicesAvailable()) {
-				AlertDialogHelper.showNoGooglePlayService(this);
 				Log.i(TAG, "No Google Play Service installed. Quit now.");
+				AlertDialogHelper.showNoGooglePlayService(this);
 			}
+			
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+		        String providers = Secure.getString(getContentResolver(),
+		                Secure.LOCATION_PROVIDERS_ALLOWED);
+		        if (TextUtils.isEmpty(providers)) {
+		        	AlertDialogHelper.accessMyLocationFailed(this);
+		        }
+		    } else {
+		        final int locationMode;
+		        try {
+		            locationMode = Secure.getInt(getContentResolver(), Secure.LOCATION_MODE);
+		            if (locationMode != Secure.LOCATION_MODE_BATTERY_SAVING && 
+			        		locationMode != Secure.LOCATION_MODE_HIGH_ACCURACY && 
+			        		locationMode != Secure.LOCATION_MODE_SENSORS_ONLY) {
+			        	AlertDialogHelper.accessMyLocationFailed(this);
+			        }
+		        } catch (SettingNotFoundException e) {
+		            Log.i(TAG, e.getMessage());
+		        	AlertDialogHelper.accessMyLocationFailed(this);
+		        }
+		    }
 			
 			mLocationClient = new LocationClient(this, this, this);
 			mLocationRequest = LocationRequest.create();
@@ -131,20 +164,22 @@ public class SplashActivity extends RoboActivity implements
 			// Get best last location measurement meeting criteria
 			mBestReading = bestLastKnownLocation(MIN_LAST_READ_ACCURACY, FIVE_MIN);
 	
-			if (null == mBestReading
-					|| mBestReading.getAccuracy() > MIN_LAST_READ_ACCURACY
-					|| mBestReading.getTime() < System.currentTimeMillis()
-							- TWO_MIN) {
+			if (null == mBestReading) {
+//					|| mBestReading.getAccuracy() > MIN_LAST_READ_ACCURACY
+//					|| mBestReading.getTime() < System.currentTimeMillis()
+//							- TWO_MIN) {
 	
 				mLocationClient.requestLocationUpdates(mLocationRequest, this);
 				
 				// Schedule a runnable to unregister location listeners
-				Executors.newScheduledThreadPool(1).schedule(new Runnable() {
-					@Override
-					public void run() {
-						mLocationClient.removeLocationUpdates(SplashActivity.this);
-					}
-				}, MEASURE_TIME, TimeUnit.MILLISECONDS);
+//				Executors.newScheduledThreadPool(1).schedule(new Runnable() {
+//					@Override
+//					public void run() {
+//						mLocationClient.removeLocationUpdates(SplashActivity.this);
+//			    //    	AlertDialogHelper.accessMyLocationFailed(SplashActivity.this);
+//						Toast.makeText(SplashActivity.this, "waits 30 seconds", Toast.LENGTH_SHORT).show();
+//					}
+//				}, MEASURE_TIME, TimeUnit.MILLISECONDS);
 			} else {
 				// Display last reading information
 				updateDisplay(mBestReading, "onConnected");
@@ -209,9 +244,13 @@ public class SplashActivity extends RoboActivity implements
 	
 	// Update display
 	private void updateDisplay(Location location, String methodName) {
-//		Toast.makeText(this, String.format("%3$s: latitude:%1$f, longtitude: %2$f", 
-//					location.getLatitude(), location.getLongitude(), methodName), 
-//				Toast.LENGTH_SHORT).show();
+		Log.i(TAG, String.format("%3$s: latitude:%1$f, longtitude: %2$f", 
+				location.getLatitude(), location.getLongitude(), methodName));
+
+		Toast.makeText(this, String.format("%1$s: %2$f, %3$s %4$f", 
+				strLatitude, location.getLatitude(), strLongtitude, location.getLongitude()), 
+			Toast.LENGTH_LONG).show();
+		
 		((EarthquakeApplication) getApplication()).setCurrentLocation(location);
 	}
 

@@ -215,6 +215,10 @@ public class EarthquakeInfo implements Serializable, ClusterItem {
 		return distance;
 	}
 	
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

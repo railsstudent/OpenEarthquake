@@ -44,6 +44,23 @@ public final class AlertDialogHelper {
 			.create()
 			.show();
 	}
+
+	public static void accessMyLocationFailed(final Activity currentActivity) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(currentActivity);
+			builder
+				.setCancelable(false)
+				.setMessage(currentActivity.getString(R.string.access_mylocation_error))
+				.setNeutralButton(currentActivity.getString(R.string.confirm_exit), 
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								if (currentActivity != null) {
+									currentActivity.finish();
+								}
+							}})
+				.create()
+				.show();
+	}
 	
 //	public static void showConfirmExitDialog(final Activity activity) {
 //		

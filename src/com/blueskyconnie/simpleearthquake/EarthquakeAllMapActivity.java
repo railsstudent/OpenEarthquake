@@ -79,7 +79,7 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 
 					dbHelper = new QuakeSQLiteOpenHelper(this);
 					quakeDS = new QuakeDataSource(dbHelper.getReadableDatabase());
-					searchHelper = new SearchDataHelper(quakeDS);
+					searchHelper = new SearchDataHelper(this, quakeDS);
 
 					infoType = getIntent().getStringExtra(Constants.EARTHQUAKE_TYPE);
 					searchPlace = getIntent().getStringExtra(Constants.SEARCH_PLACE);

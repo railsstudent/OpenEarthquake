@@ -124,7 +124,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 		quakeDS = new QuakeDataSource(dbHelper.getWritableDatabase());
 		handler = new EarthquakeJsonHttpResponseHandler(this.getActivity(),
 				this, infoType, quakeDS);
-		searchHelper = new SearchDataHelper(quakeDS);
+		searchHelper = new SearchDataHelper(getActivity(), quakeDS);
 	}
 
 	@Override
