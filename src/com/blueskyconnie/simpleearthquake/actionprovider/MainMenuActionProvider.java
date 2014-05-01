@@ -69,7 +69,7 @@ public class MainMenuActionProvider extends CommonMenuActionProvider {
 				mContext.startActivity(new Intent(mContext, EarthquakePreferenceActivity.class));
 				return true;
 		}
-		return false;
+		return super.onMenuItemClick(item);
 	}
 
 	@Override

@@ -183,6 +183,31 @@
             android:textColor="@color/grayColor" />
         
         <TextView
+            android:id="@+id/tvPrefV4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/prefv4_software"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/blackColor" />
+
+        <TextView
+            android:id="@+id/tvPrefV4Copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/prefv4_copyright"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/grayColor" />
+        
+        <TextView
             android:id="@+id/tvAppCopyright"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

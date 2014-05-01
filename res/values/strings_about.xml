@@ -13,6 +13,8 @@
     <string name="crouton_copyright">Copyright 2013, Benjamin Weiss</string>
     <string name="guava_software">5) Google Guava</string>
     <string name="guava_copyright">Copyright 2011, Guava Authors</string>
+    <string name="prefv4_software">6) android-support-v4-preferencefragment</string>
+    <string name="prefv4_copyright">Copyright 2013, kolavar</string>
     <string name="developer">Developed by Connie Leung. Send me feedback.</string>
     <string name="email">cleung334@gmail.com</string>
     <string name="copyright">Copyright</string>
