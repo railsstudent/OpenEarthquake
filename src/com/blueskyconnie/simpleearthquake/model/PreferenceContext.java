@@ -5,6 +5,7 @@ public final class PreferenceContext {
 	private String magValue;
 	private String depthValue;
 	private int mapType;
+	private String distValue;
 	
 	public int getMapType() {
 		return mapType;
@@ -28,5 +29,13 @@ public final class PreferenceContext {
 	
 	public void setDepthValue(String depthValue) {
 		this.depthValue = depthValue;
+	}
+
+	public String getDistValue() {
+		return distValue;
+	}
+
+	public void setDistValue(String distValue) {
+		this.distValue = distValue;
 	}
 }

@@ -77,7 +77,7 @@ public class EarthquakePreferenceFragment extends PreferenceFragment implements 
 		Activity activity = this.getActivity();
 		if (activity != null) {
 			EarthquakeApplication application = (EarthquakeApplication) activity.getApplicationContext();
-			application.setPreferenceChanged(true);
+			application.notifyAllPreferenceChanged();
 		}
 		Log.i(TAG, "onSharedPreferenceChanged ends");
 	}

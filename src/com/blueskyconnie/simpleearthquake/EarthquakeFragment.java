@@ -33,7 +33,6 @@ import com.blueskyconnie.simpleearthquake.helper.PreferenceHelper;
 import com.blueskyconnie.simpleearthquake.helper.SearchDataHelper;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo.INFO_TYPE;
-import com.blueskyconnie.simpleearthquake.model.PreferenceContext;
 import com.blueskyconnie.simpleearthquake.model.SearchCriteria;
 import com.google.common.base.Strings;
 
@@ -186,6 +185,31 @@ public class EarthquakeFragment extends RoboListFragment implements
 		Log.i(TAG, "onResume called - resfulUrl = " + restfulUrl);
 	}
 
+	public void refreshIfPrefChanged() {
+		Activity activity = getActivity();
+		EarthquakeApplication application = null;
+		if (activity != null) {
+			application = (EarthquakeApplication) activity.getApplication();
+		}
+		boolean isPreferenceChanged = (application != null ? application.isPreferenceChanged(infoType) : false);
+		if (isPreferenceChanged) {
+			application.setPreferenceChanged(infoType, false);
+			// call client to get restful data
+			if (lstView != null && btnLoad != null) {
+				tvTotal.setVisibility(View.INVISIBLE);
+				lstView.setVisibility(View.INVISIBLE);
+				btnLoad.setEnabled(false);
+				btnLoad.setVisibility(View.INVISIBLE);
+				// hide menu items 
+				setMenuItemVisible(false);
+				swipeRefreshLayout.setEnabled(false);
+				swipeRefreshLayout.setRefreshing(true);
+				isLoadingData = true;
+				UsgsEarthquakeClient.get(restfulUrl, null, handler);
+			}
+		} 
+	}
+	
 	private void loadData() {
 		if (isLoadingData) {
 			Log.i(TAG, "loadData() - isLoadingData = " + isLoadingData + ", exit early.");
@@ -200,14 +224,14 @@ public class EarthquakeFragment extends RoboListFragment implements
 		if (activity != null) {
 			application = (EarthquakeApplication) activity.getApplicationContext();
 		}
-		boolean isPreferenceChanged = (application != null ? application.isPreferenceChanged() : false);
+		boolean isPreferenceChanged = (application != null ? application.isPreferenceChanged(infoType) : false);
 		Log.i(TAG, "loadData - isPreferenceChanged = " + isPreferenceChanged);
 		
 //		if (!isDataLoaded || isRefreshing) {
 		if (!isDataLoaded || isRefreshing || isPreferenceChanged) {
 			if (this.getUserVisibleHint()) {
 				if (isPreferenceChanged) {
-					application.setPreferenceChanged(false);
+					application.setPreferenceChanged(infoType, false);
 				}
 				
 				// call client to get restful data
@@ -362,19 +386,16 @@ public class EarthquakeFragment extends RoboListFragment implements
 
 	private void filterData(String query) {
 		List<EarthquakeInfo> lstEarthquake = null;
-		PreferenceContext prefContext = PreferenceHelper.load(getActivity());
-		
+
 		SearchCriteria criteria = new SearchCriteria();
 		criteria.setInfoType(infoType);
 		criteria.setPlace(query);
-		criteria.setStrPrefDepthValue(prefContext.getDepthValue());
-		criteria.setStrPrefMagValue(prefContext.getMagValue());
+		PreferenceHelper.convertPrefContext(getActivity(), criteria);
+		
 		lstEarthquake = searchHelper.search(criteria);
 		earthquakeAdapter.addEarthquake(lstEarthquake);
 		totalRecords = lstEarthquake.size();
 		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
-
-		prefContext = null;
 	}
 	
 	@Override

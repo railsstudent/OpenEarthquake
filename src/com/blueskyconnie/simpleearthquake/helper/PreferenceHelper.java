@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.blueskyconnie.simpleearthquake.Constants;
 import com.blueskyconnie.simpleearthquake.model.PreferenceContext;
+import com.blueskyconnie.simpleearthquake.model.SearchCriteria;
 import com.google.android.gms.maps.GoogleMap;
 
 public final class PreferenceHelper {
@@ -20,6 +21,7 @@ public final class PreferenceHelper {
 		if (mPref != null) {
 			prefContext.setDepthValue(mPref.getString(Constants.PREF_KEY_DEPTH, Constants.ALL));
 			prefContext.setMagValue(mPref.getString(Constants.PREF_KEY_MAGNITUDE, Constants.ALL));
+			prefContext.setDistValue(mPref.getString(Constants.PREF_KEY_DIST, Constants.ALL));
 			String strMapType = mPref.getString(Constants.PREF_KEY_MAPTYPE, "MAP_TYPE_SATELLITE");
 			int mapType;
 			try {
@@ -41,5 +43,16 @@ public final class PreferenceHelper {
 			prefContext.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 		}
 		return prefContext;
+	}
+	
+	
+	public static void convertPrefContext(Context context, SearchCriteria criteria) {
+		
+		PreferenceContext prefContext = load(context);
+		if (prefContext != null && criteria != null) {
+			criteria.setStrPrefDepthValue(prefContext.getDepthValue());
+			criteria.setStrPrefMagValue(prefContext.getMagValue());
+			criteria.setStrPrefDistValue(prefContext.getDistValue());
+		}
 	}
 }

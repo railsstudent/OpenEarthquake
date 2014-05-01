@@ -81,6 +81,10 @@ public class MainActivity extends RoboActionBarActivity implements
 			@Override
 			public void onPageSelected(int position) {
 				actionBar.setSelectedNavigationItem(position);
+				if (mTabsPagerAdapter.getItem(position) instanceof EarthquakeFragment) {
+					EarthquakeFragment efrag = (EarthquakeFragment) mTabsPagerAdapter.getItem(position);
+					efrag.refreshIfPrefChanged();
+				}
 			}
 		});
 		

@@ -83,7 +83,7 @@ public class EarthquakeListAdapter extends BaseAdapter {
 			holder.tvDepth.setText(adapterDepth);
 
 			String adapterDist = context.getString(R.string.adapterDist);
-			adapterDist = String.format(adapterDepth, Constants.df.format(objEarthquake.getDistance()), 
+			adapterDist = String.format(adapterDist, Constants.df.format(objEarthquake.getDistance()), 
 					context.getString(R.string.kilometer));
 			holder.tvDist.setText(adapterDist);
 		}

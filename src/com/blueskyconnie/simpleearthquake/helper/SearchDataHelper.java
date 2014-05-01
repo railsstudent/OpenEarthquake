@@ -1,6 +1,7 @@
 package com.blueskyconnie.simpleearthquake.helper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import android.content.Context;
@@ -12,7 +13,9 @@ import com.blueskyconnie.simpleearthquake.EarthquakeApplication;
 import com.blueskyconnie.simpleearthquake.db.QuakeDataSource;
 import com.blueskyconnie.simpleearthquake.model.EarthquakeInfo;
 import com.blueskyconnie.simpleearthquake.model.SearchCriteria;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 
 public class SearchDataHelper {
 
@@ -42,7 +45,7 @@ public class SearchDataHelper {
 		}
 		
 		String strPrefMagValue = criteria.getStrPrefMagValue();
-		if (!strPrefMagValue.equals("all")) {
+		if (!strPrefMagValue.equals(Constants.ALL)) {
 			try {
 				 filter = filter + " AND " + QuakeDataSource.COLUMN_MAGNITUDE + " >= ? ";
 				 lstSelectArgs.add(strPrefMagValue);
@@ -53,7 +56,7 @@ public class SearchDataHelper {
 		}
 			
 		String strPrefDepthValue = criteria.getStrPrefDepthValue();
-		if (!strPrefDepthValue.equals("all")) {
+		if (!strPrefDepthValue.equals(Constants.ALL)) {
 			try {
 				 filter = filter + " AND " + QuakeDataSource.COLUMN_DEPTH + " <= ? ";
 				 lstSelectArgs.add(strPrefDepthValue);
@@ -70,6 +73,7 @@ public class SearchDataHelper {
 		if (lstEarthquake == null) {
 			lstEarthquake = new ArrayList<EarthquakeInfo>();
 		}
+		
 		// compute distance between earthquake and current location
 		EarthquakeApplication application = (EarthquakeApplication) context.getApplicationContext();
 		Location currentLocation = application.getCurrentLocation();
@@ -83,6 +87,20 @@ public class SearchDataHelper {
 					info.setDistance(results[0]);
 				}
 			}
+		}
+		
+		// filter by distance
+		if (!criteria.getStrPrefDistValue().equals(Constants.ALL)) {
+			final double prefDistValue = criteria.getPrefDistValue();
+			Collection<EarthquakeInfo> col =  
+				Collections2.filter(lstEarthquake, new Predicate<EarthquakeInfo>() {
+					@Override
+					public boolean apply(EarthquakeInfo item) {
+						return item.getDistance() <= prefDistValue;
+					}
+				});
+			
+			lstEarthquake = new ArrayList<EarthquakeInfo> (col);
 		}
 		return lstEarthquake;
 	}

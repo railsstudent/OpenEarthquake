@@ -9,6 +9,7 @@
     	<item>All</item>
     	<item>M 1.0+</item>
     	<item>M 2.5+</item>    
+    	<item>M 3.0+</item>
     	<item>M 3.5+</item>
     	<item>M 4.5+</item>
     </string-array>
@@ -17,6 +18,7 @@
         <item>all</item>
         <item>1.0</item>
         <item>2.5</item>
+        <item>3.0</item>
         <item>3.5</item>
         <item>4.5</item>
     </string-array>
@@ -25,13 +27,13 @@
     <string name="pref_depth_summary_title">Display earthquakes no more than this depth</string>
     <string-array name="depth_entries">
         <item>All</item>
-        <item>&lt;=5km</item>
-        <item>&lt;=10km</item>
-        <item>&lt;=25km</item>
-        <item>&lt;=50km</item>
-        <item>&lt;=100km</item>
-        <item>&lt;=250km</item>
-        <item>&lt;=500km</item>
+        <item>&lt;=5 km</item>
+        <item>&lt;=10 km</item>
+        <item>&lt;=25 km</item>
+        <item>&lt;=50 km</item>
+        <item>&lt;=100 km</item>
+        <item>&lt;=250 km</item>
+        <item>&lt;=500 km</item>
     </string-array>
     
     <string-array name="depth_values">
@@ -58,6 +60,30 @@
         <item>MAP_TYPE_TERRAIN</item>
     </string-array>
     
+    <string-array name="distance_entries">
+        <item>All</item>
+        <item>&lt;=500 km</item>
+        <item>&lt;=1000 km</item>
+        <item>&lt;=2500 km</item>
+        <item>&lt;=5000 km</item>
+        <item>&lt;=7500 km</item>
+        <item>&lt;=10000 km</item>
+        <item>&lt;=15000 km</item>
+    </string-array>
+    
+    <string-array name="distance_values">
+        <item>all</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>2500</item>
+        <item>5000</item>
+        <item>7500</item>
+        <item>10000</item>
+        <item>15000</item>
+    </string-array>
+    
     <string name="pref_currLocation_title">Current Location</string>
+    <string name="pref_dist_title">Distance</string>
+    <string name="pref_dist_summary_title">Display earthquakes within this distance range</string>
     
 </resources>

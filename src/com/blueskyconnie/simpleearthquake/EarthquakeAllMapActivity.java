@@ -84,15 +84,12 @@ public class EarthquakeAllMapActivity extends RoboActionBarActivity /*implements
 					infoType = getIntent().getStringExtra(Constants.EARTHQUAKE_TYPE);
 					searchPlace = getIntent().getStringExtra(Constants.SEARCH_PLACE);
 					
-//					List<EarthquakeInfo> earthquakeList = quakeDS.query(QuakeDataSource.TABLE_NAME, "TYPE = ? ", 
-//							new String[] { infoType }, QuakeDataSource.COLUMN_INT_SEQ);
-
 					PreferenceContext prefContext = PreferenceHelper.load(this);
 					SearchCriteria criteria = new SearchCriteria();
 					criteria.setInfoType(infoType);
 					criteria.setPlace(searchPlace);
-					criteria.setStrPrefDepthValue(prefContext.getDepthValue());
-					criteria.setStrPrefMagValue(prefContext.getMagValue());
+					PreferenceHelper.convertPrefContext(this, criteria);
+					
 					List<EarthquakeInfo> earthquakeList = searchHelper.search(criteria);
 					
 					Log.i(TAG, "Number of earthquake data retrieved: " + earthquakeList.size());

@@ -140,10 +140,10 @@ public class SplashActivity extends RoboActivity implements
 				if (mLocationClient != null) {
 					mLocationClient.removeLocationUpdates(this);
 				}
-				// Update display
-				updateDisplay(location, "onLocationChanged");
 				if (!isNextActivityStarted) {
 					isNextActivityStarted = true;
+					// Update display
+					updateDisplay(location, "onLocationChanged");
 					startNextActivity();	
 					Log.i(TAG, "Launch next activity in onLocationChanged");
 				}
@@ -181,10 +181,10 @@ public class SplashActivity extends RoboActivity implements
 //					}
 //				}, MEASURE_TIME, TimeUnit.MILLISECONDS);
 			} else {
-				// Display last reading information
-				updateDisplay(mBestReading, "onConnected");
 				if (!isNextActivityStarted) {
 					isNextActivityStarted = true;
+					// Display last reading information
+					updateDisplay(mBestReading, "onConnected");
 					startNextActivity();	
 					Log.i(TAG, "Launch next activity in onConnected");
 				}
