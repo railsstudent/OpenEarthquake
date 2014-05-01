@@ -40,6 +40,6 @@
         
     <string name="pref_currLocation_title">我的位置</string>
     <string name="pref_dist_title">距離</string>
-    <string name="pref_dist_summary_title">顯示這個距離以內的地</string>
+    <string name="pref_dist_summary_title">顯示這個距離以內的地震</string>
     
 </resources>
