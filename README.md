@@ -1,0 +1,4 @@
+OpenEarthquake
+==============
+
+Display earthquake information
