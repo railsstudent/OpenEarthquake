@@ -11,18 +11,20 @@
 
         <TextView
             android:id="@+id/lblWinPlace"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/place"
             android:layout_marginRight="8dp"
             android:color="@color/blackColor"
+            android:layout_weight="1"
             android:textSize="20sp" />
         
         <TextView
             android:id="@+id/tvWinPlace"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:color="@color/blackColor"
+            android:layout_weight="4"
             android:textSize="20sp" />
 
     </TableRow>
