@@ -1,5 +1,7 @@
 package com.blueskyconnie.simpleearthquake.model;
 
+import com.blueskyconnie.simpleearthquake.Constants;
+
 public final class SearchCriteria {
 
 	private String place;
@@ -47,6 +49,9 @@ public final class SearchCriteria {
 	
 	public void setStrPrefMagValue(String strPrefMagValue) {
 		this.strPrefMagValue = strPrefMagValue;
+		if (strPrefMagValue != null && strPrefMagValue.equals(Constants.ALL)) {
+			return;
+		}
 		try { 
 			prefMagValue = Double.parseDouble(strPrefMagValue);
 		} catch (NumberFormatException ex) {
@@ -60,6 +65,9 @@ public final class SearchCriteria {
 	
 	public void setStrPrefDepthValue(String strPrefDepthValue) {
 		this.strPrefDepthValue = strPrefDepthValue;
+		if (strPrefDepthValue != null && strPrefDepthValue.equals(Constants.ALL)) {
+			return;
+		}
 		try { 
 			prefDepthValue = Double.parseDouble(strPrefDepthValue);
 		} catch (NumberFormatException ex) {
@@ -73,6 +81,9 @@ public final class SearchCriteria {
 
 	public void setStrPrefDistValue(String strPrefDistValue) {
 		this.strPrefDistValue = strPrefDistValue;
+		if (strPrefDistValue != null && strPrefDistValue.equals(Constants.ALL)) {
+			return;
+		}
 		try { 
 			prefDistValue = Double.parseDouble(strPrefDistValue);
 		} catch (NumberFormatException ex) {

@@ -104,20 +104,22 @@ public class EarthquakeListAdapter extends BaseAdapter {
 	public void addEarthquake(List<EarthquakeInfo> newLstEarthquake) {
 		this.lstInfo.clear();
 		if (newLstEarthquake != null) {
-			this.lstInfo.addAll(newLstEarthquake);
+			lstInfo.addAll(newLstEarthquake);
 		}
 		count = BUFFER_SIZE;
 		count = Math.min(count, lstInfo.size());
-		this.notifyDataSetChanged();
+		notifyDataSetChanged();
 	}
 	
-	public void addEarthquake(EarthquakeInfo newEarthquake) {
-		this.lstInfo.add(newEarthquake);
-		count = count + 1;
-		count = Math.min(count, lstInfo.size());
-		this.notifyDataSetChanged();
-	}
-	
+//	public void resetEarthquake(List<EarthquakeInfo> newLstEarthquake) {
+//		lstInfo.clear();
+//		if (newLstEarthquake != null) {
+//			lstInfo.addAll(newLstEarthquake);
+//		}
+//		count = BUFFER_SIZE;
+//		count = Math.min(count, lstInfo.size());
+//		notifyDataSetChanged();
+//	}
 	
 	private static class EarthquakeHolder {
 		TextView tvMagnitude;

@@ -136,10 +136,8 @@ public class EarthquakeFragment extends RoboListFragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		earthquakeAdapter = new EarthquakeListAdapter(getActivity(),
-				R.layout.earthquake_row_layout, this);
+		earthquakeAdapter = new EarthquakeListAdapter(getActivity(), R.layout.earthquake_row_layout, this);
 		setListAdapter(earthquakeAdapter);
-//		setListAdapter(new EndlessQuakeAdapter(earthquakeAdapter, quakeDS, infoType, 8));
 		// by experiment, control is injected here
 		btnLoad.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -394,6 +392,10 @@ public class EarthquakeFragment extends RoboListFragment implements
 		
 		lstEarthquake = searchHelper.search(criteria);
 		earthquakeAdapter.addEarthquake(lstEarthquake);
+//		if (getListAdapter() != null) {
+//			EndlessEarthquakeListAdapter tmpAdapter = (EndlessEarthquakeListAdapter) getListAdapter();
+//			tmpAdapter.setDataSource(lstEarthquake);
+//		}
 		totalRecords = lstEarthquake.size();
 		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
 	}
