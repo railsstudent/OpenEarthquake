@@ -391,11 +391,7 @@ public class EarthquakeFragment extends RoboListFragment implements
 		PreferenceHelper.convertPrefContext(getActivity(), criteria);
 		
 		lstEarthquake = searchHelper.search(criteria);
-		earthquakeAdapter.addEarthquake(lstEarthquake);
-//		if (getListAdapter() != null) {
-//			EndlessEarthquakeListAdapter tmpAdapter = (EndlessEarthquakeListAdapter) getListAdapter();
-//			tmpAdapter.setDataSource(lstEarthquake);
-//		}
+		earthquakeAdapter.setEarthquake(lstEarthquake);
 		totalRecords = lstEarthquake.size();
 		tvTotal.setText(String.format(strTotalFormatter, totalRecords, earthquakeAdapter.getCount()));
 	}
