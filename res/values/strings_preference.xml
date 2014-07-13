@@ -86,4 +86,17 @@
     <string name="pref_dist_title">Distance</string>
     <string name="pref_dist_summary_title">Display earthquakes within this distance range</string>
     
+    <string name="pref_limit_title">Number of Items</string>
+    <string name="pref_limit_summary_title">Showing a maximum number of earthquakes</string>
+    <string name="pref_limit_dialog_title">Maximum number of items</string>
+    <string-array name="limit_values">
+        <item>all</item>
+        <item>5</item>
+        <item>10</item>
+        <item>50</item>
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+    </string-array>
+    
 </resources>

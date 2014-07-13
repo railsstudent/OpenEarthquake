@@ -6,6 +6,8 @@ public final class PreferenceContext {
 	private String depthValue;
 	private int mapType;
 	private String distValue;
+	private String limitValue;
+	
 	
 	public int getMapType() {
 		return mapType;
@@ -37,5 +39,13 @@ public final class PreferenceContext {
 
 	public void setDistValue(String distValue) {
 		this.distValue = distValue;
+	}
+
+	public String getLimitValue() {
+		return limitValue;
+	}
+
+	public void setLimitValue(String limitValue) {
+		this.limitValue = limitValue;
 	}
 }

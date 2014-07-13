@@ -8,11 +8,13 @@ public final class SearchCriteria {
 	private String strPrefMagValue;
 	private String strPrefDepthValue;
 	private String strPrefDistValue;
+	private String strPrefLimitValue;
 	private String infoType;
 	
 	private double prefMagValue = 0;
 	private double prefDepthValue = 0;
 	private double prefDistValue = 0;
+	private int prefLimitValue = 0;
 	
 	public double getPrefMagValue() {
 		return prefMagValue;
@@ -90,5 +92,24 @@ public final class SearchCriteria {
 			ex.printStackTrace();
 		}
 	}
+
+	public String getStrPrefLimitValue() {
+		return strPrefLimitValue;
+	}
+
+	public void setStrPrefLimitValue(String strPrefLimitValue) {
+		this.strPrefLimitValue = strPrefLimitValue;
+		if (strPrefLimitValue != null && strPrefLimitValue.equals(Constants.ALL)) {
+			return;
+		}
+		try { 
+			prefLimitValue = Integer.parseInt(strPrefLimitValue);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+		}
+	}
 	
+	public int getPrefLimitValue() {
+		return prefLimitValue;
+	}
 }

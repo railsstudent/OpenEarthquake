@@ -102,6 +102,13 @@ public class SearchDataHelper {
 			
 			lstEarthquake = new ArrayList<EarthquakeInfo> (col);
 		}
+		
+		// filter by record count 
+		if (!criteria.getStrPrefLimitValue().equals(Constants.ALL)) {
+			if (criteria.getPrefLimitValue() <= lstEarthquake.size()) {
+				lstEarthquake = lstEarthquake.subList(0, criteria.getPrefLimitValue());
+			}
+		}
 		return lstEarthquake;
 	}
 }

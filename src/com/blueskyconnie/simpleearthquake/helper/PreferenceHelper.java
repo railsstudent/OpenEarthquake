@@ -36,11 +36,13 @@ public final class PreferenceHelper {
 				mapType = GoogleMap.MAP_TYPE_SATELLITE;
 				e.printStackTrace();
 			}
-			prefContext.setMapType(mapType);
+			prefContext.setMapType(mapType);			
+			prefContext.setLimitValue(mPref.getString(Constants.PREF_KEY_LIMIT, Constants.ALL));
 		} else {
 			prefContext.setDepthValue(Constants.ALL);
 			prefContext.setMagValue(Constants.ALL);
 			prefContext.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+			prefContext.setLimitValue(Constants.ALL);
 		}
 		return prefContext;
 	}
@@ -53,6 +55,7 @@ public final class PreferenceHelper {
 			criteria.setStrPrefDepthValue(prefContext.getDepthValue());
 			criteria.setStrPrefMagValue(prefContext.getMagValue());
 			criteria.setStrPrefDistValue(prefContext.getDistValue());
+			criteria.setStrPrefLimitValue(prefContext.getLimitValue());
 		}
 	}
 }

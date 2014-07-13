@@ -21,4 +21,5 @@ public class Constants {
 	public static final String PREF_KEY_MAPTYPE = "pref_key_maptype";
 	public static final String PREF_KEY_CURRENTLOC = "pref_key_currLocation";
 	public static final String PREF_KEY_DIST = "pref_key_dist";
+	public static final String PREF_KEY_LIMIT = "pref_key_limit";
 }

@@ -42,4 +42,8 @@
     <string name="pref_dist_title">距離</string>
     <string name="pref_dist_summary_title">顯示這個距離以內的地震</string>
     
+    <string name="pref_limit_title">項目數目</string>
+    <string name="pref_limit_summary_title">顯示地震的最多數目</string>
+    <string name="pref_limit_dialog_title">選擇地震的最多數目</string>
+        
 </resources>
